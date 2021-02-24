@@ -26,6 +26,8 @@ RtuRw *Rtu_Modbus::get()
     if(ser) {
         res->init(ser);
         ser->reflush();
+    } else {
+        res = nullptr;
     }
 
     return res;

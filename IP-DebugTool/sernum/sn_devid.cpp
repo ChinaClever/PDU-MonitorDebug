@@ -42,7 +42,7 @@ bool Sn_DevId::analysDevType(uchar *buf, int len)
 
     ret = mTypeDef->analysDevType(id);
     if(ret){
-        mItem->devId = id;
+        mDt->devId = id;
     } else {
         str = tr("不支持此设备类型 ID：%1").arg(id,0,16);
     }

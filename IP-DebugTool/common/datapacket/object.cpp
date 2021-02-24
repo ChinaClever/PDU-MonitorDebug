@@ -7,6 +7,7 @@ Object::Object(QObject *parent) : QThread(parent)
     mItem = Cfg::bulid()->item;
     mPro = mPacket->getPro();
     mDev = mPacket->getDev();
+    mData = &(mDev->data);
     mCfg = &(mDev->cfg);
     mDt = &(mDev->dt);
 }
@@ -14,6 +15,7 @@ Object::Object(QObject *parent) : QThread(parent)
 void Object::initFunSlot()
 {
     mModbus = Rtu_Modbus::bulid(this)->get();
+    if(!mModbus) QTimer::singleShot(350,this,SLOT(initFunSlot()));
 }
 
 bool Object::updatePro(const QString &str, bool pass, int sec)
@@ -27,7 +29,7 @@ bool Object::updatePro(const QString &str, bool pass, int sec)
     return pass;
 }
 
-bool Object::delay(int s)
+bool Object::mdelay(int s)
 {
     bool ret = true;
     for(int i=0; i<s; ++i) {

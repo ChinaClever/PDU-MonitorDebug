@@ -7,7 +7,14 @@
 #define PACK_ARRAY_SIZE LINE_NUM
 #define OpSize  6
 
-
+// 倍率定义
+#define COM_RATE_VOL	1.0    // 电压
+#define COM_RATE_CUR	10.0    // 电流
+#define COM_RATE_POW	1000.0  // 功率
+#define COM_RATE_ELE	10.0    // 电能
+#define COM_RATE_PF     100.0   // 功率因数
+#define COM_RATE_TEM	1.0    // 温度
+#define COM_RATE_HUM	1.0    // 湿度
 /**
  * 数据单元：包括当前值，阈值，临界值，告警状态等
  */
@@ -38,11 +45,14 @@ struct sObjData
     sDataUnit hum; // 湿度
 
     ushort pow[PACK_ARRAY_SIZE]; // 功率
+    ushort powed[PACK_ARRAY_SIZE]; // 功率
     uint ele[PACK_ARRAY_SIZE]; // 电能
 
     uchar pf[PACK_ARRAY_SIZE]; // 功率因数
     uchar sw[PACK_ARRAY_SIZE]; // 开关状态 0 表示未启用
     ushort aPow[PACK_ARRAY_SIZE]; // 视在功率值
+    uchar status[PACK_ARRAY_SIZE];
+    ushort cured[PACK_ARRAY_SIZE]; // 电流
 
     ushort hz[PACK_ARRAY_SIZE]; // 电压频率
     ushort br;  // 00	表示波特率9600(00默认9600，01为4800，02为9600，03为19200，04为38400)
@@ -84,6 +94,7 @@ struct sObjCfg
 struct sTypeCfg
 {
     uchar si_ac;
+    uchar si_led;
     uchar si_lines;
     uchar si_series;
     uchar si_standar;
@@ -101,8 +112,12 @@ struct sTypeCfg
 
 struct sDevType
 {
+    uchar devId;
     uchar devType; // 0 SI-PDU  1 IP-PDU
     uchar lines;
+    uchar ac;
+
+    uchar version; // IP V1 V3
 };
 
 
@@ -121,7 +136,9 @@ struct sDevData
 enum {
     Test_Fun, // 功能
     Test_Start, // 开始
+    Test_Ading,
     Test_vert, // 验证
+    Test_Collect,
     Test_Over, // 终止
     Test_End, // 完成
 

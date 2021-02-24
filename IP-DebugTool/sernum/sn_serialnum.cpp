@@ -42,7 +42,7 @@ bool Sn_SerialNum::checkSn(uchar *sn, int len)
 
 void Sn_SerialNum::initDevType(sSnItem &it)
 {
-    uint id = mItem->devId;
+    uint id = mDt->devId;
     for(int i=3; i>=0; --i) {
         it.devType[i] = (0xFF) & (id >> ((3-i)*8));
     }

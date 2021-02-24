@@ -12,7 +12,8 @@ public:
 
     void init() {mPacket->init();}
     bool updatePro(const QString &str, bool pass=true, int sec=1);
-    bool delay(int s=1);
+    bool delay(int s=1) {return mdelay(6*s);}
+    bool mdelay(int s=1);
 
 protected slots:
     virtual void initFunSlot();
@@ -24,6 +25,7 @@ protected:
     RtuRw *mModbus;
     sCfgItem *mItem;
     sProgress *mPro;
+    sObjData *mData;
     sDataPacket *mPacket;
 };
 

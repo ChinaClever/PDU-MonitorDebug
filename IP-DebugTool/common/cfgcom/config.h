@@ -4,6 +4,7 @@
 #include "serialstatuswid.h"
 
 enum eDevTypes {
+    BM_PDU=0,
     SI_PDU=0,
     IP_PDU,
     MPDU,
@@ -37,7 +38,10 @@ struct sCfgItem
 {    
     uchar modeId;
     uchar addr;
-    uint devId;
+    uchar step;
+
+    ushort vol;
+    ushort volErr, curErr, powErr; // 电流误差
 
     QString sn;
     QString mac;
@@ -53,7 +57,9 @@ struct sCfgItem
     bool enSn;
     uchar pcNum;
     ushort currentNum;
+
     SerialPort *com;
+    SerialPort *source;
 };
 
 
