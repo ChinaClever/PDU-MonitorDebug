@@ -11,6 +11,9 @@ Td_MainWid::Td_MainWid(QWidget *parent) :
     ui(new Ui::Td_MainWid)
 {
     ui->setupUi(this);
+    QGridLayout *gridLayout = new QGridLayout(parent);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    gridLayout->addWidget(this);
     initWid();
 }
 

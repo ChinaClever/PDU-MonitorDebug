@@ -3,7 +3,7 @@
 
 #include "ad_resulting.h"
 
-class Ad_CoreThread : public Object
+class Ad_CoreThread : public BaseThread
 {
     Q_OBJECT
     explicit Ad_CoreThread(QObject *parent = nullptr);

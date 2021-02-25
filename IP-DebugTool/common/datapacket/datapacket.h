@@ -153,7 +153,7 @@ struct sProgress
 
     uchar step; // 步骤
     QString time;
-    bool pass;
+    QList<bool> pass;
     QStringList status;
 
     uchar result;    // 最终结果

@@ -5,7 +5,7 @@
  */
 #include "ad_ledsi.h"
 
-Ad_LedSi::Ad_LedSi(QObject *parent) : Object(parent)
+Ad_LedSi::Ad_LedSi(QObject *parent) : BaseThread(parent)
 {
     mPacket = sDataPacket::bulid();
 }

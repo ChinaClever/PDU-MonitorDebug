@@ -5,7 +5,7 @@
  */
 #include "sn_devid.h"
 
-Sn_DevId::Sn_DevId(QObject *parent) : Object(parent)
+Sn_DevId::Sn_DevId(QObject *parent) : BaseThread(parent)
 {
     mTypeDef = Sn_DevType::bulid();
 }

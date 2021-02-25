@@ -2,7 +2,7 @@
 #define DATATABLEWID_H
 
 #include "comtablewid.h"
-#include "object.h"
+#include "baseobject.h"
 
 class Td_DataTabWid : public ComTableWid
 {

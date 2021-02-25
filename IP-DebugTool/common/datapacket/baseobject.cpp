@@ -1,8 +1,9 @@
-#include "object.h"
+#include "baseobject.h"
 
-Object::Object(QObject *parent) : QThread(parent)
+
+BaseObject::BaseObject()
 {
-    QTimer::singleShot(850,this,SLOT(initFunSlot()));
+    mModbus = nullptr;
     mPacket = sDataPacket::bulid();
     mItem = Cfg::bulid()->item;
     mPro = mPacket->getPro();
@@ -12,16 +13,28 @@ Object::Object(QObject *parent) : QThread(parent)
     mDt = &(mDev->dt);
 }
 
-void Object::initFunSlot()
+BaseThread::BaseThread(QObject *parent) : QThread(parent)
+{
+    isRun = false;
+    QTimer::singleShot(850,this,SLOT(initFunSlot()));
+}
+
+BaseThread::~BaseThread()
+{
+    isRun = false;
+    wait();
+}
+
+void BaseThread::initFunSlot()
 {
     mModbus = Rtu_Modbus::bulid(this)->get();
     if(!mModbus) QTimer::singleShot(350,this,SLOT(initFunSlot()));
 }
 
-bool Object::updatePro(const QString &str, bool pass, int sec)
+bool BaseThread::updatePro(const QString &str, bool pass, int sec)
 {
     mPro->time = QTime::currentTime().toString("hh:mm:ss");
-    mPro->pass = pass;
+    mPro->pass << pass;
     mPro->status << str;
     if(pass) pass = delay(sec);
     else mPro->result = Test_Fail;
@@ -29,7 +42,7 @@ bool Object::updatePro(const QString &str, bool pass, int sec)
     return pass;
 }
 
-bool Object::mdelay(int s)
+bool BaseThread::mdelay(int s)
 {
     bool ret = true;
     for(int i=0; i<s; ++i) {

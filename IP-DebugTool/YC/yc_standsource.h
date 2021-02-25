@@ -1,9 +1,9 @@
 #ifndef STANDARDSOURCE_H
 #define STANDARDSOURCE_H
 
-#include "object.h"
+#include "baseobject.h"
 
-class YC_StandSource : public Object
+class YC_StandSource : public BaseThread
 {
     Q_OBJECT
 protected:

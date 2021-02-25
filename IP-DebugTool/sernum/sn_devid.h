@@ -2,7 +2,7 @@
 #define DEV_TYPEID_H
 #include "sn_devtype.h"
 
-class Sn_DevId: public Object
+class Sn_DevId: public BaseThread
 {
     Q_OBJECT
     explicit Sn_DevId(QObject *parent = nullptr);

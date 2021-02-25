@@ -1,9 +1,9 @@
 #ifndef DEV_OBJECT_H
 #define DEV_OBJECT_H
 
-#include "object.h"
+#include "baseobject.h"
 
-class Dev_Object : public Object
+class Dev_Object : public BaseThread
 {
     Q_OBJECT
 public:

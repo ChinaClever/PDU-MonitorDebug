@@ -4,7 +4,7 @@
 #include "ad_adjusting.h"
 #include "dev_ipcfg.h"
 
-class Ad_Resulting : public Object
+class Ad_Resulting : public BaseThread
 {
     Q_OBJECT
     explicit Ad_Resulting(QObject *parent = nullptr);

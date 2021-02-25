@@ -4,7 +4,7 @@
 #include "dev_sictrl.h"
 #include "snmpclient.h"
 
-class Dev_IpSnmp : public Object
+class Dev_IpSnmp : public BaseThread
 {
     Q_OBJECT
     explicit Dev_IpSnmp(QObject *parent = nullptr);

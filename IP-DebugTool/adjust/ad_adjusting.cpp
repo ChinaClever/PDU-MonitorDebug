@@ -5,7 +5,7 @@
  */
 #include "ad_adjusting.h"
 
-Ad_Adjusting::Ad_Adjusting(QObject *parent) : Object(parent)
+Ad_Adjusting::Ad_Adjusting(QObject *parent) : BaseThread(parent)
 {
 }
 

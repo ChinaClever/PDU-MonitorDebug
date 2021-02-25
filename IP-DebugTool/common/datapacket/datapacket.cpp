@@ -25,10 +25,11 @@ void sDataPacket::init()
 {
     pro->step = 0;
     pro->result = 0;
-    pro->pass = true;
+    pro->pass.clear();
     pro->status.clear();
 
     pro->step = Test_Fun;
     pro->result = Test_Info;
     pro->startTime = QTime::currentTime();
+    memset(&(dev->data),0,sizeof(sObjData));
 }

@@ -11,7 +11,7 @@ Set_IpWid::Set_IpWid(QWidget *parent) :
     ui(new Ui::Set_IpWid)
 {
     ui->setupUi(this);
-    set_background_icon(this,":/image/back.jpg");
+    groupBox_background_icon(this);
     mUnitWid = new Set_LineUnitWid(ui->groupBox);
     QTimer::singleShot(10,this,SLOT(initFunSlot()));
 }

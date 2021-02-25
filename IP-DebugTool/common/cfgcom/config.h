@@ -54,7 +54,6 @@ struct sCfgItem
     sCount cnt;
     int logCount;
 
-    bool enSn;
     uchar pcNum;
     ushort currentNum;
 
@@ -82,15 +81,18 @@ public:
     void writeCnt();
     void writeCfgDev();
 
+    void writeErrData();
     void setCurrentNum();
     void write(const QString &key, const QVariant& v, const QString &g="cfg");
     QVariant read(const QString &key, const QVariant &v = QVariant(), const QString &g="cfg");
 
 protected:
+    void initMac();
     void initCnt();
     bool getDate();
     void setDate();
     void initCfgDev();
+    void initErrData();
     void initCurrentNum();
 
 private:

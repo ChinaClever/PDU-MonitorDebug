@@ -4,12 +4,12 @@ INCLUDEPATH += $$PWD
 
 
 HEADERS += \
-    $$PWD/datapacket.h \
-    $$PWD/object.h
+    $$PWD/baseobject.h \
+    $$PWD/datapacket.h
 	
 SOURCES += 	 \
-    $$PWD/datapacket.cpp \
-    $$PWD/object.cpp
+    $$PWD/baseobject.cpp \
+    $$PWD/datapacket.cpp
 
 FORMS += \
 

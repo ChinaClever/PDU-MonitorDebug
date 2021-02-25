@@ -4,7 +4,7 @@
 #include "ad_ledsi.h"
 
 
-class Ad_Adjusting : public Object
+class Ad_Adjusting : public BaseThread
 {
     Q_OBJECT
     explicit Ad_Adjusting(QObject *parent = nullptr);

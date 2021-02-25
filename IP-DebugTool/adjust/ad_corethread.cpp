@@ -7,7 +7,7 @@
 #include "dblogs.h"
 extern QString user_land_name();
 
-Ad_CoreThread::Ad_CoreThread(QObject *parent) : Object(parent)
+Ad_CoreThread::Ad_CoreThread(QObject *parent) : BaseThread(parent)
 {
     isRun = false;
     mSource = nullptr;

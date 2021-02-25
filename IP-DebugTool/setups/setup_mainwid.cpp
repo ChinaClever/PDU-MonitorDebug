@@ -27,15 +27,11 @@ Setup_MainWid::~Setup_MainWid()
 void Setup_MainWid::initFunSlot()
 {
     initPcNum();
+    initErrData();
     initLogCount();
     mUserWid = new UserMainWid(ui->stackedWid);
     ui->stackedWid->addWidget(mUserWid);
     QTimer::singleShot(2*1000,this,SLOT(checkPcNumSlot()));
-
-    initMac();
-    timer = new QTimer(this);
-    timer->start(3*1000);
-    connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
 
     QDate buildDate = QLocale(QLocale::English ).toDate( QString(__DATE__).replace("  ", " 0"), "MMM dd yyyy");
     ui->label_date->setText(buildDate.toString("yyyy-MM-dd"));
@@ -58,24 +54,9 @@ void Setup_MainWid::initSerial()
 {
     mComWid = new SerialStatusWid(ui->comWid);
     mItem->com = mComWid->initSerialPort(tr("PDU"));
-}
 
-void Setup_MainWid::initMac()
-{
-    mItem->startMac = "2C:26:5F:38:00:01";
-    mItem->endMac = "2C:26:5F:3B:FF:FF";
-    if(mItem->pcNum > 1) {
-        mItem->startMac = "2C:26:5F:3C:00:01";
-        mItem->endMac = "2C:26:5F:3F:FF:FF";
-    }
-    ui->startMacLab->setText(mItem->startMac);
-    ui->endMacLab->setText(mItem->endMac);
-    int cnt = MacAddr::bulid()->macCnt(mItem->startMac, mItem->mac);
-    int res = MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
-    if((cnt < 0) || res < 0) {
-        mItem->mac =  mItem->startMac;
-    }
-    updateMac();
+    mSourceWid = new SerialStatusWid(ui->sourceWid);
+    mItem->source = mSourceWid->initSerialPort(tr("标准源"));
 }
 
 void Setup_MainWid::initLogCount()
@@ -96,11 +77,6 @@ void Setup_MainWid::writeLogCount()
     Cfg::bulid()->write("log_count", arg1, "Sys");
 }
 
-void Setup_MainWid::updateMac()
-{
-    int ret =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
-    ui->cntMacLab->setNum(ret);
-}
 
 void Setup_MainWid::initPcNum()
 {
@@ -114,7 +90,7 @@ void Setup_MainWid::initPcNum()
 void Setup_MainWid::writePcNum()
 {
     int arg1 = ui->pcNumSpin->value();
-    mItem->pcNum = arg1; initMac();
+    mItem->pcNum = arg1;
     Cfg::bulid()->write("pc_num", arg1, "Sys");
 }
 
@@ -150,8 +126,45 @@ void Setup_MainWid::on_verBtn_clicked()
     dlg.exec();
 }
 
-void Setup_MainWid::timeoutDone()
+
+void Setup_MainWid::updateErrData()
 {
-    updateMac();
+    sCfgItem *item = mItem;
+    item->volErr = ui->volErrBox->value();
+    item->curErr = ui->curErrBox->value() * 10;
+    item->powErr = ui->powErrBox->value() * 10;
+    Cfg::bulid()->writeErrData();
 }
 
+void Setup_MainWid::initErrData()
+{
+    sCfgItem *item = mItem;
+    ui->volErrBox->setValue(item->volErr);
+    ui->curErrBox->setValue(item->curErr / 10.0);
+    ui->powErrBox->setValue(item->powErr / 10.0);
+}
+
+
+void Setup_MainWid::on_saveBtn_clicked()
+{
+    static int flg = 0;
+    QString str = tr("修改");
+
+    bool ret = usr_land_jur();
+    if(!ret) {
+        MsgBox::critical(this, tr("你无权进行此操作"));
+        return;
+    }
+
+    if(flg++ %2) {
+        ret = false;
+        updateErrData();
+    } else {
+        str = tr("保存");
+    }
+
+    ui->saveBtn->setText(str);
+    ui->volErrBox->setEnabled(ret);
+    ui->curErrBox->setEnabled(ret);
+    ui->powErrBox->setEnabled(ret);
+}

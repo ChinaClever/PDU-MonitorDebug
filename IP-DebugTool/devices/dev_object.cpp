@@ -5,7 +5,7 @@
  */
 #include "dev_object.h"
 
-Dev_Object::Dev_Object(QObject *parent) : Object(parent)
+Dev_Object::Dev_Object(QObject *parent) : BaseThread(parent)
 {
 }
 

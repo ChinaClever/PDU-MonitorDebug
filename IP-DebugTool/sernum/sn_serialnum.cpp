@@ -5,7 +5,7 @@
  */
 #include "sn_serialnum.h"
 
-Sn_SerialNum::Sn_SerialNum(QObject *parent) : Object(parent)
+Sn_SerialNum::Sn_SerialNum(QObject *parent) : BaseThread(parent)
 {
     mTypeId = Sn_DevId::bulid(this);
 }

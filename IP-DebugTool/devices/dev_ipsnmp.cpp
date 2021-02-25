@@ -5,7 +5,7 @@
  */
 #include "dev_ipsnmp.h"
 
-Dev_IpSnmp::Dev_IpSnmp(QObject *parent) : Object(parent)
+Dev_IpSnmp::Dev_IpSnmp(QObject *parent) : BaseThread(parent)
 {
     mSnmp = SnmpClient::bulid(this);
 }

@@ -1,6 +1,6 @@
 #ifndef DEV_DEFTYPE_H
 #define DEV_DEFTYPE_H
-#include "object.h"
+#include "baseobject.h"
 
 class Sn_DevType
 {

@@ -1,5 +1,5 @@
-#ifndef HOME_MAINWID_H
-#define HOME_MAINWID_H
+#ifndef SET_MAINWID_H
+#define SET_MAINWID_H
 
 #include <QWidget>
 #include "set_workwid.h"
@@ -16,9 +16,6 @@ public:
     explicit Set_MainWid(QWidget *parent = nullptr);
     ~Set_MainWid();
 
-signals:
-    void startSig();
-
 protected:
     void initWid();
 
@@ -29,4 +26,4 @@ private:
     Set_WorkWid *mWorkWid;
 };
 
-#endif // HOME_MAINWID_H
+#endif // SET_MAINWID_H

@@ -3,7 +3,7 @@
 
 #include "yc_dc107.h"
 
-class Ad_LedSi : public Object
+class Ad_LedSi : public BaseThread
 {
     Q_OBJECT
     explicit Ad_LedSi(QObject *parent = nullptr);

@@ -5,7 +5,7 @@
  */
 #include "yc_standsource.h"
 
-YC_StandSource::YC_StandSource(QObject *parent) : Object(parent)
+YC_StandSource::YC_StandSource(QObject *parent) : BaseThread(parent)
 {
     mSerial = nullptr;
 }

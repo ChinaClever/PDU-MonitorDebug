@@ -6,7 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QTimer::singleShot(5,this,SLOT(initFunSlot())); //延时初始化
+    mNavBarWid = new NavBarWid(ui->barWid);
+    QTimer::singleShot(50,this,SLOT(initFunSlot())); //延时初始化
+    connect(mNavBarWid, SIGNAL(navBarSig(int)), this, SLOT(navBarSlot(int)));
 }
 
 MainWindow::~MainWindow()
@@ -21,11 +23,8 @@ void MainWindow::initFunSlot()
 
 void MainWindow::initWid()
 {
-    mNavBarWid = new NavBarWid(ui->barWid);
-    connect(mNavBarWid, SIGNAL(navBarSig(int)), this, SLOT(navBarSlot(int)));
-
-//    mHomeWid = new Home_MainWid(ui->stackedWid);
-//    ui->stackedWid->addWidget(mHomeWid);
+    mHomeWid = new Home_MainWid(ui->stackedWid);
+    ui->stackedWid->addWidget(mHomeWid);
 
     mSet = new Set_MainWid(ui->stackedWid);
     ui->stackedWid->addWidget(mSet);

@@ -6,7 +6,7 @@
 #include "ad_resulting.h"
 #define AD_CUR_RATE 100
 
-Ad_Resulting::Ad_Resulting(QObject *parent) : Object(parent)
+Ad_Resulting::Ad_Resulting(QObject *parent) : BaseThread(parent)
 {
     //mSource =YC_Ac92b::bulid(this);
     mCollect= nullptr;

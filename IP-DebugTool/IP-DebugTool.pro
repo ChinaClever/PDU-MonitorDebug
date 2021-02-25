@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(YC/YC.pri)
 include(logs/logs.pri)
+include(home/home.pri)
+include(cores/cores.pri)
 include(adjust/adjust.pri)
 include(setups/setups.pri)
 include(sernum/sernum.pri)

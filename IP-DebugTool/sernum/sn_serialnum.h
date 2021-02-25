@@ -15,7 +15,7 @@ struct sSnItem
 };
 
 
-class Sn_SerialNum : public Object
+class Sn_SerialNum : public BaseThread
 {
     Q_OBJECT
     explicit Sn_SerialNum(QObject *parent = nullptr);

@@ -17,29 +17,29 @@ public:
     ~Setup_MainWid();
 
 protected:
-    void initMac();
     void initSerial();
-    void updateMac();
 
     void initLogCount();
     void writeLogCount();
     void initPcNum();
-    void writePcNum();    
+    void writePcNum();
+    void initErrData();
+    void updateErrData();
 
 protected slots:
-    void timeoutDone();
     void initFunSlot();
     void checkPcNumSlot();
     void on_pcBtn_clicked();
     void on_verBtn_clicked();
+    void on_saveBtn_clicked();
 
 private:
     Ui::Setup_MainWid *ui;
 
-    QTimer *timer;
     sCfgItem *mItem;
     UserMainWid *mUserWid;
     SerialStatusWid *mComWid;
+    SerialStatusWid *mSourceWid;
 };
 
 #endif // SETUP_MAINWID_H

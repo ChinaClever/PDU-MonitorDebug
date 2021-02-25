@@ -11,7 +11,7 @@ Set_SiWid::Set_SiWid(QWidget *parent) :
     ui(new Ui::Set_SiWid)
 {
     ui->setupUi(this);
-    set_background_icon(this,":/image/back.jpg");
+    groupBox_background_icon(this);
     mUnitWid = new Set_LineUnitWid(ui->groupBox);
     QTimer::singleShot(13,this,SLOT(initFunSlot()));
 }

@@ -13,8 +13,10 @@ Cfg::Cfg()
     item->com = nullptr;
     item->source = nullptr;
 
+    initMac();
     initCnt();
     initCfgDev();
+    initErrData();
     initCurrentNum();
 }
 
@@ -69,7 +71,6 @@ void Cfg::initCurrentNum()
 
 void Cfg::initCfgDev()
 {
-    item->enSn = true;
     item->addr = read("addr", 1,"Sys").toInt();
     item->modeId = read("modeId", 1,"Sys").toInt();
     item->user = read("user", "", "User").toString();
@@ -102,6 +103,28 @@ void Cfg::writeCnt()
     write("user", item->user, "User");
 }
 
+void Cfg::initMac()
+{
+    QString str = "2C:26:5F:38:00:00";
+    //item->mac = read("mac", str, "Mac").toString();
+    item->startMac = read("start", str, "Mac").toString();
+    item->endMac = read("end", str, "end").toString();
+}
+
+
+void Cfg::initErrData()
+{
+    item->volErr = read("vol", 1,"Err").toInt();
+    item->curErr = read("cur", 1,"Err").toInt();
+    item->powErr = read("pow", 45,"Err").toInt();
+}
+
+void Cfg::writeErrData()
+{
+    write("vol", item->volErr, "Err");
+    write("cur", item->curErr, "Err");
+    write("pow", item->powErr, "Err");
+}
 
 /**
  * @brief 获取串口名称
