@@ -29,7 +29,7 @@ public:
     explicit BaseThread(QObject *parent = nullptr);
     ~BaseThread();
 
-    bool updatePro(const QString &str, bool pass=true, int sec=1);
+    bool updatePro(const QString &str, bool pass=true, int sec=0);
     bool delay(int s=1) {return mdelay(6*s);}
     bool mdelay(int s=1);
 

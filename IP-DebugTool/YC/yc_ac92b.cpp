@@ -63,7 +63,7 @@ bool YC_Ac92b::powerOn(int v)
 {
     bool ret = setValue("V", 100);
     if(ret) {
-        // ret = setValue("A", v);
+         ret = setValue("A", v);
     }
 
     return ret;

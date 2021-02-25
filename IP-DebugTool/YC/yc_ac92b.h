@@ -14,8 +14,8 @@ public:
     void powerDown();
     bool powerOn(int v=60);
 
-    bool setCur(int v, int sec=10);
-    bool setVol(int v, int sec=10);
+    bool setCur(int v, int sec=0);
+    bool setVol(int v, int sec=0);
 
 protected:
     void initFun();
