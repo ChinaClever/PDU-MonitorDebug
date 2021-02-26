@@ -136,6 +136,8 @@ struct sDevData
 enum {
     Test_Fun, // 功能
     Test_Start, // 开始
+    Test_Seting,
+    Test_Sning,
     Test_Ading,
     Test_vert, // 验证
     Test_Collect,

@@ -38,21 +38,18 @@ bool Test_NetWork::checkNet()
 
 bool Test_NetWork::startProcess()
 {
-    QString exe = "pyweb_ctrlset_";
-    if(MPDU == mItem->modeId) {
-        exe += "mpdu.exe";
-    } else exe += "ip.exe";
+    QString exe = "pyweb_ctrlset_ip.exe";
 
     mac = true;
-    bool ret = checkNet();
-    if(ret) {
-        mProcess->start(exe);
-        ret = mProcess->waitForFinished(120*1000);
-        if(mac) updateMacAddr();
-    }
     mProcess->close();
+    mProcess->start(exe);
+    updatePro(tr("正在启动网页"));
+    mProcess->waitForFinished(28*1000);
+    bool ret = checkNet(); {
+        if(ret && mac) updateMacAddr();
+    }
 
-    return updatePro(tr("网页设置功能退出"), ret);
+    return ret;
 }
 
 
@@ -73,7 +70,7 @@ void Test_NetWork::workDown()
         if(list.size() == 2) {
             QString str = list.first();
             bool pass = list.last().toInt();
-            mLogs->updatePro(str, pass, 0);
+            updatePro(str, pass, 0);
         } else {
             if(QString(res->datagram).contains("MAC-1")) mac = false; else
                 qDebug() <<"Test_NetWork workDown err" << list.size();

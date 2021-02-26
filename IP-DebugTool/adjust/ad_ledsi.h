@@ -2,6 +2,7 @@
 #define AD_LEDSI_H
 
 #include "yc_dc107.h"
+#include "dev_read.h"
 
 class Ad_LedSi : public BaseThread
 {

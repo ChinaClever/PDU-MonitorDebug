@@ -11,9 +11,6 @@ public:
     static YC_Ac92b *bulid(QObject *parent = nullptr);
 
     bool handShake();
-    void powerDown();
-    bool powerOn(int v=60);
-
     bool setCur(int v, int sec=0);
     bool setVol(int v, int sec=0);
 

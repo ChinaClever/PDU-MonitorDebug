@@ -51,31 +51,14 @@ void YC_Ac92b::initFun()
     serialWrite(f);
 }
 
-void YC_Ac92b::powerDown()
-{
-    setValue("A", 0);
-    setValue("V", 0);
-    initFun();
-}
-
-
-bool YC_Ac92b::powerOn(int v)
-{
-    bool ret = setValue("V", 100);
-    if(ret) {
-         ret = setValue("A", v);
-    }
-
-    return ret;
-}
-
-
 bool YC_Ac92b::setVol(int v, int sec)
 {
     int vol = 100;
     if(v == 200) {
         vol = 91;
         serialWrite("P5\r"); // 改变功率因素
+    } else if(v == 0) {
+        vol = v;
     }
 
     bool ret = setValue("V", vol);
@@ -103,7 +86,7 @@ bool YC_Ac92b::handShake()
     bool ret = setBaudRate(9600);
     if(ret && setRange()) {
         QByteArray res;
-        int rtn = mSerial->transmit(array, res, 2);
+        int rtn = mSerial->transmit(array, res, 4);
         if(rtn > 0)  {
             acOrDc = 1;
         } else {

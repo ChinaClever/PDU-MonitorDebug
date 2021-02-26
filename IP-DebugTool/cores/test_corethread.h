@@ -2,6 +2,7 @@
 #define TEST_CORETHREAD_H
 #include "yc_obj.h"
 #include "test_sithread.h"
+#include "ad_corethread.h"
 
 class Test_CoreThread : public BaseThread
 {
@@ -11,21 +12,20 @@ public:
 
 protected:
     void run();
-    void powerOn();
+    bool setDev();
+    bool readDev();
     void workDown();
-    bool checkNet();
-    bool startProcess();
-    void updateMacAddr();
     void workResult(bool res);
 
 protected slots:
     void initFunSlot();
 
 private:
-    Test_Logs *mLogs;
+    Yc_Obj *mYc;
+    //Test_Logs *mLogs;
     Sn_SerialNum *mSn;
     Test_SiThread *mCtrl;
-    Test_NetWork *mNet;
+    Ad_CoreThread *mAd;
 };
 
 #endif // TEST_CORETHREAD_H

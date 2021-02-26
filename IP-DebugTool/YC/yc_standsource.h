@@ -9,16 +9,17 @@ class YC_StandSource : public BaseThread
 protected:
     explicit YC_StandSource(QObject *parent = nullptr);
 public:
-    virtual bool powerOn(int v=60)=0;  // 上电
-    virtual void powerDown()=0; // 下电
+    virtual bool powerOn(int v=60);  // 上电
+    virtual void powerDown(); // 下电
     virtual bool powerReset(); //
 
-    virtual bool setCur(int v, int sec=10)=0;
-    virtual bool setVol(int v, int sec=10)=0;
+    virtual bool setCur(int v, int sec=0)=0;
+    virtual bool setVol(int v, int sec=0)=0;
     virtual bool handShake()=0;
     int acOrDc;
 
 protected:
+    virtual void initFun(){}
     bool write(QByteArray &array);
     bool setBaudRate(qint32 baudRate);
     virtual bool serialWrite(const QByteArray &array)=0;

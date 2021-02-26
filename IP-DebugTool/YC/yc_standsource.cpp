@@ -12,11 +12,8 @@ YC_StandSource::YC_StandSource(QObject *parent) : BaseThread(parent)
 
 void YC_StandSource::initFunSlot()
 {
-    if(mItem->source) {
-        mSerial = mItem->source;
-    } else {
-        QTimer::singleShot(350,this,SLOT(initFunSlot()));
-    }
+    mSerial = mItem->source;
+    if(!mSerial) QTimer::singleShot(350,this,SLOT(initFunSlot()));
 }
 
 bool YC_StandSource::setBaudRate(qint32 baudRate)
@@ -40,15 +37,27 @@ bool YC_StandSource::write(QByteArray &array)
 }
 
 
+bool YC_StandSource::powerOn(int v)
+{
+    bool ret = setVol(220);
+    if(ret) ret = setCur(v);
+
+    return ret;
+}
+
+void YC_StandSource::powerDown()
+{
+    setCur(0);
+    setVol(0);
+    initFun();
+}
+
 bool YC_StandSource::powerReset()
 {
     powerDown();
     bool ret = delay(6);
     if(ret) {
-        ret = setVol(220);
-        if(ret) {
-            ret = setCur(60);
-        }
+       ret = powerOn();
     }
 
     return ret;

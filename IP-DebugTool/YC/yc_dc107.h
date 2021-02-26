@@ -11,11 +11,8 @@ public:
     static YC_Dc107 *bulid(QObject *parent = nullptr);
 
     bool handShake();
-    void powerDown();
-    bool powerOn(int v=60);
-
-    bool setCur(int v, int sec=5);
-    bool setVol(int v, int sec=5);
+    bool setCur(int v, int sec=0);
+    bool setVol(int v, int sec=0);
 
 protected:
     bool setRange();

@@ -21,7 +21,7 @@ bool Ad_Adjusting::transmit(uchar *buf, int len)
 {
     bool ret = true;
     uchar recv[64] = {0};
-    len = mModbus->transmit(buf, len, recv, 2);
+    len = mModbus->transmit(buf, len, recv, 3);
     if(len > 0) {
         ret = recvStatus(recv, len);
     }
@@ -68,7 +68,7 @@ bool Ad_Adjusting::writeOffset()
         updatePro(tr("发送直流偏移命令！"));
         ret = writeCmd(0xA1, 0);
         if(mDt->devType == IP_PDU) ret = waitDcRecv();
-        else ret = delay(15);
+        else ret = delay(20);
         if(!ret) return ret;
 
         updatePro(tr("设置标准源电流6A"));
@@ -101,18 +101,18 @@ bool Ad_Adjusting::writePhase()
 
 bool Ad_Adjusting::sentCmd()
 {
-    //updatePro(tr("即将开始校准！"), true, 4);
+    updatePro(tr("即将开始校准！"), true, 2);
     updatePro(tr("发送校准解锁命令！"));
     bool ret = writeCmd(0xA0, 0);
     if(!ret){
-        delay(4); ret = writeCmd(0xA0, 0);  // 重复发一次命令
+        delay(5); ret = writeCmd(0xA0, 0);  // 重复发一次命令
         if(!ret) return ret;
     }
 
     if(ret) ret = writeOffset();
     if(!ret) return ret;
 
-    updatePro(tr("发送启动校准命令！"));
+    updatePro(tr("发送启动校准命令！"),ret, 2);
     ret = writeCmd(0xA2, 0);
     //ret = writePhase();
 

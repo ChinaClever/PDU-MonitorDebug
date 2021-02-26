@@ -16,7 +16,8 @@ BaseObject::BaseObject()
 BaseThread::BaseThread(QObject *parent) : QThread(parent)
 {
     isRun = false;
-    QTimer::singleShot(850,this,SLOT(initFunSlot()));
+    int t = 550+rand()%150;
+    QTimer::singleShot(t,this,SLOT(initFunSlot()));
 }
 
 BaseThread::~BaseThread()
@@ -28,7 +29,10 @@ BaseThread::~BaseThread()
 void BaseThread::initFunSlot()
 {
     mModbus = Rtu_Modbus::bulid(this)->get();
-    if(!mModbus) QTimer::singleShot(350,this,SLOT(initFunSlot()));
+    if(!mModbus) {
+        int t = 100+rand()%150;
+        QTimer::singleShot(t,this,SLOT(initFunSlot()));
+    }
 }
 
 bool BaseThread::updatePro(const QString &str, bool pass, int sec)

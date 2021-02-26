@@ -33,7 +33,7 @@ SOURCES += \
     mainwindow.cpp \
     navbarwid.cpp
 
-HEADERS += \
+HEADERS += \    
     mainwindow.h \
     navbarwid.h
 

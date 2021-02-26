@@ -56,7 +56,7 @@ bool Sn_DevId::readDevId()
     initReadType(it);
 
     int len = 0;
-    uchar recv[8] = {0};
+    static uchar recv[256] = {0};
     for(int i=0; i<4; ++i) {
         len = mModbus->read(it, recv);
         if(len) break; else if(!delay(1)) break;
@@ -72,10 +72,8 @@ bool Sn_DevId::readDevType()
     mItem->dev_type.clear();
 
     QString str = tr("开始读取设备ID！");
-    bool ret = updatePro(str, true, 0);
-    if(ret) {
-        ret = readDevId();
-    }
+    bool ret = updatePro(str);
+    if(ret) ret = readDevId();
 
     return ret;
 }

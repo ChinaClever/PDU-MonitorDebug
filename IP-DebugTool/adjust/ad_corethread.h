@@ -9,29 +9,23 @@ class Ad_CoreThread : public BaseThread
     explicit Ad_CoreThread(QObject *parent = nullptr);
 public:
     static Ad_CoreThread *bulid(QObject *parent = nullptr);
-    ~Ad_CoreThread();
-
-    void startAdjust();
+    bool startAdjust() {return workDown();}
     void startCollect();
     void startResult();
 
+
 protected:
-    void run();
     bool initLedSi();
     bool initThread(int v);
-    bool initSource();
+    bool workDown();
 
     void writeLog();
-    void workDown();
     void collectData();
     void verifyResult();
-    bool readDevInfo();
 
 private:
-    bool isRun;
     Ad_Adjusting *mAdjust;
     Ad_Resulting *mResult;
-    YC_StandSource *mSource;
     Ad_LedSi *mLedSi;
 };
 

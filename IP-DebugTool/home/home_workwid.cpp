@@ -33,17 +33,17 @@ void Home_WorkWid::initLayout()
 
 void Home_WorkWid::initFunSlot()
 {
-    mCoreThread = new Test_CoreThread(this);
-    mPro->step = Test_End;
     int cnt = MacAddr::bulid()->macCnt(mItem->startMac, mItem->mac);
     ui->macCntLab->setNum(cnt);
     ui->cntLab->setNum(mItem->cnt.cnt);
     ui->userLab->setText(mItem->user);
+    mPro->step = Test_End;
 
     initLayout();
     timer = new QTimer(this);
     timer->start(500);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutDone()));
+    mCoreThread = new Test_CoreThread(this);
 }
 
 void Home_WorkWid::setTextColor()
@@ -163,8 +163,8 @@ bool Home_WorkWid::initSerial()
 {
     bool ret = mItem->com->isOpened();
     if(!ret) { MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
-    ret = mItem->source->isOpened();
-    if(!ret) { MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
+    //ret = mItem->source->isOpened();
+    //if(!ret) { MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
     return ret;
 }
 
@@ -178,10 +178,10 @@ bool Home_WorkWid::initWid()
         if(mItem->cnt.cnt < 1) {
             MsgBox::critical(this, tr("请先填写订单剩余数量！")); return false;
         }
-        int res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
-        if((res <= 0) && mItem->modeId) {
-            MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
-        }
+        //int res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
+        //if((res <= 0) && mItem->modeId) {
+        //    MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
+        //}
 
         mId = 1;
         mPacket->init();

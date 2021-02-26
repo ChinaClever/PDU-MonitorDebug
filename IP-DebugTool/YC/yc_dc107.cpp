@@ -75,6 +75,7 @@ bool YC_Dc107::setVol(int v, int sec)
 
     char *cmd = cmd220;
     if(v == 200) cmd = cmd200;
+    if(v == 0){ return setValue('V', 0);}
     QByteArray array(cmd, sizeof(cmd220));
     bool ret = sendCmd(array);
     if(ret) ret = delay(sec);
@@ -91,21 +92,6 @@ bool YC_Dc107::setCur(int v, int sec)
     return ret;
 }
 
-void YC_Dc107::powerDown()
-{
-    setValue('A', 0);
-    setValue('V', 0);
-}
-
-bool YC_Dc107::powerOn(int v)
-{
-    bool ret = setVol(220);
-    if(ret) {
-         ret = setCur(v);
-    }
-
-    return ret;
-}
 
 bool YC_Dc107::handShake()
 {

@@ -87,7 +87,7 @@ bool Sn_SerialNum::readSn(sSnItem &itSn)
 {
     sRtuItem itRtu;
     bool ret = false;
-    uchar buf[32] = {0};
+    static uchar buf[256] = {0};
     QString str = tr("序列号读取");
 
     initDevType(itSn);
@@ -159,8 +159,6 @@ bool Sn_SerialNum::writeSn(sSnItem &itSn)
 
     sRtuSetItems itRtu;
     initWriteCmd(itRtu, buf, len);
-    delay(1);
-
     return mModbus->writes(itRtu);
 }
 
@@ -179,6 +177,7 @@ void Sn_SerialNum::writeStatus(bool ret)
 
 bool Sn_SerialNum::snEnter()
 {
+    mPro->step = Test_Sning;
     bool ret = mTypeId->readDevType();
     if(ret) {
         ret = readSn(mSnItem);

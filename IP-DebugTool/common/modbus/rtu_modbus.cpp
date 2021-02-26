@@ -25,7 +25,7 @@ RtuRw *Rtu_Modbus::get()
     SerialPort *ser = Cfg::bulid()->item->com;
     if(ser) {
         res->init(ser);
-        ser->reflush();
+        //ser->reflush();
     } else {
         res = nullptr;
     }
