@@ -3,7 +3,6 @@ INCLUDEPATH += $$PWD
 
 
 HEADERS += \
-    $$PWD/dev_read.h \
     $$PWD/dev_ipcfg.h \
     $$PWD/dev_iprtu.h \
     $$PWD/dev_ipsnmp.h \
@@ -13,7 +12,6 @@ HEADERS += \
     $$PWD/dev_sirtu.h
 	
 SOURCES += \
-    $$PWD/dev_read.cpp \
     $$PWD/dev_ipcfg.cpp \
     $$PWD/dev_iprtu.cpp \
     $$PWD/dev_ipsnmp.cpp \

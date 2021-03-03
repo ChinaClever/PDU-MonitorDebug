@@ -14,9 +14,6 @@ void Test_SiThread::initFunSlot()
 {
     mRtu = Dev_SiRtu::bulid(this);
     mCtrl = Dev_SiCtrl::bulid(this);
-    mLogs = Test_Logs::bulid(this);
-    mDev = Dev_SiCfg::bulid(this)->getDev();
-    mDt = &(mDev->dt);
 }
 
 Test_SiThread *Test_SiThread::bulid(QObject *parent)
@@ -30,37 +27,32 @@ Test_SiThread *Test_SiThread::bulid(QObject *parent)
 
 bool Test_SiThread::curAlarmWrite(int i)
 {
-    QString str = tr("电流报警阈值 L%1 写入").arg(i+1);
     bool ret = mCtrl->setCurTh(i);
-    if(ret) str += tr("正常");
-    else str += tr("错误");
+    QString str = tr("电流报警阈值 L%1 写入").arg(i+1);
+    if(ret) str += tr("正常"); else str += tr("错误");
 
-    return mLogs->updatePro(str, ret);
+    return updatePro(str, ret);
 }
 
 bool Test_SiThread::volAlarmWrite(int i)
 {
-    QString str = tr("电压报警阈值 L%1 写入").arg(i+1);
     bool ret = mCtrl->setVolTh(i);
-    if(ret) str += tr("正常");
-    else str += tr("错误");
-
-    return mLogs->updatePro(str, ret);
+    QString str = tr("电压报警阈值 L%1 写入").arg(i+1);
+    if(ret) str += tr("正常"); else str += tr("错误");
+    return updatePro(str, ret);
 }
 
 bool Test_SiThread::envAlarmWrite()
 {
-    QString str = tr("温度报警阈值写入");
     bool ret = mCtrl->setTem();
-    if(ret) str += tr("正常");
-    else str += tr("错误");
-    ret = mLogs->updatePro(str, ret);
+    QString str = tr("温度报警阈值写入");
+    if(ret) str += tr("正常"); else str += tr("错误");
+    ret = updatePro(str, ret);
 
-    str = tr("湿度报警阈值写入");
     ret = mCtrl->setHum();
-    if(ret) str += tr("正常");
-    else str += tr("错误");
-    return  mLogs->updatePro(str, ret);
+    str = tr("湿度报警阈值写入");
+    if(ret) str += tr("正常"); else str += tr("错误");
+    return  updatePro(str, ret);
 }
 
 bool Test_SiThread::writeAlarmTh()
@@ -94,52 +86,52 @@ bool Test_SiThread::clearEle()
         str += tr("错误");
     }
 
-    return  mLogs->updatePro(str, ret);
+    return  updatePro(str, ret);
 }
 
 bool Test_SiThread::readDev()
 {
     bool ret = true;
-    QString str = tr("开始读取设备信息");
     for(int i=0; i<5; ++i) {
-        ret = mRtu->readPduData(); if(ret) break;
-        Rtu_Modbus::bulid(this)->get()->changeBaudRate();
+        QString str = tr("开始读取设备数据：第%1次").arg(i);if(i>1)updatePro(str);
+        ret = mRtu->readPduData(); if(ret) break; else if(!delay(3)) break;
+        if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
+
+    QString str = tr("读取设备数据");
     if(ret) str += tr("正常"); else str += tr("错误");
-    return  mLogs->updatePro(str, ret);
+    return  updatePro(str, ret);
 }
 
 bool Test_SiThread::checkLine()
 {
-    bool ret = readDev();
-    if(ret) {
-        int line = 3;
-        switch (mDev->dt.lines) {
-        case 0:  line = 1; break;
-        case 1: line = 1; break;
-        case 2:  line = 3;  break;
-        }
-
-        if(line != mDev->data.size) {
-            ret = false;
-            mLogs->updatePro(tr("单相两路需先切换至“一路”，再切换到单相交流或者直流"), ret);
-        }
+    bool ret = true;
+    QString str = tr("设备相数验证");
+    if(mCfg->si_lines == 1) {
+        int lines = mDev->data.size;
+        ret = mDt->lines == lines ? true:false;
+    } else if(mCfg->si_lines == 2){
+        if(mDt->lines != 2) ret = false;
     }
 
-    return ret;
+    if(ret) str += tr("正常"); else str += tr("错误");
+    return updatePro(str, ret);
 }
 
 bool Test_SiThread::setData()
 {
-    QString str = tr("解锁设备");
-    bool ret = mCtrl->unClock();
-    if(ret) str += tr("成功"); else str += tr("错误");
-    ret = mLogs->updatePro(str, ret);
-    if(ret) {
-        str = tr("设备配置信息写入");
-        ret = mCtrl->setDev();
-        if(ret) str += tr("正常"); else str += tr("错误");
-        ret = mLogs->updatePro(str, ret);
+    bool ret = true;
+    if(!mCfg->si_led) {
+        QString str = tr("解锁设备");
+        ret = mCtrl->unClock();
+        if(ret) str += tr("成功"); else str += tr("错误");
+        ret = updatePro(str, ret);
+        if(ret) {
+            str = tr("设备配置信息写入");
+            ret = mCtrl->setDev();
+            if(ret) str += tr("正常"); else str += tr("错误");
+            ret = updatePro(str, ret);
+        }
     }
 
     return  ret;
@@ -150,14 +142,9 @@ bool Test_SiThread::setDev()
 {
     bool ret = readDev();
     if(ret) ret = setData();
+    if(ret) ret = checkLine();
     if(ret) ret = setAlarm();
     if(ret) ret = clearEle();
-
-   // if(ret) {
-        // ret = checkLine();
-     //   ret = setAlarm();
-     //   if(ret) ret = clearEle();
-   // }
 
     return ret;
 }

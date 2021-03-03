@@ -1,8 +1,8 @@
 #ifndef AD_LEDSI_H
 #define AD_LEDSI_H
 
-#include "yc_dc107.h"
-#include "dev_read.h"
+#include "yc_obj.h"
+#include "dev_ipcfg.h"
 
 class Ad_LedSi : public BaseThread
 {

@@ -8,8 +8,6 @@
 
 Ad_Resulting::Ad_Resulting(QObject *parent) : BaseThread(parent)
 {
-    //mSource =YC_Ac92b::bulid(this);
-    mCollect= nullptr;
 }
 
 Ad_Resulting *Ad_Resulting::bulid(QObject *parent)
@@ -49,25 +47,27 @@ bool Ad_Resulting::powErrRange(int exValue, int pow)
     return ret;
 }
 
-
 bool Ad_Resulting::powRangeByID(int i, int exValue, int cnt)
 {
-    exValue = mItem->vol * exValue/AD_CUR_RATE;
+    exValue = mItem->vol * exValue/AD_CUR_RATE; //mData->cur.value[i]/COM_RATE_CUR;
     if(AC == mDt->ac) exValue *= 0.5;
     QString str = tr("期望功率%1kW 第%2位 功率").arg(exValue/1000.0).arg(i+1);
     bool ret = powErrRange(exValue, mData->pow[i]);
     mData->powed[i] = mData->pow[i];
     if(ret) {
         str += tr("正常");
+        updatePro(str);
+        mData->status[i] = Test_Pass;
     } else {
+        ret = false;
         if(cnt > 3) {
             str += tr("错误");
+            updatePro(str, ret, 1);
             mData->status[i] = Test_Fail;
         }
-        ret = false;
     }
 
-    return updatePro(str, ret, 0);
+    return ret;
 }
 
 bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
@@ -79,18 +79,19 @@ bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
     mData->cured[i] = mData->cur.value[i];
     if(ret) {
         // if(mItem->si_led) return ret;   ////===========
+        mCollect->readPduData();
         ret = powRangeByID(i, exValue, cnt);
     } else {
-        if(cnt > 2) {
+        ret = false;
+        if(cnt > 3) {
             str += tr("错误");
+            updatePro(str, ret, 0);
             mData->status[i] = Test_Fail;
         }
-        ret = false;
     }
 
-    return updatePro(str, ret, 0);
+    return ret;
 }
-
 
 bool Ad_Resulting::volErrRangeByID(int i)
 {
@@ -100,14 +101,14 @@ bool Ad_Resulting::volErrRangeByID(int i)
     int max = mItem->vol + mItem->volErr;
     QString str = tr("期望电压200V，实际电压%1V 第%2位 电压").arg(vol).arg(i+1);
     if((vol >= min) && (vol <= max)) {
+        updatePro(str, ret, 1);
         mData->status[i] = Test_Pass;
     } else {
         ret = false;
     }
 
-    return updatePro(str, ret, 0);
+    return ret;
 }
-
 
 bool Ad_Resulting::volErrRange()
 {
@@ -123,7 +124,7 @@ bool Ad_Resulting::volErrRange()
                 ret = false;
                 mData->status[i] = Test_Fail;
                 QString str = tr("检测到电压 %1 错误").arg(i+1);
-                updatePro(str, ret, 0); break;
+                updatePro(str, ret, 1); break;
             }
         }
     }
@@ -131,62 +132,43 @@ bool Ad_Resulting::volErrRange()
     return ret;
 }
 
-
-bool Ad_Resulting::eachCurCheck(int exValue, int cnt)
-{
-    bool res = true;
-    for(int k=0; k<mData->size; ++k) {
-        bool ret = curRangeByID(k, exValue, cnt);
-        if(!ret) {res = false;return res;}
-    }
-
-    return res;
-}
-
-bool Ad_Resulting::eachCurEnter(int exValue)
+bool Ad_Resulting::eachCurCheck(int k, int exValue)
 {
     bool ret = true;
+    double value = mItem->vol*exValue/AD_CUR_RATE/1000.0;
+    if(AC == mDt->ac) value = value*0.5;
+    QString str = tr("校验数据: 期望电流%1A 功率%2kW").arg(exValue/AD_CUR_RATE).arg(value);
+    updatePro(str, ret, 1);
     for(int i=0; i<5; ++i) {
-        double value = mItem->vol*exValue/AD_CUR_RATE/1000.0;
-        if(AC == mDt->ac) value = value*0.5;
-        QString str = tr("校验数据: 期望电流%1A 功率%2kW").arg(exValue/AD_CUR_RATE).arg(value);
-        if(i) str += tr(" 第%1次").arg(i+1); else delay(4);
-
-        updatePro(str, ret, 0);
+        if(i) str += tr(" 第%1次").arg(i+1); //else delay(4);
         mCollect->readPduData();
-        ret = eachCurCheck(exValue, i);
+        ret = curRangeByID(k, exValue, i);
         if(ret) break; else if(!delay(3)) break;
     }
 
     return ret;
 }
 
-
-YC_StandSource *Ad_Resulting::initStandSource()
+bool Ad_Resulting::eachCurEnter(int exValue)
 {
-    if(DC == mDt->ac) {
-        mSource = YC_Dc107::bulid(this);
-    } else {
-        mSource = YC_Ac92b::bulid(this);
+    bool res = true;
+    for(int k=0; k<mData->size; ++k) {
+        bool ret = eachCurCheck(k, exValue);
+        if(!ret) res = false;
     }
 
-    QString str = tr("标准源通讯");
-    bool ret = mSource->handShake();
-    if(ret) str += tr("成功!"); else str += tr("失败!");
-    updatePro(str, ret, 0);
-
-    return mSource;
+    return res;
 }
 
-Dev_Object *Ad_Resulting::initThread()
+void Ad_Resulting::initRtuThread()
 {
-    switch (mDt->devType) {
+    switch (mItem->modeId) {
     case SI_PDU: mCollect = Dev_SiRtu::bulid(this); break;
     case IP_PDU: mCollect = Dev_IpRtu::bulid(this); break;
     default: mCollect = nullptr; break;
     }
 
-    return mCollect;
+
 }
 
 bool Ad_Resulting::workDown(int exValue)
@@ -200,17 +182,19 @@ bool Ad_Resulting::noLoadCurCheck(int cnt)
     for(int k=0; k<mData->size; ++k) {
         mData->powed[k] = mData->pow[k];
         mData->cured[k] = mData->cur.value[k];
+        QString str = tr("空载校验:第%1相").arg(k+1);
         if(mData->cur.value[k] || mData->pow[k]) {
             res = false;
-            if(cnt > 2) {
+            if(cnt > 3) {
                 mData->status[k] = Test_Fail;
-                QString str = tr("空载校验:第%1位").arg(k+1);
                 if(mData->cur.value[k]) str += tr("电流有底数");
                 if(mData->pow[k]) str += tr(" 功率有底数");
-                updatePro(str, res, 0);
+                updatePro(str, res, 1);
             }
         } else {
             mData->status[k] = Test_Pass;
+            str += tr("通过");
+            updatePro(str);
         }
     }
 
@@ -221,8 +205,8 @@ bool Ad_Resulting::noLoadCurFun()
 {
     bool ret = true;
     for(int i=0; i<5; ++i) {
-        QString str = tr("空载校验: 第%2次检查").arg(i+1);
-        updatePro(str, ret, 0);
+        QString str = tr("空载校验: 第%1次检查").arg(i+1);
+        if(i)updatePro(str, true, 3); else delay(3);
 
         mCollect->readPduData();
         ret = noLoadCurCheck(i);
@@ -234,27 +218,26 @@ bool Ad_Resulting::noLoadCurFun()
 
 bool Ad_Resulting::noLoadEnter()
 {
-    QString str = tr("空载验证：设置空载电流");
-    bool ret = mSource->setCur(0, 1);
-    updatePro(str, ret, 3);
-
-    if(ret) ret = noLoadCurFun();
+    bool ret = mSource->setCur(0, 0);
     if(ret) ret = volErrRange();
+
+    QString str = tr("空载验证：设置空载电流");
+    updatePro(str, ret, 5);
+    if(ret) ret = noLoadCurFun();
     return ret;
 }
 
 bool Ad_Resulting::powerOn()
 {
-    bool ret = true;
+    initRtuThread();
     mItem->step = Test_vert;
-    QString str = tr("自动验证开始");
-    updatePro(str, ret, 0);
-    ret = mSource->setVol(200, 0);
-    ret = mSource->setCur(40, 2);
-    str = tr("验证电流：期望电流4A");
+    updatePro(tr("自动验证开始"));
+    mSource = Yc_Obj::bulid()->get();
+    mSource->setVol(200, 1);
+    bool ret = mSource->setCur(40, 3);
+    QString str = tr("验证电流：期望电流4A");
     return updatePro(str, ret, 3);
 }
-
 
 bool Ad_Resulting::resEnter()
 {

@@ -14,6 +14,7 @@ protected:
     void run();
     bool setDev();
     bool readDev();
+    bool checkDev();
     void workDown();
     void workResult(bool res);
 

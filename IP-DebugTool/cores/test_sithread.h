@@ -30,7 +30,6 @@ protected slots:
 private:
     Dev_SiRtu *mRtu;
     Dev_SiCtrl *mCtrl;
-    Test_Logs *mLogs;
 };
 
 #endif // TEST_SICTRL_H

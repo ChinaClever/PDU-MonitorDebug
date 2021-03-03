@@ -22,6 +22,7 @@ void Dev_SiCfg::initType()
 {
     sTypeCfg *ptr = mCfg;
     ptr->si_ac = read("si_ac", 1).toInt();
+    ptr->si_led = read("si_led", 0).toInt();
     ptr->si_lines = read("si_lines", 1).toInt();
     ptr->si_series = read("si_series", 0).toInt();
     ptr->si_standar = read("si_standar", 0).toInt();

@@ -26,6 +26,7 @@ void Set_SiWid::initFunSlot()
 {
     this->setEnabled(false);
     mObj = Dev_SiCfg::bulid(this);
+    mItem = Cfg::bulid()->item;
     mDev = mObj->getDev();
     mUnitWid->init(&(mDev->cfg.si_cfg));
     initType();
@@ -43,9 +44,15 @@ void Set_SiWid::initType()
 void Set_SiWid::updateType()
 {
     sTypeCfg *cfg = &(mDev->cfg);
+    cfg->si_led = ui->ledCheck->isChecked()?1:0;
     cfg->si_lines = ui->lineBox->currentIndex();
     cfg->si_standar = ui->sBox->currentIndex();
     cfg->si_series = ui->curBox->currentIndex();
+    if(cfg->si_lines) {
+        cfg->si_ac = AC;
+    } else {
+        cfg->si_ac = DC;
+    }
 }
 
 bool Set_SiWid::inputCheck()
@@ -66,7 +73,7 @@ bool Set_SiWid::dataSave()
 
 void Set_SiWid::enabledSlot(bool en)
 {
-    if(mDev->dt.devType != SI_PDU) return;
+    if(mItem->modeId != SI_PDU) return;
 
     this->setEnabled(en);
     if(!en) {

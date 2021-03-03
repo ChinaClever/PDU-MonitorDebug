@@ -101,7 +101,6 @@ bool Ad_Adjusting::writePhase()
 
 bool Ad_Adjusting::sentCmd()
 {
-    updatePro(tr("即将开始校准！"), true, 2);
     updatePro(tr("发送校准解锁命令！"));
     bool ret = writeCmd(0xA0, 0);
     if(!ret){
@@ -112,7 +111,7 @@ bool Ad_Adjusting::sentCmd()
     if(ret) ret = writeOffset();
     if(!ret) return ret;
 
-    updatePro(tr("发送启动校准命令！"),ret, 2);
+    updatePro(tr("发送启动校准命令！"),ret, 1);
     ret = writeCmd(0xA2, 0);
     //ret = writePhase();
 
@@ -122,56 +121,49 @@ bool Ad_Adjusting::sentCmd()
 bool Ad_Adjusting::updateStatus(ushort status)
 {
     QString str;
-    bool ret = true;
-
     if(0x1100 == status) {
         uchar step = Test_vert;
         str = tr("校准返回正常！");
-
-
-        /////////////===========
-//        if(mItem->aiMode && mPacket->devType->specs == Mn) step = Test_End;
+        // if(mItem->aiMode) step = Test_End;
         mItem->step = step;
     } else if(0x1101 == status) {
-        ret = false;
         str = tr("校准失败");
         mItem->step = Test_vert;
     } else if(0x1102 == status) {
-         str = tr("校准解锁成功");
+        str = tr("校准解锁成功");
     } else if(0x1108 == status) {
-         str = tr("准直流偏移校准成功");
+        str = tr("准直流偏移校准成功");
     }else if(0x1109 == status) {
-        str = tr("直流偏移校准失败"); ret = false;
+        str = tr("直流偏移校准失败");
     }else if(0x110A == status) {
-         str = tr("直流正在校准");
+        str = tr("直流正在校准");
     }else if(0x110B == status) {
-        str = tr("直流电流校准失败"); ret = false;
+        str = tr("直流电流校准失败");
     }else if(0x110C == status) {
-        str = tr("直流电压校准失败"); ret = false;
+        str = tr("直流电压校准失败");
     }else if(status <= 0x1115) {
         if(status%3 == 0) {
-             str = tr("L%1相， 正在校准").arg((status-0x110D)/3+1);
+            str = tr("L%1相， 正在校准").arg((status-0x110D)/3+1);
         } else if(status%3 == 1) {
-             str = tr("L%1相， 校准成功").arg((status-0x110D)/3+1);
+            str = tr("L%1相， 校准成功").arg((status-0x110D)/3+1);
         } else if(status%3 == 2) {
-             str = tr("L%1相， 校准失败").arg((status-0x110D)/3+1); ret = false;
+            str = tr("L%1相， 校准失败").arg((status-0x110D)/3+1);
         }
     } else if(status <= 0x1118) {
-        str = tr("校准失败：L%1相电流 ").arg(status-0x1115); ret = false;
+        str = tr("校准失败：L%1相电流 ").arg(status-0x1115);
     } else if(status <= 0x111C) {
-        str = tr("校准失败：L%1相电压 ").arg(status-0x1119); ret = false;
+        str = tr("校准失败：L%1相电压 ").arg(status-0x1119);
     }else if(status <= 0x112F) {
         str = tr("校准完成，输出位%1 ").arg(status-0x1120);
     } else if(status <= 0x114F) {
-        str = tr("电流校准失败：输出位%1").arg(status-0x1140); ret = false;
+        str = tr("电流校准失败：输出位%1").arg(status-0x1140);
     } else if(status <= 0x116F) {
-        str = tr("电压校准失败：输出位%1").arg(status-0x1160); ret = false;
+        str = tr("电压校准失败：输出位%1").arg(status-0x1160);
     } else {
-        str = tr("校准失败：状态返回错误%1 ").arg(QString::number(status, 16)); ret = false;
+        str = tr("校准失败：状态返回错误%1 ").arg(QString::number(status, 16));
     }
-    updatePro(str, ret, 0);
 
-    return true;
+    return updatePro(str);
 }
 
 bool Ad_Adjusting::recvStatus(uchar *recv, int len)

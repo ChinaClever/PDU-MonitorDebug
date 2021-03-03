@@ -60,17 +60,17 @@ bool Ad_CoreThread::initThread(int v)
 
 void Ad_CoreThread::collectData()
 {
-    bool ret = initThread(220);
-    if(!ret){mItem->step = Test_End; return;}
-    Dev_Object *th = mResult->initThread();
-    while(mItem->step != Test_Over) {
-        QString str = tr("正在读取设备数据");
-        ret = th->readPduData();
-        if(ret) str += tr("正常");
-        else str += tr("错误！");
-        updatePro(str, ret, 1);
-    }
-    updatePro(tr("读取设备数据停止！"));
+//    bool ret = initThread(220);
+//    if(!ret){mItem->step = Test_End; return;}
+//    Dev_Object *th = mResult->initThread();
+//    while(mItem->step != Test_Over) {
+//        QString str = tr("正在读取设备数据");
+//        ret = th->readPduData();
+//        if(ret) str += tr("正常");
+//        else str += tr("错误！");
+//        updatePro(str, ret, 1);
+//    }
+//    updatePro(tr("读取设备数据停止！"));
 }
 
 void Ad_CoreThread::verifyResult()
@@ -131,7 +131,6 @@ bool Ad_CoreThread::workDown()
     ret = mAdjust->startAdjust();
     //    }
 
-    Dev_Read::bulid()->readPduData();
     if(mItem->step == Test_vert) {
         ret = mResult->resEnter();
         //    } else if(mItem->step == Test_End) {

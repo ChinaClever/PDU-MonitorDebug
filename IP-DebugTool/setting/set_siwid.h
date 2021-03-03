@@ -35,6 +35,7 @@ private:
     Ui::Set_SiWid *ui;
     Set_LineUnitWid *mUnitWid;
 
+    sCfgItem *mItem;
     Dev_Object *mObj;
     sDevData *mDev;
 };
