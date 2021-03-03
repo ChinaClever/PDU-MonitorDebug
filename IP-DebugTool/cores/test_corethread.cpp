@@ -27,18 +27,16 @@ void Test_CoreThread::initFunSlot()
 bool Test_CoreThread::setDev()
 {
     bool ret = true;
-    mPro->step = Test_Seting;
     if(mItem->modeId) {
-        ret = Test_NetWork::bulid()->startProcess();
+        if(mPro->step > Test_Seting) delay(5);
+        else ret = Test_NetWork::bulid()->startProcess();
     } else {
         ret = mCtrl->setDev();
-        if(mCfg->si_led) {
-
-            //return ret;
-        }
+        if(mCfg->si_led) return ret;
     }
 
-    return mSn->snEnter();
+    if(ret) ret = mSn->snEnter();
+    return ret;
 }
 
 bool Test_CoreThread::readDev()
@@ -102,22 +100,57 @@ void Test_CoreThread::workResult(bool res)
     mPro->step = Test_Over;
 }
 
-void Test_CoreThread::workDown()
+
+bool Test_CoreThread::initFun()
 {
+    updatePro(tr("即将开始"));
     bool ret = mYc->powerOn();
     if(ret) ret = setDev();
     if(ret) ret = readDev();
+    return ret;
+}
+
+
+void Test_CoreThread::workDown()
+{
+    bool ret = initFun();
     if(ret) ret = checkDev();
     if(ret) ret = mAd->startAdjust();
-
 
     workResult(ret);
 }
 
+void Test_CoreThread::collectData()
+{
+    int cnt = 1;
+    Dev_Object *dev = Dev_SiRtu::bulid();
+    if(mItem->modeId) dev = Dev_IpRtu::bulid();
+
+    while(mItem->step < Test_Over) {
+        bool ret = dev->readPduData();
+        QString str = tr("正在读取设备数据 %1").arg(cnt++);
+        if(!ret && (cnt > 3)) str= tr("读取设备数据错误！");
+        updatePro(str, ret, 1);
+    }
+
+    QString str = tr("读取设备数据停止！");
+    updatePro(str);
+}
+
+
 void Test_CoreThread::run()
 {
     if(isRun) return; else isRun = true;
-    updatePro(tr("即将开始"));
-    workDown();
+    bool ret = initFun();
+    if(ret) {
+        switch (mPro->step) {
+        case Test_Start: workDown(); break;
+        case Test_Collect: collectData(); break;
+        case Test_Ading: mAd->startAdjust(); break;
+        case Test_vert: mAd->verifyResult(); break;
+        }
+    }
+
     isRun = false;
+    if(mPro->step < Test_Over) mPro->step = Test_Over;
 }

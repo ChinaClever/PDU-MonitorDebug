@@ -111,6 +111,7 @@ bool Sn_DevType::analysDevType(uint id)
     QString str = getDevStr(id);
     if(str.size()) {
         mDt->devId = id;
+        mDt->dev_type = str;
         mDt->devType = getDevType(str);
         mDt->ac = getAcType(str);
         //mDt->specs = getColMode(str);

@@ -32,6 +32,7 @@ bool Yc_Obj::powerOn()
     YC_StandSource *yc = get();
     QString str = tr("标准源上电");
     bool ret = yc->handShake();
+    if(!ret) ret = yc->handShake();
     if(ret) ret = yc->powerOn();
     if(ret) str += tr("成功");
     else str += tr("失败");

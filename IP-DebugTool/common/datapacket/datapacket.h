@@ -116,8 +116,9 @@ struct sDevType
     uchar devType; // 0 SI-PDU  1 IP-PDU
     uchar lines;
     uchar ac;
-
     uchar version; // IP V1 V3
+    QString dev_type;
+    QString sn;
 };
 
 
@@ -137,10 +138,9 @@ enum {
     Test_Fun, // 功能
     Test_Start, // 开始
     Test_Seting,
-    Test_Sning,
+    Test_Collect,
     Test_Ading,
     Test_vert, // 验证
-    Test_Collect,
     Test_Over, // 终止
     Test_End, // 完成
 

@@ -177,7 +177,6 @@ void Sn_SerialNum::writeStatus(bool ret)
 
 bool Sn_SerialNum::snEnter()
 {
-    mPro->step = Test_Sning;
     bool ret = mTypeId->readDevType();
     if(ret) {
         ret = readSn(mSnItem);
@@ -187,7 +186,7 @@ bool Sn_SerialNum::snEnter()
         }
     }
 
-    mItem->sn = mSnItem.sn;
+    mDt->sn = mSnItem.sn;
     mSnItem.sn.clear();
 
     return ret;

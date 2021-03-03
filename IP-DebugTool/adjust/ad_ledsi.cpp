@@ -65,11 +65,10 @@ bool Ad_LedSi::writeAc()
     bool ret = true;
     int line = mDt->lines;
     for(int i=0; i<line; ++i) {
-        updatePro(tr("L%1 校准").arg(i+1), ret, 3);
-        if(ret) ret = writeCmd(0xA1, i);
-        if(!ret) {
-            updatePro(tr("L%1 校准失败！").arg(i+1), ret); break;
-        }
+        ret = writeCmd(0xA1, i);
+        QString str = tr("L%1 校准").arg(i+1);
+        if(ret) str += tr("正常"); else str += tr("错误");
+        updatePro(str, ret, 2);
     }
 
     return ret;

@@ -68,9 +68,6 @@ bool Sn_DevId::readDevId()
 
 bool Sn_DevId::readDevType()
 {
-    mItem->sn.clear();
-    mItem->dev_type.clear();
-
     QString str = tr("开始读取设备ID！");
     bool ret = updatePro(str);
     if(ret) ret = readDevId();

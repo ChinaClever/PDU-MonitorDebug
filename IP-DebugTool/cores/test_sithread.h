@@ -12,9 +12,10 @@ public:
     static Test_SiThread *bulid(QObject *parent = nullptr);
 
     bool setDev();
+    bool readDev();
 
 protected:
-    bool readDev();
+    bool initDev();
     bool setData();
     bool checkLine();
     bool volAlarmWrite(int i);

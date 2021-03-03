@@ -27,6 +27,8 @@ void sDataPacket::init()
     pro->result = 0;
     pro->pass.clear();
     pro->status.clear();
+    dev->dt.sn.clear();
+    dev->dt.dev_type.clear();
 
     pro->step = Test_Fun;
     pro->result = Test_Info;

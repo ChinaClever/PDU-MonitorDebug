@@ -12,10 +12,12 @@ public:
 
 protected:
     void run();
+    bool initFun();
     bool setDev();
     bool readDev();
     bool checkDev();
     void workDown();
+    void collectData();
     void workResult(bool res);
 
 protected slots:

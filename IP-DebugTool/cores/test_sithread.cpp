@@ -70,6 +70,7 @@ bool Test_SiThread::writeAlarmTh()
 
 bool Test_SiThread::setAlarm()
 {
+    mRtu->readPduData();
     bool ret  = writeAlarmTh();
     if(ret) ret = envAlarmWrite();
 
@@ -94,7 +95,7 @@ bool Test_SiThread::readDev()
     bool ret = true;
     for(int i=0; i<5; ++i) {
         QString str = tr("开始读取设备数据：第%1次").arg(i);if(i>1)updatePro(str);
-        ret = mRtu->readPduData(); if(ret) break; else if(!delay(3)) break;
+        ret = mRtu->readPduData(); if(ret) break; else if(!delay(4)) break;
         if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
 
@@ -105,7 +106,7 @@ bool Test_SiThread::readDev()
 
 bool Test_SiThread::checkLine()
 {
-    bool ret = true;
+    bool ret = mRtu->readPduData();
     QString str = tr("设备相数验证");
     if(mCfg->si_lines == 1) {
         int lines = mDev->data.size;
@@ -118,9 +119,23 @@ bool Test_SiThread::checkLine()
     return updatePro(str, ret);
 }
 
+bool Test_SiThread::initDev()
+{
+    QString str = tr("等待设备稳定");
+    if(mCfg->si_led) {
+        mDt->devType = SI_PDU;
+        mDt->ac = mCfg->si_ac;
+        //mDt->specs = Transformer;
+        mDt->lines = mDev->data.size;
+        mDt->dev_type = tr("SI/BM数码管");
+    }
+
+    return updatePro(str, true, 3);
+}
+
 bool Test_SiThread::setData()
 {
-    bool ret = true;
+    bool ret = mRtu->readPduData();
     if(!mCfg->si_led) {
         QString str = tr("解锁设备");
         ret = mCtrl->unClock();
@@ -140,11 +155,14 @@ bool Test_SiThread::setData()
 
 bool Test_SiThread::setDev()
 {
-    bool ret = readDev();
-    if(ret) ret = setData();
-    if(ret) ret = checkLine();
-    if(ret) ret = setAlarm();
-    if(ret) ret = clearEle();
+    bool ret = initDev();
+    if(ret) ret = readDev();
+    if(mPro->step <= Test_Seting) {
+        if(ret) ret = setData();
+        if(ret) ret = checkLine();
+        if(ret) ret = setAlarm();
+        if(ret) ret = clearEle();
+    }
 
     return ret;
 }

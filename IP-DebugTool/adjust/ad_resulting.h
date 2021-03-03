@@ -12,6 +12,8 @@ public:
     static Ad_Resulting *bulid(QObject *parent = nullptr);
 
     bool resEnter();
+    bool initRtuThread();
+
 protected:
     bool powErrRange(int exValue, int cur);
     bool curErrRange(int exValue, int cur);
@@ -29,7 +31,6 @@ protected:
     bool noLoadCurFun();
     bool noLoadCurCheck(int cnt);
     bool powerOn();
-    void initRtuThread();
 
 private:
     YC_StandSource *mSource;

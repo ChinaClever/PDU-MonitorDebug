@@ -135,11 +135,11 @@ void Home_WorkWid::updateResult()
 
 void Home_WorkWid::updateWid()
 {
-    QString str = mItem->sn;
+    QString str = mDt->sn;
     if(str.isEmpty()) str = "--- ---";
     ui->snLab->setText(str);
 
-    str = mItem->dev_type;
+    str = mDt->dev_type;
     if(str.isEmpty()) str = "--- ---";
     ui->devLab->setText(str);
 
@@ -185,10 +185,8 @@ bool Home_WorkWid::initWid()
 
         mId = 1;
         mPacket->init();
-        mItem->sn.clear();
-        mItem->dev_type.clear();
         ui->textEdit->clear();
-        mPro->step = Test_Start;
+        mPro->step = ui->modeBox->currentIndex()+1; //Test_Start;
         ui->groupBox_4->setEnabled(false);
     }
 

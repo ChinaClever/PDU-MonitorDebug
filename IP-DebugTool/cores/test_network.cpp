@@ -40,11 +40,13 @@ bool Test_NetWork::startProcess()
 {
     QString exe = "pyweb_ctrlset_ip.exe";
 
+    int t = 28;
     mac = true;
     mProcess->close();
     mProcess->start(exe);
     updatePro(tr("正在启动网页"));
-    mProcess->waitForFinished(28*1000);
+    if(mPro->step == Test_Seting) t = 60;
+    mProcess->waitForFinished(t*1000);
     bool ret = checkNet(); {
         if(ret && mac) updateMacAddr();
     }

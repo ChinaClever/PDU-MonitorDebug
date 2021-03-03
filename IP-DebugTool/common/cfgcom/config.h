@@ -43,11 +43,8 @@ struct sCfgItem
     ushort vol;
     ushort volErr, curErr, powErr; // 电流误差
 
-    QString sn;
     QString mac;
     QString user;
-    QString dev_type;
-
     QString startMac;
     QString endMac;
 

@@ -24,9 +24,9 @@ bool Test_Logs::writeMac()
 {
     sMacItem it;
 
-    it.dev = mItem->dev_type.split("_").first();
+    it.dev = mDt->dev_type.split("_").first();
     it.user = mItem->user;
-    it.sn = mItem->sn;
+    it.sn = mDt->sn;
     it.mac = mMac;
     mMac.clear();
 
@@ -65,10 +65,10 @@ bool Test_Logs::writeLog()
     Db_Tran db;
     sLogItem it;
 
-    it.dev = mItem->dev_type.split("_").first();
+    it.dev = mDt->dev_type.split("_").first();
     it.op = user_land_name();
     it.user = mItem->user;
-    it.sn = mItem->sn;
+    it.sn = mDt->sn;
 
     mItem->cnt.cnt--;
     mItem->cnt.all += 1;
@@ -87,9 +87,9 @@ bool Test_Logs::writeLog()
 
 bool Test_Logs::initItem(sStateItem &it)
 {
-    it.dev = mItem->dev_type.split("_").first();
+    it.dev = mDt->dev_type.split("_").first();
     it.user = mItem->user;
-    it.sn = mItem->sn;
+    it.sn = mDt->sn;
 
     return it.sn.size();
 }
