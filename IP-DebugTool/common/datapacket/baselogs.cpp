@@ -1,26 +1,21 @@
-/*
- *
- *  Created on: 2021年1月1日
- *      Author: Lzy
- */
-#include "test_logs.h"
+#include "baselogs.h"
 extern QString user_land_name();
 
-Test_Logs::Test_Logs(QObject *parent) : BaseThread(parent)
+BaseLogs::BaseLogs(QObject *parent) : QThread(parent)
 {
+
 }
 
-
-Test_Logs *Test_Logs::bulid(QObject *parent)
+BaseLogs *BaseLogs::bulid(QObject *parent)
 {
-    static Test_Logs* sington = nullptr;
+    static BaseLogs* sington = nullptr;
     if(sington == nullptr)
-        sington = new Test_Logs(parent);
+        sington = new BaseLogs(parent);
     return sington;
 }
 
 
-bool Test_Logs::writeMac()
+bool BaseLogs::writeMac()
 {
     sMacItem it;
 
@@ -33,7 +28,7 @@ bool Test_Logs::writeMac()
     return DbMacs::bulid()->insertItem(it);
 }
 
-bool Test_Logs::appendLogItem(const QString &str, bool pass)
+bool BaseLogs::appendLogItem(const QString &str, bool pass)
 {
     sStateItem it;
     if(pass) {
@@ -48,7 +43,7 @@ bool Test_Logs::appendLogItem(const QString &str, bool pass)
     return pass;
 }
 
-void Test_Logs::saveLogs()
+void BaseLogs::saveLogs()
 {
     bool ret = writeLog();
     if(ret) {
@@ -60,7 +55,7 @@ void Test_Logs::saveLogs()
     mLogItems.clear();
 }
 
-bool Test_Logs::writeLog()
+bool BaseLogs::writeLog()
 {
     Db_Tran db;
     sLogItem it;
@@ -70,11 +65,15 @@ bool Test_Logs::writeLog()
     it.user = mItem->user;
     it.sn = mDt->sn;
 
-    mItem->cnt.cnt--;
     mItem->cnt.all += 1;
     if(mPro->result != Test_Fail) {
         it.result = tr("通过");
         mItem->cnt.ok += 1;
+        mItem->cnt.cnt--;
+        if(!mItem->cnt.cnt)  {
+            mItem->user.clear();
+            Cfg::bulid()->write("user", mItem->user, "User");
+        }
     } else {
         mItem->cnt.err += 1;
         it.result = tr("失败");
@@ -85,7 +84,7 @@ bool Test_Logs::writeLog()
     return DbLogs::bulid()->insertItem(it);
 }
 
-bool Test_Logs::initItem(sStateItem &it)
+bool BaseLogs::initItem(sStateItem &it)
 {
     it.dev = mDt->dev_type.split("_").first();
     it.user = mItem->user;
@@ -94,7 +93,7 @@ bool Test_Logs::initItem(sStateItem &it)
     return it.sn.size();
 }
 
-void Test_Logs::writeLogs()
+void BaseLogs::writeLogs()
 {
     Db_Tran db;
     for(int i=0; i<mLogItems.size(); ++i) {
@@ -102,14 +101,4 @@ void Test_Logs::writeLogs()
         if(initItem(it)) DbStates::bulid()->insertItem(it);
     }
     mLogItems.clear();
-}
-
-bool Test_Logs::updatePro(const QString &str, bool pass, int sec)
-{       
-    if(mPro->step < Test_Over){
-        if(!pass)appendLogItem(str, pass);
-        updatePro(str, pass, sec);
-    }
-
-    return pass;
 }

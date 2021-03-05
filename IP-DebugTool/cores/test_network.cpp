@@ -21,7 +21,6 @@ Test_NetWork *Test_NetWork::bulid(QObject *parent)
 void Test_NetWork::initFunSlot()
 {    
     mProcess = new QProcess(this);
-    mLogs = Test_Logs::bulid(this);
     mUdp = new UdpRecvSocket(this);
     mUdp->initSocket(10086);
     this->start();
@@ -40,7 +39,7 @@ bool Test_NetWork::startProcess()
 {
     QString exe = "pyweb_ctrlset_ip.exe";
 
-    int t = 28;
+    int t = 30;
     mac = true;
     mProcess->close();
     mProcess->start(exe);
@@ -58,7 +57,7 @@ bool Test_NetWork::startProcess()
 void Test_NetWork::updateMacAddr()
 {
     if(mItem->mac.size() > 5) {
-        mLogs->writeMac(mItem->mac);
+        BaseLogs::bulid()->writeMac(mItem->mac);
         MacAddr *mac = MacAddr::bulid();
         mItem->mac = mac->macAdd(mItem->mac);
     }

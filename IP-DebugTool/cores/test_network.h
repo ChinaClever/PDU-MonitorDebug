@@ -1,7 +1,7 @@
 #ifndef TEST_NETWORK_H
 #define TEST_NETWORK_H
-
-#include "test_logs.h"
+#include "baselogs.h"
+#include "sn_serialnum.h"
 #include "udprecvsocket.h"
 
 class Test_NetWork : public BaseThread
@@ -23,7 +23,6 @@ protected slots:
 
 private:
     bool mac;
-    Test_Logs *mLogs;
     UdpRecvSocket *mUdp;
     QProcess *mProcess;
 };

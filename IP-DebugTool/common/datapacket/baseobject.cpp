@@ -1,5 +1,5 @@
 #include "baseobject.h"
-
+#include "baselogs.h"
 
 BaseObject::BaseObject()
 {
@@ -16,6 +16,7 @@ BaseObject::BaseObject()
 BaseThread::BaseThread(QObject *parent) : QThread(parent)
 {
     isRun = false;
+    BaseLogs::bulid(this);
     int t = 550+rand()%150;
     QTimer::singleShot(t,this,SLOT(initFunSlot()));
 }
@@ -42,6 +43,7 @@ bool BaseThread::updatePro(const QString &str, bool pass, int sec)
     mPro->status << str;
     if(pass) pass = delay(sec);
     else mPro->result = Test_Fail;
+    if(!pass) BaseLogs::bulid()->appendLogItem(str, pass);
 
     return pass;
 }
