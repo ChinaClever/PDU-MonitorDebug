@@ -30,9 +30,21 @@ class IpWeb:
             self.dest_ip = '127.0.0.1'
             #self.sendtoMainapp("Mac地址错误：" + mac, 0)
 
+    def udpSendTo(self, message):
+        self.sock.sendto(message.encode('utf-8-sig'), (self.dest_ip, 10086))
+
     def sendtoMainapp(self, parameter, res):
         message = parameter + ";" + str(res)
-        self.sock.sendto(message.encode('utf-8-sig'), (self.dest_ip, 10086))
+        self.udpSendTo(message)
+
+    def setMacAddr(self):
+        cfg = self.cfgs
+        it = self.driver.find_element_by_id('mac1')
+        mac = it.get_attribute('value')
+        if "2C:26:5F:" in mac:
+            self.udpSendTo("MAC-1")
+        else:
+            self.setItById("mac1", cfg['mac'], 'Mac地址')
 
     @staticmethod
     def getCfg():
@@ -172,7 +184,7 @@ class IpWeb:
         self.execJs(js)
         self.driver.switch_to.alert.accept()
         time.sleep(0.5)
-
+        
     def resetFactory(self):
         v = IpWeb.getCfg().get("ipCfg", "ip_version")
         jsSheet = "xmlset = createXmlRequest();xmlset.onreadystatechange = setdata;ajaxgets(xmlset, \"/setsys?a=\" + {0} + \"&\");"
