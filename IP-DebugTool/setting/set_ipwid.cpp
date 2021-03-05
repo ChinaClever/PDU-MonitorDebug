@@ -38,6 +38,7 @@ void Set_IpWid::initType()
     ui->ipTypeBox->setCurrentIndex(v);
     on_ipTypeBox_currentIndexChanged(v);
 
+    ui->lcdBox->setCurrentIndex(dt->ip_lcd);
     ui->logBox->setCurrentIndex(dt->log_en);
     ui->sBox->setCurrentIndex(dt->ip_standar);
     ui->lineBox->setCurrentIndex(dt->ip_lines);
@@ -52,6 +53,7 @@ void Set_IpWid::updateType()
     int v = ui->ipTypeBox->currentIndex()+1;
     if(v > 1) v = 3; dt->ip_version = v;
 
+    dt->ip_lcd = ui->lcdBox->currentIndex();
     dt->ip_lines = ui->lineBox->currentIndex();
     dt->ip_modbus = ui->ipModeBox->currentIndex();
     dt->ip_standar = ui->sBox->currentIndex();
