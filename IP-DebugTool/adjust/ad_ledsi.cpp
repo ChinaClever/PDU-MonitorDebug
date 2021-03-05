@@ -50,11 +50,11 @@ bool Ad_LedSi::writeDc()
 {
     updatePro(tr("发送直流偏移命令！"));
     bool ret = writeCmd(0xA2, 0);
-    if(ret) ret = delay(4);//15
+    if(ret) ret = delay(5);//15
     if(!ret) return ret;
 
     updatePro(tr("设置标准源电流6A"));
-    ret = YC_Dc107::bulid()->setCur(60, 6);
+    ret = YC_Dc107::bulid()->setCur(60, 10);
     if(ret) ret = writeCmd(0xA1, 0);
 
     return ret;
@@ -63,7 +63,8 @@ bool Ad_LedSi::writeDc()
 bool Ad_LedSi::writeAc()
 {
     bool ret = true;
-    int line = mDt->lines;
+    int line = mDt->lines;    
+    updatePro(tr("正在校准：请等待..."), ret, 5);
     for(int i=0; i<line; ++i) {
         ret = writeCmd(0xA1, i);
         QString str = tr("L%1 校准").arg(i+1);
@@ -89,12 +90,11 @@ bool Ad_LedSi::sentCmd()
 
 bool Ad_LedSi::startAdjust()
 {
-    mItem->step = Test_Ading;
     bool ret = sentCmd();
     if(ret) {
-        mItem->step = Test_vert;
+        mPro->step = Test_vert;
     } else {
-        mItem->step = Test_vert;
+        mPro->step = Test_vert;
     }
 
     return updatePro(tr("校准返回！"), ret, 1);

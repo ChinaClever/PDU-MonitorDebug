@@ -8,6 +8,9 @@ Set_WorkWid::Set_WorkWid(QWidget *parent) :
 {
     ui->setupUi(this);
      QTimer::singleShot(450,this,SLOT(initFunSlot()));
+     QGridLayout *gridLayout = new QGridLayout(parent);
+     gridLayout->setContentsMargins(0, 0, 0, 0);
+     gridLayout->addWidget(this);
 }
 
 Set_WorkWid::~Set_WorkWid()
@@ -19,6 +22,7 @@ void Set_WorkWid::initFunSlot()
 {
     mCnt = 0;
     initTypeComboBox();
+    ui->groupBox_2->setEnabled(false);
     ui->userEdit->setText(mItem->user);
     ui->addrSpin->setValue(mItem->addr);
     ui->cntSpin->setValue(mItem->cnt.cnt);
@@ -39,14 +43,13 @@ void Set_WorkWid::saveFunSlot()
 
 void Set_WorkWid::on_setBtn_clicked()
 {
-    QString str = tr("修改");
+    QString str = tr("修 改");
     bool en = ++mCnt % 2;
-    if(en) str = tr("保存");
+    if(en) str = tr("保 存");
 
     ui->setBtn->setText(str);
-    ui->cntSpin->setEnabled(en);
     ui->addrSpin->setEnabled(en);
-    ui->userEdit->setEnabled(en);
+    ui->groupBox_2->setEnabled(en);
     ui->typeComboBox->setDisabled(en);
     mItem->addr = ui->addrSpin->value();
     mItem->cnt.cnt = ui->cntSpin->value();
@@ -64,7 +67,7 @@ void Set_WorkWid::saveErrSlot()
 {
     mCnt = 1;
     emit enabledSig(true);
-    ui->setBtn->setText(tr("保存"));
+    ui->setBtn->setText(tr("保 存"));
 }
 
 

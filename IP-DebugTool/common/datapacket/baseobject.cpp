@@ -50,7 +50,7 @@ bool BaseThread::mdelay(int s)
 {
     bool ret = true;
     for(int i=0; i<s; ++i) {
-        if((mPro->step < Test_Over)  || (mPro->step > Test_End)){
+        if(mPro->step < Test_Over){
             QThread::msleep(100);
         } else {
             ret = false;

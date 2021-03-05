@@ -143,7 +143,7 @@ bool Ad_Resulting::eachCurCheck(int k, int exValue)
     for(int i=0; i<5; ++i) {
         if(i) str += tr(" 第%1次").arg(i+1); //else delay(4);
         ret = curRangeByID(k, exValue, i);
-        if(ret) break; else if(!delay(3)) break;
+        if(ret) break; else if(!delay(i+4)) break;
         mCollect->readPduData();
     }
 
@@ -208,11 +208,10 @@ bool Ad_Resulting::noLoadCurFun()
     bool ret = true;
     for(int i=0; i<5; ++i) {
         QString str = tr("空载校验: 第%1次检查").arg(i+1);
-        if(i)updatePro(str, true, 3); else delay(3);
-
+        if(i)updatePro(str, true, 3); else delay(5);
         mCollect->readPduData();
         ret = noLoadCurCheck(i);
-        if(ret) break; else if(!delay(3)) break;
+        if(ret) break; else if(!delay(i+3)) break;
     }
 
     return ret;
@@ -232,7 +231,7 @@ bool Ad_Resulting::noLoadEnter()
 bool Ad_Resulting::powerOn()
 {
     initRtuThread();
-    mItem->step = Test_vert;
+    mPro->step = Test_vert;
     updatePro(tr("自动验证开始"));
     mSource = Yc_Obj::bulid()->get();
     mSource->setVol(200, 1);

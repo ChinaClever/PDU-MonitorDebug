@@ -125,10 +125,10 @@ bool Ad_Adjusting::updateStatus(ushort status)
         uchar step = Test_vert;
         str = tr("校准返回正常！");
         // if(mItem->aiMode) step = Test_End;
-        mItem->step = step;
+        mPro->step = step;
     } else if(0x1101 == status) {
         str = tr("校准失败");
-        mItem->step = Test_vert;
+        mPro->step = Test_vert;
     } else if(0x1102 == status) {
         str = tr("校准解锁成功");
     } else if(0x1108 == status) {
@@ -206,7 +206,7 @@ int Ad_Adjusting::readSerial(uchar *recv, int sec)
 
 bool Ad_Adjusting::overWork(const QString &str)
 {
-    mItem->step = Test_End;
+    mPro->step = Test_End;
     return updatePro(str, false, 0);
 }
 
@@ -223,7 +223,7 @@ bool Ad_Adjusting::readData()
         } else {
             ret = overWork(tr("校准超时！")); break;
         }
-        if(mItem->step >= Test_vert) break;
+        if(mPro->step >= Test_vert) break;
     } while(true == ret);
 
     return ret;
@@ -231,9 +231,9 @@ bool Ad_Adjusting::readData()
 
 bool Ad_Adjusting::startAdjust()
 {
-    mItem->step = Test_Ading;
+    mPro->step = Test_Ading;
     bool ret = sentCmd();
-    if(ret && (mItem->step == Test_Ading)){
+    if(ret && (mPro->step == Test_Ading)){
         ret = readData();
     }
 

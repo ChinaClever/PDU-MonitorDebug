@@ -28,7 +28,7 @@ bool Test_CoreThread::setDev()
 {
     bool ret = true;
     if(mItem->modeId) {
-        if(mPro->step > Test_Seting) delay(5);
+        if(mPro->step > Test_Seting) ret = delay(6);
         else ret = Test_NetWork::bulid()->startProcess();
     } else {
         ret = mCtrl->setDev();
@@ -41,20 +41,21 @@ bool Test_CoreThread::setDev()
 
 bool Test_CoreThread::readDev()
 {
+    bool ret = true;
     Dev_Object *dev = Dev_IpRtu::bulid();
     if(mItem->modeId) {
-        QString str = tr("SNMP通讯");
-        bool ret = Dev_IpSnmp::bulid()->readPduData();
+        QString str = tr("Modbus RTU通讯 ");
+        ret = dev->readPduData();
+        if(ret) str += tr("正常"); else str += tr("错误");
+        updatePro(str, ret);
+
+        str = tr("SNMP通讯 ");
+        ret = Dev_IpSnmp::bulid()->readPduData();
         if(ret) str += tr("正常"); else str += tr("错误");
         updatePro(str, ret, 1);
-    } else {
-        dev = Dev_SiRtu::bulid();
     }
 
-    QString str = tr("读取设备数据");
-    bool ret = dev->readPduData();
-    if(ret) str += tr("正常"); else str += tr("错误");
-    return updatePro(str, ret);
+    return ret;
 }
 
 bool Test_CoreThread::checkDev()
@@ -81,13 +82,11 @@ bool Test_CoreThread::checkDev()
     return ret;
 }
 
-void Test_CoreThread::workResult(bool res)
+void Test_CoreThread::workResult()
 {
-    //    if(mItem->enSn)
-    //   mSn->snEnter();
-    QString str = tr("最终结果");
+    bool res = true;
+    QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
-        res = true;
         str += tr("通过");
     } else {
         res = false;
@@ -95,7 +94,7 @@ void Test_CoreThread::workResult(bool res)
     }
 
     mYc->powerDown();
-    //mLogs->updatePro(str, res);
+    updatePro(str, res);
     // mLogs->saveLogs();
     mPro->step = Test_Over;
 }
@@ -113,23 +112,21 @@ bool Test_CoreThread::initFun()
 
 void Test_CoreThread::workDown()
 {
-    bool ret = initFun();
-    if(ret) ret = checkDev();
+    bool ret = checkDev();
     if(ret) ret = mAd->startAdjust();
-
-    workResult(ret);
 }
 
 void Test_CoreThread::collectData()
 {
-    int cnt = 1;
+    int cnt = 0;
     Dev_Object *dev = Dev_SiRtu::bulid();
     if(mItem->modeId) dev = Dev_IpRtu::bulid();
 
-    while(mItem->step < Test_Over) {
+    while(mPro->step == Test_Collect) {
         bool ret = dev->readPduData();
         QString str = tr("正在读取设备数据 %1").arg(cnt++);
-        if(!ret && (cnt > 3)) str= tr("读取设备数据错误！");
+        if(ret && (cnt%5)) continue;
+        if(!ret && (cnt>5)) str= tr("读取设备数据错误！");
         updatePro(str, ret, 1);
     }
 
@@ -152,5 +149,5 @@ void Test_CoreThread::run()
     }
 
     isRun = false;
-    if(mPro->step < Test_Over) mPro->step = Test_Over;
+    workResult();
 }

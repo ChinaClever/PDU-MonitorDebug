@@ -18,7 +18,7 @@ protected:
     bool checkDev();
     void workDown();
     void collectData();
-    void workResult(bool res);
+    void workResult();
 
 protected slots:
     void initFunSlot();

@@ -118,6 +118,9 @@ int Dev_SiRtu::recvAcData(uchar *ptr, int line)
 
     mDt->lines = obj->size;
     if(obj->size > 1)  obj->size = 3;
+    if((mDt->lines == 2) && mCfg->si_led) {
+        if((obj->vol.value[0] && (!obj->vol.value[1]) && (!obj->vol.value[2]))) obj->size = 1;
+    }
     obj->vol.size = obj->cur.size = obj->size;
 
     return SI_RTU_THREE_LEN;

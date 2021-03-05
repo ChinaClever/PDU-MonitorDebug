@@ -26,15 +26,15 @@ Ad_CoreThread *Ad_CoreThread::bulid(QObject *parent)
 bool Ad_CoreThread::workDown()
 {
     bool ret = true;
-    if(mDt->devType) {
-        ret = mAdjust->startAdjust();
-    } else if(mCfg->si_led) {
+    if(!mDt->devType && mCfg->si_led) {
         ret = mLedSi->startAdjust();
+    } else {
+        ret = mAdjust->startAdjust();
     }
 
-    if(mItem->step == Test_vert) {
+    if(mPro->step == Test_vert) {
         ret = mResult->resEnter();
-    } else if(mItem->step == Test_End) {
+    } else if(mPro->step == Test_End) {
         ret = mResult->initRtuThread();
     }
 

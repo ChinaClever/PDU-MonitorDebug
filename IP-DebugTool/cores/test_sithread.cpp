@@ -99,7 +99,7 @@ bool Test_SiThread::readDev()
         if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
 
-    QString str = tr("读取设备数据");
+    QString str = tr("Modbus-RTU通讯 ");
     if(ret) str += tr("正常"); else str += tr("错误");
     return  updatePro(str, ret);
 }
@@ -162,6 +162,9 @@ bool Test_SiThread::setDev()
         if(ret) ret = checkLine();
         if(ret) ret = setAlarm();
         if(ret) ret = clearEle();
+    } else {
+        if(mPro->step > Test_Collect)
+            ret = delay(10);
     }
 
     return ret;

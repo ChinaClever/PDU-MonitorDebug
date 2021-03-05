@@ -103,7 +103,7 @@ void Home_WorkWid::updateTime()
 
     ui->timeLab->setText(str);
     ui->timeLab->setStyleSheet(style);
-    ui->startBtn->setText(tr("终止设置"));
+    ui->startBtn->setText(tr("终 止"));
 }
 
 void Home_WorkWid::updateResult()
@@ -121,9 +121,9 @@ void Home_WorkWid::updateResult()
 
     mPro->step = Test_End;
     ui->timeLab->setText(str);
+    ui->modeBox->setEnabled(true);
     ui->timeLab->setStyleSheet(style);
-    ui->groupBox_4->setEnabled(true);
-    ui->startBtn->setText(tr("开始设置"));
+    ui->startBtn->setText(tr("开 始"));
     ui->cntLab->setNum(mItem->cnt.cnt);
     int cnt = MacAddr::bulid()->macCnt(mItem->startMac, mItem->mac);
     ui->macCntLab->setNum(cnt);
@@ -162,9 +162,9 @@ void Home_WorkWid::timeoutDone()
 bool Home_WorkWid::initSerial()
 {
     bool ret = mItem->com->isOpened();
-    if(!ret) { MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
-    //ret = mItem->source->isOpened();
-    //if(!ret) { MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
+    if(!ret) {MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
+    ret = mItem->source->isOpened();
+    if(!ret) {MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
     return ret;
 }
 
@@ -186,8 +186,8 @@ bool Home_WorkWid::initWid()
         mId = 1;
         mPacket->init();
         ui->textEdit->clear();
-        mPro->step = ui->modeBox->currentIndex()+1; //Test_Start;
-        ui->groupBox_4->setEnabled(false);
+        ui->modeBox->setEnabled(false);
+        mPro->step = ui->modeBox->currentIndex()+Test_Start;
     }
 
     return ret;
@@ -199,7 +199,7 @@ void Home_WorkWid::on_startBtn_clicked()
         if(initWid()) mCoreThread->start();
     } else {
         bool ret = MsgBox::question(this, tr("确定需要提前结束？"));
-        if(ret) {
+        if(ret) {            
             mPro->result = Test_Fail;
             updateResult();
         }

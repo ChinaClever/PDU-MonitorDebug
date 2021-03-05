@@ -38,7 +38,6 @@ struct sCfgItem
 {    
     uchar modeId;
     uchar addr;
-    uchar step;
 
     ushort vol;
     ushort volErr, curErr, powErr; // 电流误差
