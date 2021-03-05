@@ -124,7 +124,7 @@ bool Ad_Adjusting::updateStatus(ushort status)
     if(0x1100 == status) {
         uchar step = Test_vert;
         str = tr("校准返回正常！");
-        // if(mItem->aiMode) step = Test_End;
+        if(mItem->aiMode) step = Test_Over;
         mPro->step = step;
     } else if(0x1101 == status) {
         str = tr("校准失败");

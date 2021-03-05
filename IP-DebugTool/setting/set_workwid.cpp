@@ -23,9 +23,11 @@ void Set_WorkWid::initFunSlot()
     mCnt = 0;
     initTypeComboBox();
     ui->groupBox_2->setEnabled(false);
+    ui->groupBox_3->setEnabled(false);
     ui->userEdit->setText(mItem->user);
     ui->addrSpin->setValue(mItem->addr);
     ui->cntSpin->setValue(mItem->cnt.cnt);
+    ui->aiBox->setCurrentIndex(mItem->aiMode);
 
     initMac();
     timer = new QTimer(this);
@@ -50,9 +52,11 @@ void Set_WorkWid::on_setBtn_clicked()
     ui->setBtn->setText(str);
     ui->addrSpin->setEnabled(en);
     ui->groupBox_2->setEnabled(en);
+    ui->groupBox_3->setEnabled(en);
     ui->typeComboBox->setDisabled(en);
     mItem->addr = ui->addrSpin->value();
     mItem->cnt.cnt = ui->cntSpin->value();
+    mItem->aiMode = ui->aiBox->currentIndex();
     if(mItem->user != ui->userEdit->text()) {
         mItem->user = ui->userEdit->text();
         sCount *cnt = &(mItem->cnt);

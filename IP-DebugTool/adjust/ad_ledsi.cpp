@@ -62,17 +62,17 @@ bool Ad_LedSi::writeDc()
 
 bool Ad_LedSi::writeAc()
 {
-    bool ret = true;
+    bool res = true;
     int line = mDt->lines;    
-    updatePro(tr("正在校准：请等待..."), ret, 5);
+    updatePro(tr("正在校准：请等待..."), res, 5);
     for(int i=0; i<line; ++i) {
-        ret = writeCmd(0xA1, i);
+        bool ret = writeCmd(0xA1, i);
         QString str = tr("L%1 校准").arg(i+1);
-        if(ret) str += tr("正常"); else str += tr("错误");
+        if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
         updatePro(str, ret, 2);
     }
 
-    return ret;
+    return res;
 }
 
 
@@ -92,7 +92,7 @@ bool Ad_LedSi::startAdjust()
 {
     bool ret = sentCmd();
     if(ret) {
-        mPro->step = Test_vert;
+        mPro->step = Test_Over;
     } else {
         mPro->step = Test_vert;
     }

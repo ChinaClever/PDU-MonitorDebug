@@ -34,7 +34,7 @@ bool Ad_CoreThread::workDown()
 
     if(mPro->step == Test_vert) {
         ret = mResult->resEnter();
-    } else if(mPro->step == Test_End) {
+    } else if(mPro->step == Test_Over) {
         ret = mResult->initRtuThread();
     }
 

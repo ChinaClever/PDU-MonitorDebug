@@ -49,7 +49,7 @@ struct sCfgItem
 
     sCount cnt;
     int logCount;
-
+    uchar aiMode;
     uchar pcNum;
     ushort currentNum;
 

@@ -138,7 +138,7 @@ bool Test_SiThread::setData()
     bool ret = mRtu->readPduData();
     if(!mCfg->si_led) {
         QString str = tr("解锁设备");
-        ret = mCtrl->unClock();
+        ret = mCtrl->unClock(); if(!ret) return true;
         if(ret) str += tr("成功"); else str += tr("错误");
         ret = updatePro(str, ret);
         if(ret) {

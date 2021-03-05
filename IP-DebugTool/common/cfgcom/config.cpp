@@ -75,6 +75,7 @@ void Cfg::initCfgDev()
     item->addr = read("addr", 1,"Sys").toInt();
     item->modeId = read("modeId", 1,"Sys").toInt();
     item->user = read("user", "", "User").toString();
+    item->aiMode = read("ai_mode", 1, "Sys").toInt();
     if(item->modeId) item->modeId = 1;
 }
 
