@@ -84,6 +84,7 @@ public:
 
 protected:
     void initMac();
+    void wirteMac();
     void initCnt();
     bool getDate();
     void setDate();

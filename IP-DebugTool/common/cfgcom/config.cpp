@@ -100,8 +100,15 @@ void Cfg::writeCnt()
     write("all", item->cnt.all, "Count");
     write("ok", item->cnt.ok, "Count");
     write("err", item->cnt.err, "Count");
-    write("mac", item->mac, "Mac");
     write("user", item->user, "User");
+    wirteMac();
+}
+
+void Cfg::wirteMac()
+{
+    write("mac", item->mac, "Mac");
+    write("start", item->startMac, "Mac");
+    write("end", item->endMac, "Mac");
 }
 
 void Cfg::initMac()

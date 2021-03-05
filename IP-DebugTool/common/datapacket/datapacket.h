@@ -101,6 +101,7 @@ struct sTypeCfg
     sObjCfg si_cfg;
 
     uchar ip_ac;
+    uchar ip_lcd;
     uchar ip_lines;
     uchar ip_language;
     uchar ip_modbus;
