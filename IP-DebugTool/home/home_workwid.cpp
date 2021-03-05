@@ -178,10 +178,12 @@ bool Home_WorkWid::initWid()
         if(mItem->cnt.cnt < 1) {
             MsgBox::critical(this, tr("请先填写订单剩余数量！")); return false;
         }
-        //int res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
-        //if((res <= 0) && mItem->modeId) {
-        //    MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
-        //}
+        if(mItem->modeId) {
+            int res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
+            if((res <= 0) && mItem->modeId) {
+                MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
+            }
+        }
 
         mId = 1;
         mPacket->init();
@@ -199,7 +201,7 @@ void Home_WorkWid::on_startBtn_clicked()
         if(initWid()) mCoreThread->start();
     } else {
         bool ret = MsgBox::question(this, tr("确定需要提前结束？"));
-        if(ret) {            
+        if(ret) {
             mPro->result = Test_Fail;
             updateResult();
         }
