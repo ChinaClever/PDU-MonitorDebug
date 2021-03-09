@@ -39,6 +39,7 @@ void Set_SiWid::initType()
     ui->lineBox->setCurrentIndex(v);
     ui->sBox->setCurrentIndex(cfg->si_standar);
     ui->curBox->setCurrentIndex(cfg->si_series);
+    if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
 }
 
 void Set_SiWid::updateType()
@@ -48,11 +49,7 @@ void Set_SiWid::updateType()
     cfg->si_lines = ui->lineBox->currentIndex();
     cfg->si_standar = ui->sBox->currentIndex();
     cfg->si_series = ui->curBox->currentIndex();
-    if(cfg->si_lines) {
-        cfg->si_ac = AC;
-    } else {
-        cfg->si_ac = DC;
-    }
+    if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
 }
 
 bool Set_SiWid::inputCheck()
