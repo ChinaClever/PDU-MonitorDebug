@@ -184,7 +184,7 @@ bool Home_WorkWid::initWid()
                 if(res < 1) {
                     MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
                 } else {
-                    QString str = tr("剩余MAC地址，仅有%1个，请向领导反馈").arg(ret);
+                    QString str = tr("剩余MAC地址，仅有%1个，请向领导反馈").arg(res);
                     MsgBox::critical(this, str);
                 }
             }
