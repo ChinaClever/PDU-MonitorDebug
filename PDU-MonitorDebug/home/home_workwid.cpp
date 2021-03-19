@@ -179,9 +179,14 @@ bool Home_WorkWid::initWid()
             MsgBox::critical(this, tr("请先填写订单剩余数量！")); return false;
         }
         if(mItem->modeId) {
-            int res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
-            if((res <= 0) && mItem->modeId) {
-                MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
+            uint res =  MacAddr::bulid()->macCnt(mItem->mac, mItem->endMac);
+            if((res <= mItem->cntMac) && mItem->modeId) {
+                if(res < 1) {
+                    MsgBox::critical(this, tr("MAC地址已用完，无法继续使用")); return false;
+                } else {
+                    QString str = tr("剩余MAC地址，仅有%1个，请向领导反馈").arg(ret);
+                    MsgBox::critical(this, str);
+                }
             }
         }
 

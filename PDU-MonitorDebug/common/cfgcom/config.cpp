@@ -108,6 +108,7 @@ void Cfg::writeCnt()
 void Cfg::wirteMac()
 {
     write("mac", item->mac, "Mac");
+    write("cnt", item->cntMac, "Mac");
     write("start", item->startMac, "Mac");
     write("end", item->endMac, "Mac");
 }
@@ -116,6 +117,7 @@ void Cfg::initMac()
 {
     QString str = "2C:26:5F:38:00:00";
     item->mac = read("mac", str, "Mac").toString();
+    item->cntMac = read("cnt", 5*1000, "Mac").toInt();
     item->startMac = read("start", str, "Mac").toString();
     item->endMac = read("end", str, "Mac").toString();
 }

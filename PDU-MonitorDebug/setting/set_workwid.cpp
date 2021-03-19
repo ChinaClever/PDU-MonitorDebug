@@ -24,6 +24,7 @@ void Set_WorkWid::initFunSlot()
     initTypeComboBox();
     ui->groupBox_2->setEnabled(false);
     ui->groupBox_3->setEnabled(false);
+    ui->groupBox_4->setEnabled(false);
     ui->userEdit->setText(mItem->user);
     ui->addrSpin->setValue(mItem->addr);
     ui->cntSpin->setValue(mItem->cnt.cnt);
@@ -53,8 +54,10 @@ void Set_WorkWid::on_setBtn_clicked()
     ui->addrSpin->setEnabled(en);
     ui->groupBox_2->setEnabled(en);
     ui->groupBox_3->setEnabled(en);
+    ui->groupBox_4->setEnabled(en);
     ui->typeComboBox->setDisabled(en);
     mItem->addr = ui->addrSpin->value();
+    mItem->cntMac = ui->spinBox->value();
     mItem->cnt.cnt = ui->cntSpin->value();
     mItem->aiMode = ui->aiBox->currentIndex();
     if(mItem->user != ui->userEdit->text()) {
@@ -101,6 +104,7 @@ void Set_WorkWid::updateMac()
 void Set_WorkWid::initMac()
 {   
     updateMac();
+    ui->spinBox->setValue(mItem->cntMac);
     ui->startMacLab->setText(mItem->startMac);
     ui->endMacLab->setText(mItem->endMac);
 }
