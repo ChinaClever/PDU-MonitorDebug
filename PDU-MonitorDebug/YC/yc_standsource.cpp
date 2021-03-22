@@ -45,11 +45,11 @@ bool YC_StandSource::powerOn(int v)
     return ret;
 }
 
-void YC_StandSource::powerDown()
+bool YC_StandSource::powerDown()
 {
-    setCur(0);
-    setVol(0);
-    initFun();
+    setCur(0,0);
+    setVol(0,0);
+    return initFun();
 }
 
 bool YC_StandSource::powerReset()

@@ -42,13 +42,15 @@ bool YC_Ac92b::setRange()
     return write(array);
 }
 
-void YC_Ac92b::initFun()
+bool YC_Ac92b::initFun()
 {
     QByteArray p("P3\r");
     serialWrite(p);
 
     QByteArray f("F50\r");
     serialWrite(f);
+
+    return true;
 }
 
 bool YC_Ac92b::setVol(int v, int sec)

@@ -12,7 +12,7 @@ public:
     YC_StandSource *get();
 
     bool powerOn();
-    void powerDown();
+    bool powerDown();
 
     bool setCur(int v, int sec=0);
     bool setVol(int v, int sec=0);

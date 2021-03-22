@@ -46,7 +46,7 @@ bool Yc_Obj::powerOn()
     return updatePro(str, ret);
 }
 
-void Yc_Obj::powerDown()
+bool Yc_Obj::powerDown()
 {
     YC_StandSource *yc = get();
     return yc->powerDown();

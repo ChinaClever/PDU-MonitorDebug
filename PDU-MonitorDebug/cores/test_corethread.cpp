@@ -17,7 +17,6 @@ void Test_CoreThread::initFunSlot()
     Dev_IpSnmp::bulid(this);
     Test_NetWork::bulid(this);
     mYc = Yc_Obj::bulid(this);
-    //mLogs = Test_Logs::bulid(this);
 
     mCtrl = Test_SiThread::bulid(this);
     mAd = Ad_CoreThread::bulid(this);
@@ -84,7 +83,8 @@ bool Test_CoreThread::checkDev()
 
 void Test_CoreThread::workResult()
 {
-    bool res = true;
+    BaseLogs::bulid()->start();
+    bool res = mYc->powerDown();
     QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
         str += tr("通过");
@@ -93,9 +93,7 @@ void Test_CoreThread::workResult()
         str += tr("失败");
     }
 
-    mYc->powerDown();
-    updatePro(str, res);
-    BaseLogs::bulid()->start();
+    updatePro(str, res, 5);
     mPro->step = Test_Over;
 }
 
@@ -148,6 +146,6 @@ void Test_CoreThread::run()
         }
     }
 
-    isRun = false;
     workResult();
+    isRun = false;
 }

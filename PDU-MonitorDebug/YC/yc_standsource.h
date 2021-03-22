@@ -10,7 +10,7 @@ protected:
     explicit YC_StandSource(QObject *parent = nullptr);
 public:
     virtual bool powerOn(int v=60);  // 上电
-    virtual void powerDown(); // 下电
+    virtual bool powerDown(); // 下电
     virtual bool powerReset(); //
 
     virtual bool setCur(int v, int sec=0)=0;
@@ -19,9 +19,9 @@ public:
     int acOrDc;
 
 protected:
-    virtual void initFun(){}
     bool write(QByteArray &array);
     bool setBaudRate(qint32 baudRate);
+    virtual bool initFun(){return true;}
     virtual bool serialWrite(const QByteArray &array)=0;
 
 protected slots:

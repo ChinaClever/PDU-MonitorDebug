@@ -15,7 +15,7 @@ public:
     bool setVol(int v, int sec=0);
 
 protected:
-    void initFun();
+    bool initFun();
     bool setRange();
     bool setValue(const QString &str, int v);
     bool serialWrite(const QByteArray &array);
