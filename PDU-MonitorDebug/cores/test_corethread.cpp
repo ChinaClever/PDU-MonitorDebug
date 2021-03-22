@@ -93,7 +93,7 @@ void Test_CoreThread::workResult()
         str += tr("失败");
     }
 
-    updatePro(str, res, 5);
+    updatePro(str, res, 1);
     mPro->step = Test_Over;
 }
 

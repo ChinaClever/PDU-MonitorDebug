@@ -152,11 +152,9 @@ void Home_WorkWid::updateWid()
 
 void Home_WorkWid::timeoutDone()
 {
+    insertText();
+    updateWid();
     updateCnt();
-    if(mPro->step < Test_End) {
-        insertText();
-        updateWid();
-    }
 }
 
 bool Home_WorkWid::initSerial()

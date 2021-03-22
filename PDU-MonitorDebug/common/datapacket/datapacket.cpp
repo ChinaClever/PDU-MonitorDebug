@@ -30,7 +30,6 @@ void sDataPacket::init()
     dev->dt.sn.clear();
     dev->dt.dev_type.clear();
 
-    pro->step = Test_Fun;
     pro->result = Test_Info;
     pro->startTime = QTime::currentTime();
     memset(&(dev->data),0,sizeof(sObjData));
