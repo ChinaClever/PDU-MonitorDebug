@@ -25,7 +25,6 @@ protected slots:
 
 private:
     Yc_Obj *mYc;
-    //Test_Logs *mLogs;
     Sn_SerialNum *mSn;
     Test_SiThread *mCtrl;
     Ad_CoreThread *mAd;

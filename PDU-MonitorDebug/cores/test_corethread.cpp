@@ -96,7 +96,6 @@ void Test_CoreThread::workResult()
     mYc->powerDown();
     updatePro(str, res);
     BaseLogs::bulid()->start();
-    // mLogs->saveLogs();
     mPro->step = Test_Over;
 }
 

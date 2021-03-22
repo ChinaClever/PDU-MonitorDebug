@@ -99,6 +99,7 @@ bool Test_SiThread::readDev()
         if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
 
+    if(!mData->size){delay(5);ret=mRtu->readPduData();}
     QString str = tr("Modbus-RTU通讯 ");
     if(ret) str += tr("正常"); else str += tr("错误");
     return  updatePro(str, ret);
