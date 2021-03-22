@@ -13,7 +13,8 @@ YC_StandSource::YC_StandSource(QObject *parent) : BaseThread(parent)
 void YC_StandSource::initFunSlot()
 {
     mSerial = mItem->source;
-    if(!mSerial) QTimer::singleShot(350,this,SLOT(initFunSlot()));
+    if(mSerial) mSerial->setTs(2);
+    else QTimer::singleShot(350,this,SLOT(initFunSlot()));
 }
 
 bool YC_StandSource::setBaudRate(qint32 baudRate)
