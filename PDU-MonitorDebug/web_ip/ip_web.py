@@ -49,7 +49,7 @@ class IpWeb:
     @staticmethod
     def getCfg():
         cf = configparser.ConfigParser()
-        fn = os.path.expanduser('~') + "/.MasterCtrlSet/cfg.ini"
+        fn = os.path.expanduser('~') + "/.PDU-Settings/cfg.ini"
         cf.read(fn, 'utf-8-sig')  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块
         #cf.read("cfg.ini")
         return cf
