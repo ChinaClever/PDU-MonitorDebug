@@ -49,7 +49,8 @@ bool Test_CoreThread::readDev()
         updatePro(str, ret);
 
         str = tr("SNMP通讯 ");
-        ret = Dev_IpSnmp::bulid()->readPduData();
+        Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
+        if(!ret) {snmp->resetSnmp(); ret = snmp->readPduData();}
         if(ret) str += tr("正常"); else str += tr("错误");
         updatePro(str, ret, 1);
     }
