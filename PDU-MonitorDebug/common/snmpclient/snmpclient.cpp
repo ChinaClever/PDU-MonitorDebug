@@ -22,10 +22,9 @@ SnmpClient::SnmpClient(QObject *parent) : QThread(parent)
 
 SnmpClient::~SnmpClient()
 {
-    m_snmp_client->cancelWork();
     delete timer;
-    delete m_snmp_client;
     delete mMutex;
+    delete m_snmp_client;
 }
 
 SnmpClient *SnmpClient::bulid(QObject *parent)
