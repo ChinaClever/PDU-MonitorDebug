@@ -26,7 +26,7 @@ void Dev_IpCfg::initType()
     ptr->ip_ac = read("ip_ac", 1).toInt();
     ptr->ip_version = read("ip_version", 1).toInt();
     ptr->ip_lines = read("ip_lines", 1).toInt();
-    ptr->ip_standar = read("ip_standar", 0).toInt();
+    ptr->ip_standard = read("ip_standard", 0).toInt();
 
     ptr->ip_language = read("ip_language", 1).toInt();
     ptr->ip_modbus = read("ip_modbus", 0).toInt();
@@ -40,7 +40,7 @@ void Dev_IpCfg::writeType()
     write("ip_ac", ptr->ip_ac);
     write("ip_version", ptr->ip_version);
     write("ip_lines", ptr->ip_lines);
-    write("ip_standar", ptr->ip_standar);
+    write("ip_standard", ptr->ip_standard);
 
     write("ip_language", ptr->ip_language);
     write("ip_modbus", ptr->ip_modbus);
