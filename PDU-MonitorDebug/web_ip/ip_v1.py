@@ -13,7 +13,7 @@ class IpV1(IpWeb):
     def setCorrect(self):
         cfg = self.cfgs
         ip =  self.ip_prefix + cfg['ip'] + '/correct.html'
-        self.driver.get(ip); time.sleep(1)
+        self.driver.get(ip); time.sleep(1.2)
         self.driver.switch_to.default_content()
         self.setItById("language", int(cfg['ip_language'])+1, '设备语言')
         self.setItById("modbus", cfg['ip_modbus'], '设备模式')
@@ -24,7 +24,7 @@ class IpV1(IpWeb):
         self.alertClick("Button3")
         self.sendtoMainapp("设备后台网页配置成功", 1)
         self.driver.back()
-        time.sleep(0.5)
+        time.sleep(0.7)
     
     
 
