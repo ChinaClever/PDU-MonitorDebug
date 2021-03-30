@@ -23,8 +23,7 @@ class IpV1(IpWeb):
         self.setMacAddr()
         self.alertClick("Button3")
         self.sendtoMainapp("设备后台网页配置成功", 1)
-        self.driver.back()
-        time.sleep(0.7)
+        self.driver.back();time.sleep(1)
     
     
 

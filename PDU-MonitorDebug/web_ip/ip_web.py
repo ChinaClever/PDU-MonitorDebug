@@ -169,16 +169,17 @@ class IpWeb:
     def alertClick(self, id):
         self.btnClick(id)
         self.driver.switch_to.alert.accept()
-        time.sleep(0.35)
+        time.sleep(0.5)
 
     def divClick(self, id):
         self.driver.switch_to.default_content()
         self.execJs("clk({0})".format(id))
         self.driver.switch_to.frame('ifrm')
+        time.sleep(0.5)
 
     def execJs(self, js):
         self.driver.execute_script(js)
-        time.sleep(0.5)
+        time.sleep(0.7)
 
     def execJsAlert(self, js):
         self.execJs(js)
