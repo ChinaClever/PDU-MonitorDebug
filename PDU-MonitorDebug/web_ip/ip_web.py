@@ -120,7 +120,7 @@ class IpWeb:
         dir = self.cfgs['ip_lcd']
         self.setSelect("dir", dir)
         self.setSelect("slave", 1)
-        self.alertClick("lang_5")
+        self.execJsAlert("setdevice()")
 
     def setEle(self):
         self.divClick(3)
@@ -150,7 +150,7 @@ class IpWeb:
 
     def setItById(self, id, v, parameter):
         try:
-            time.sleep(0.2)
+            time.sleep(0.1)
             it = self.driver.find_element_by_id(id)
         except NoSuchElementException:
             msg = '网页上找不到{0}'.format(id)
@@ -179,7 +179,7 @@ class IpWeb:
 
     def execJs(self, js):
         self.driver.execute_script(js)
-        time.sleep(0.7)
+        time.sleep(0.5)
 
     def execJsAlert(self, js):
         self.execJs(js)
