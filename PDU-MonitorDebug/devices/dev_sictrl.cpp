@@ -83,21 +83,22 @@ bool Dev_SiCtrl::setDev()
 {
     bool ret = sentRtuCmd(0x1049, mCfg->si_lines);
     if(ret) ret = sentRtuCmd(0x1051, mCfg->si_series);
-    if(ret) ret = sentRtuCmd(0x1050, mCfg->si_standar);
+    if(ret) ret = sentRtuCmd(0x1050, 0); //mCfg->si_standar
 
     return ret;
 }
 
 bool Dev_SiCtrl::factorySet()
 {
-    return sentRtuCmd(0x1013, 0x00F0); // 清除电能
+//    bool ret = sentRtuCmd(0x1013, 0x00F0); // 清除电能
+    return sentRtuCmd(0x1019, mCfg->si_standar);
 }
 
-bool Dev_SiCtrl::sentRtuCmd(ushort reg, ushort value)
+bool Dev_SiCtrl::sentRtuCmd(ushort reg, ushort value, uchar fn)
 {
     sRtuSetItem it;
     it.addr = mItem->addr;
-    it.fn = 0x10;
+    it.fn = fn;
     it.reg = reg;
     it.data = value;
 

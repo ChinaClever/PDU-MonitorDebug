@@ -44,6 +44,7 @@ void Set_IpWid::initType()
     ui->lineBox->setCurrentIndex(dt->ip_lines);
     ui->ipModeBox->setCurrentIndex(dt->ip_modbus);
     ui->languageBox->setCurrentIndex(dt->ip_language);
+    if(dt->ip_lines) dt->ip_ac = AC; else dt->ip_ac = DC;
 }
 
 
@@ -59,6 +60,7 @@ void Set_IpWid::updateType()
     dt->ip_standard = ui->sBox->currentIndex();
     dt->log_en = ui->logBox->currentIndex();
     dt->ip_language = ui->languageBox->currentIndex();
+    if(dt->ip_lines) dt->ip_ac = AC; else dt->ip_ac = DC;
 }
 
 bool Set_IpWid::inputCheck()

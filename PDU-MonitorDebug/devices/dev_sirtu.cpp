@@ -30,8 +30,8 @@ void Dev_SiRtu::initRtuItem(sRtuItem &it)
     uchar res = mCfg->si_ac;
     if(DC == res) {
         it.num = SI_RTU_DC_LEN;
-    } else if(mCfg->si_standar) {
-        it.num /= 2;  // 特殊定制
+    } else if(mCfg->si_standar) {      
+        //it.num /= 2;  // 特殊定制
     }
 }
 
