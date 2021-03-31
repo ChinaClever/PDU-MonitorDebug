@@ -100,7 +100,11 @@ bool Test_SiThread::readDev()
         if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
 
-    if(!mData->size){delay(5);ret=mRtu->readPduData();}
+    for(int i=0; i<5; ++i) {
+         if(mData->size) break;
+         else {delay(5);ret=mRtu->readPduData();}
+    }
+
     QString str = tr("Modbus-RTU通讯 ");
     if(ret) str += tr("正常"); else str += tr("错误");
     return  updatePro(str, ret);
@@ -145,6 +149,7 @@ bool Test_SiThread::initDev()
         mDt->dev_type = tr("SI/BM数码管");
     }
     updatePro(str, true, 6);
+    if(mCfg->si_ac == DC) delay(5);
     return setStandard();
 }
 
