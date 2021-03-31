@@ -48,10 +48,14 @@ bool Test_CoreThread::readDev()
         if(ret) str += tr("正常"); else str += tr("错误");
         updatePro(str, ret);
 
-        str = tr("SNMP通讯 ");
-        ret = Dev_IpSnmp::bulid()->readPduData();
-        if(ret) str += tr("正常"); else str += tr("错误");
-        updatePro(str, ret, 1);
+        if(mCfg->ip_modbus) {
+        } else {
+            str = tr("SNMP通讯 ");
+            Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
+            if(!ret) {snmp->resetSnmp(); ret = snmp->readPduData();}
+            if(ret) str += tr("正常"); else str += tr("错误");
+            updatePro(str, ret, 1);
+        }
     }
 
     return ret;
@@ -64,10 +68,11 @@ bool Test_CoreThread::checkDev()
     if(ret) str += tr("正常"); else str += tr("错误");
     ret = updatePro(str, ret);
     if(ret) {
-        if(mDt->devType) {
+        if(mDt->devType) {            
             str = tr("设备相数验证");
             int lines = mCfg->ip_lines;
             ret = mDt->lines == lines ? true:false;
+            if(0 == lines) ret = true;
             if(ret) str += tr("正常"); else str += tr("错误");
             updatePro(str, ret);
 

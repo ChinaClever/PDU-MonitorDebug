@@ -120,6 +120,19 @@ bool Test_SiThread::checkLine()
     return updatePro(str, ret);
 }
 
+
+bool Test_SiThread::setStandard()
+{
+    bool ret = true;
+    for(int i=0; i<2; ++i) {
+        ret = mCtrl->sentRtuCmd(0x1019, 0);
+        if(ret) break; else delay(3);
+    }
+    if(!ret) ret = mCtrl->sentRtuCmd(0x1019, 0, 0x06);
+
+    return ret;
+}
+
 bool Test_SiThread::initDev()
 {
     QString str = tr("等待设备稳定");
@@ -130,8 +143,8 @@ bool Test_SiThread::initDev()
         mDt->lines = mDev->data.size;
         mDt->dev_type = tr("SI/BM数码管");
     }
-
-    return updatePro(str, true, 3);
+    updatePro(str, true, 6);
+    return setStandard();
 }
 
 bool Test_SiThread::setData()
@@ -152,7 +165,6 @@ bool Test_SiThread::setData()
 
     return  ret;
 }
-
 
 bool Test_SiThread::setDev()
 {

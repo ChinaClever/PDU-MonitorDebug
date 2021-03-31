@@ -18,6 +18,7 @@ protected:
     bool initDev();
     bool setData();
     bool checkLine();
+    bool setStandard();
     bool volAlarmWrite(int i);
     bool curAlarmWrite(int i);
     bool envAlarmWrite();

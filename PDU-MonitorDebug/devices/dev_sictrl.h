@@ -19,10 +19,10 @@ public:
 
     bool setTem();
     bool setHum();
+    bool sentRtuCmd(ushort reg, ushort value, uchar fn=0x10);
 
 protected:
     bool writeReg(ushort reg, int i, sDataUnit &it, sUnitCfg &unit, int r=1);
-    bool sentRtuCmd(ushort reg, ushort value);
 };
 
 #endif // DEV_SICTRL_H
