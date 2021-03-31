@@ -68,10 +68,11 @@ bool Test_CoreThread::checkDev()
     if(ret) str += tr("正常"); else str += tr("错误");
     ret = updatePro(str, ret);
     if(ret) {
-        if(mDt->devType) {
+        if(mDt->devType) {            
             str = tr("设备相数验证");
             int lines = mCfg->ip_lines;
             ret = mDt->lines == lines ? true:false;
+            if(0 == lines) ret = true;
             if(ret) str += tr("正常"); else str += tr("错误");
             updatePro(str, ret);
 
