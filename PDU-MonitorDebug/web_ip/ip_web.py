@@ -182,7 +182,7 @@ class IpWeb:
         time.sleep(0.5)
 
     def execJsAlert(self, js):
-        self.execJs(js)
+        self.execJs(js); time.sleep(0.5)
         self.driver.switch_to.alert.accept()
         time.sleep(0.5)
         
