@@ -51,7 +51,7 @@ bool Ad_Adjusting::waitDcRecv()
     uchar buf[MODBUS_RTU_SIZE] = {0};
     updatePro(tr("正在等待直流偏移：请等待..."));
 
-    int len = readSerial(buf, 60);
+    int len = readSerial(buf, 70);
     if(len > 0){
         ret = recvStatus(buf, len);
     } else {
@@ -73,7 +73,7 @@ bool Ad_Adjusting::writeOffset()
 
         updatePro(tr("设置标准源电流6A"));
         ret = YC_Dc107::bulid()->setCur(60);
-        if(ret) ret = delay(10);
+        if(ret) ret = delay(15);
         if(!ret) return ret;
     } else {
         ret = delay(1);//15

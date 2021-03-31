@@ -80,6 +80,7 @@ bool Test_SiThread::setAlarm()
 bool Test_SiThread::clearEle()
 {
     QString str = tr("清除设备电能");
+    if(mCfg->si_standar) str = tr("设备模式切换");
     bool ret = mCtrl->factorySet();
     if(ret) {
         str += tr("正常");

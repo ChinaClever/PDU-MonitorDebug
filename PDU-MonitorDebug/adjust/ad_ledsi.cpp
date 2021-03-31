@@ -50,11 +50,11 @@ bool Ad_LedSi::writeDc()
 {
     updatePro(tr("发送直流偏移命令！"));
     bool ret = writeCmd(0xA2, 0);
-    if(ret) ret = delay(5);//15
+    if(ret) ret = delay(10);//15
     if(!ret) return ret;
 
     updatePro(tr("设置标准源电流6A"));
-    ret = YC_Dc107::bulid()->setCur(60, 10);
+    ret = YC_Dc107::bulid()->setCur(60, 15);
     if(ret) ret = writeCmd(0xA1, 0);
 
     return ret;
