@@ -101,8 +101,7 @@ bool Test_SiThread::readDev()
     }
 
     for(int i=0; i<5; ++i) {
-         if(mData->size) break;
-         else {delay(5);ret=mRtu->readPduData();}
+         if(mData->size) break; else {delay(5);ret=mRtu->readPduData();}
     }
 
     QString str = tr("Modbus-RTU通讯 ");

@@ -68,7 +68,7 @@ bool Ad_Adjusting::writeOffset()
         updatePro(tr("发送直流偏移命令！"));
         ret = writeCmd(0xA1, 0);
         if(mDt->devType == IP_PDU) ret = waitDcRecv();
-        else ret = delay(20);
+        /*else*/ ret = delay(20);
         if(!ret) return ret;
 
         updatePro(tr("设置标准源电流6A"));
