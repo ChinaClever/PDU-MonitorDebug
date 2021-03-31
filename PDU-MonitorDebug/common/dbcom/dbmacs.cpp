@@ -4,7 +4,7 @@
 DbMacs::DbMacs()
 {
     createTable();
-    tableTile = tr("MAC纪录");
+    tableTile = tr("MAC记录");
     //hiddens <<  9;
     headList << tr("设备类型") << tr("客户名称") << tr("SN码") << tr("MAC地址");
 }
