@@ -30,12 +30,18 @@ YC_StandSource *Yc_Obj::get()
 bool Yc_Obj::powerOn()
 {
     YC_StandSource *yc = get();
-    QString str = tr("标准源上电");
+    QString str = tr("连接标准源");
     bool ret = yc->handShake();
-    if(!ret) ret = yc->handShake();
+    if(!ret) {
+        str = tr("再次连接标准源");
+        ret = yc->handShake();
+    }
+    if(ret) str += tr("成功"); else str += tr("失败");
+    updatePro(str, ret);
+
+    str = tr("标准源上电");
     if(ret) ret = yc->powerOn();
-    if(ret) str += tr("成功");
-    else str += tr("失败");
+    if(ret) str += tr("成功"); else str += tr("失败");
 
     if(mItem->modeId) {
         if(mCfg->ip_ac == DC) yc->setCur(0);

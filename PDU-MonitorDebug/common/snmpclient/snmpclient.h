@@ -29,16 +29,13 @@ struct sSnmpSetCmd
 class SnmpClient : public QThread
 {
     Q_OBJECT
-    explicit SnmpClient(QObject *parent = nullptr);
 public:    
-    static SnmpClient *bulid(QObject *parent = nullptr);
-    ~SnmpClient();
+    explicit SnmpClient(QObject *parent = nullptr);
 
     void setAddress(const QString& ip);
     void setValue(const sSnmpSetCmd &cmd);
     QtSnmpDataList requestValue(const QString& oid);
     QtSnmpDataList requestValue(const QStringList& oids);
-
 protected:
     bool setValue();
     bool makeSubRequest();

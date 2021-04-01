@@ -12,10 +12,11 @@ public:
     static Test_NetWork *bulid(QObject *parent = nullptr);
 
     bool startProcess();
+    bool checkNet();
+
 protected:
     void run();
     void workDown();
-    bool checkNet();
     void updateMacAddr();
 
 protected slots:

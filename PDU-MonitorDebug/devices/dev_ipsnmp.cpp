@@ -7,7 +7,7 @@
 
 Dev_IpSnmp::Dev_IpSnmp(QObject *parent) : BaseThread(parent)
 {
-    mSnmp = SnmpClient::bulid(this);
+    mSnmp = new SnmpClient(this);
 }
 
 Dev_IpSnmp *Dev_IpSnmp::bulid(QObject *parent)
@@ -20,8 +20,8 @@ Dev_IpSnmp *Dev_IpSnmp::bulid(QObject *parent)
 
 void Dev_IpSnmp::resetSnmp()
 {
-    delete mSnmp; msleep(20);
-    mSnmp = SnmpClient::bulid(this);
+    delete mSnmp; msleep(150);
+    mSnmp = new SnmpClient(this);
 }
 
 int Dev_IpSnmp::getItemByOid(const QString &oid, int id)

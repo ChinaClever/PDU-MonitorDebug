@@ -57,6 +57,7 @@ bool Ad_Adjusting::waitDcRecv()
     } else {
         ret = overWork(tr("直流偏移等待超时！"));
     }
+    if(3 == mDt->version)  delay(25);
 
     return ret;
 }
@@ -68,12 +69,12 @@ bool Ad_Adjusting::writeOffset()
         updatePro(tr("发送直流偏移命令！"));
         ret = writeCmd(0xA1, 0);
         if(mDt->devType == IP_PDU) ret = waitDcRecv();
-        /*else*/ ret = delay(20);
+        else ret = delay(20);
         if(!ret) return ret;
 
         updatePro(tr("设置标准源电流6A"));
         ret = YC_Dc107::bulid()->setCur(60);
-        if(ret) ret = delay(15);
+        if(ret) ret = delay(10);
         if(!ret) return ret;
     } else {
         ret = delay(1);//15
@@ -132,7 +133,7 @@ bool Ad_Adjusting::updateStatus(ushort status)
     } else if(0x1102 == status) {
         str = tr("校准解锁成功");
     } else if(0x1108 == status) {
-        str = tr("准直流偏移校准成功");
+        str = tr("直流偏移校准成功");
     }else if(0x1109 == status) {
         str = tr("直流偏移校准失败");
     }else if(0x110A == status) {

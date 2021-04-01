@@ -55,13 +55,11 @@ bool YC_Dc107::setValue(const char &c, char v1, char v2)
 
 bool YC_Dc107::setRange()
 {
-    bool ret = setValue('P', 0x11);
+    bool ret = setValue('P', 0x11); mdelay(2);
     if(ret) {
-        delay(2);
-        ret = setValue('U', 7);
+        ret = setValue('U', 7); mdelay(2);
         if(ret) {
-            delay(2);
-            ret = setValue('I', 12); delay(2);
+            ret = setValue('I', 12);
         }
     }
 

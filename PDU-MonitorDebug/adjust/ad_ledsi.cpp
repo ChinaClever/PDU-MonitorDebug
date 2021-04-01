@@ -91,8 +91,9 @@ bool Ad_LedSi::sentCmd()
 bool Ad_LedSi::startAdjust()
 {
     bool ret = sentCmd();
-    if(ret) {
-        mPro->step = Test_Over;
+    if(ret) {       
+        if(mItem->aiMode) mPro->step = Test_Over;
+        else mPro->step = Test_vert;
     } else {
         mPro->step = Test_vert;
     }

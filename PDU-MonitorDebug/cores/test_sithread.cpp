@@ -130,11 +130,11 @@ bool Test_SiThread::setStandard()
     bool ret = true;
     for(int i=0; i<2; ++i) {
         ret = mCtrl->sentRtuCmd(0x1019, 0);
-        if(ret) break; else delay(3);
+        if(ret) break; else delay(2);
     }
     if(!ret) ret = mCtrl->sentRtuCmd(0x1019, 0, 0x06);
 
-    return ret;
+    return true;
 }
 
 bool Test_SiThread::initDev()
@@ -148,7 +148,6 @@ bool Test_SiThread::initDev()
         mDt->dev_type = tr("SI/BM数码管");
     }
     updatePro(str, true, 6);
-    if(mCfg->si_ac == DC) delay(5);
     return setStandard();
 }
 

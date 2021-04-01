@@ -22,7 +22,7 @@ protected:
 
     bool readData();
     bool waitDcRecv();
-    int readSerial(uchar *recv, int sec=16);
+    int readSerial(uchar *recv, int sec=25);
     bool recvStatus(uchar *recv, int len);
     bool updateStatus(ushort status);
     bool overWork(const QString &str);

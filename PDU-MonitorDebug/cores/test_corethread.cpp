@@ -46,10 +46,12 @@ bool Test_CoreThread::readDev()
         QString str = tr("Modbus RTU通讯 ");
         ret = dev->readPduData();
         if(ret) str += tr("正常"); else str += tr("错误");
-        updatePro(str, ret);
+        updatePro(str, ret);        
 
         if(mCfg->ip_modbus) {
         } else {
+            if(mPro->step > Test_Seting) return ret;
+            ret = Test_NetWork::bulid()->checkNet(); if(!ret) return ret;
             str = tr("SNMP通讯 ");
             Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
             if(!ret) {snmp->resetSnmp(); ret = snmp->readPduData();}
