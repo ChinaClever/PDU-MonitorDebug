@@ -130,7 +130,7 @@ void Test_CoreThread::collectData()
 
     while(mPro->step == Test_Collect) {
         bool ret = dev->readPduData();
-        if(ret && (++cnt%10)) continue;
+        if(ret && (++cnt%30)) continue;
         QString str = tr("正在读取设备数据 %1").arg(cnt);
         if(!ret && (cnt>5)) str= tr("读取设备数据错误！");
         updatePro(str, ret, 2);
