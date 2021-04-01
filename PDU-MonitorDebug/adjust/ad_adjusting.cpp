@@ -57,7 +57,6 @@ bool Ad_Adjusting::waitDcRecv()
     } else {
         ret = overWork(tr("直流偏移等待超时！"));
     }
-    //if(3 == mDt->version)  delay(25);
 
     return ret;
 }

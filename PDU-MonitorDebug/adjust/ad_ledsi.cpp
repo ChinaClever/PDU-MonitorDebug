@@ -54,7 +54,7 @@ bool Ad_LedSi::writeDc()
     if(!ret) return ret;
 
     updatePro(tr("设置标准源电流6A"));
-    ret = YC_Dc107::bulid()->setCur(60, 15);
+    ret = YC_Dc107::bulid()->setCur(60, 10);
     if(ret) ret = writeCmd(0xA1, 0);
 
     return ret;
