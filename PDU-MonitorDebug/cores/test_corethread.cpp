@@ -50,7 +50,7 @@ bool Test_CoreThread::readDev()
 
         if(mCfg->ip_modbus) {
         } else {
-            if(mPro->step > Test_Seting) return ret;
+            if(mPro->step >= Test_Seting) return ret;
             ret = Test_NetWork::bulid()->checkNet(); if(!ret) return ret;
             str = tr("SNMP通讯 ");
             Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
@@ -130,10 +130,10 @@ void Test_CoreThread::collectData()
 
     while(mPro->step == Test_Collect) {
         bool ret = dev->readPduData();
-        QString str = tr("正在读取设备数据 %1").arg(cnt++);
-        if(ret && (cnt%5)) continue;
+        if(ret && (++cnt%10)) continue;
+        QString str = tr("正在读取设备数据 %1").arg(cnt);
         if(!ret && (cnt>5)) str= tr("读取设备数据错误！");
-        updatePro(str, ret, 1);
+        updatePro(str, ret, 2);
     }
 
     QString str = tr("读取设备数据停止！");
