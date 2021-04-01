@@ -143,6 +143,7 @@ class IpWeb:
         self.sendtoMainapp("设备报警阈值设置成功", 1)
 
     def setSelect(self, id, v):
+        time.sleep(0.15)
         it = self.driver.find_element_by_id(id)
         if it.is_displayed():
             Select(it).select_by_index(v)
@@ -150,7 +151,7 @@ class IpWeb:
 
     def setItById(self, id, v, parameter):
         try:
-            time.sleep(0.1)
+            time.sleep(0.15)
             it = self.driver.find_element_by_id(id)
         except NoSuchElementException:
             msg = '网页上找不到{0}'.format(id)
