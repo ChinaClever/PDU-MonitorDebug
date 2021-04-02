@@ -24,7 +24,6 @@ Test_SiThread *Test_SiThread::bulid(QObject *parent)
     return sington;
 }
 
-
 bool Test_SiThread::curAlarmWrite(int i)
 {
     bool ret = mCtrl->setCurTh(i);
@@ -101,7 +100,8 @@ bool Test_SiThread::readDev()
     }
 
     for(int i=0; i<5; ++i) {
-         if(mData->size) break; else {delay(5);ret=mRtu->readPduData();}
+        if(mData->size) break; else if(!delay(3)) break;
+        ret=mRtu->readPduData();
     }
 
     QString str = tr("Modbus-RTU通讯 ");
@@ -124,15 +124,16 @@ bool Test_SiThread::checkLine()
     return updatePro(str, ret);
 }
 
-
 bool Test_SiThread::setStandard()
 {
     bool ret = true;
-    for(int i=0; i<2; ++i) {
-        ret = mCtrl->sentRtuCmd(0x1019, 0);
-        if(ret) break; else delay(2);
-    }
-    if(!ret) ret = mCtrl->sentRtuCmd(0x1019, 0, 0x06);
+    if(mCfg->si_standar) {
+        for(int i=0; i<2; ++i) {
+            ret = mCtrl->sentRtuCmd(0x1019, 0);
+            if(ret) break; else delay(2);
+        }
+        if(!ret) ret = mCtrl->sentRtuCmd(0x1019, 0, 0x06);
+    } else ret = delay(2);
 
     return true;
 }
