@@ -232,7 +232,7 @@ bool Ad_Resulting::powerOn()
 {
     initRtuThread();
     mPro->step = Test_vert;
-    updatePro(tr("自动验证开始"));
+    updatePro(tr("自动验证开始"), true, 2);
     mSource = Yc_Obj::bulid()->get();
     mSource->setVol(200, 1);
     bool ret = mSource->setCur(40, 3);
