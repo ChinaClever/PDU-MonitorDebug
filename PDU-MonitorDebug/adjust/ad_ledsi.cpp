@@ -7,7 +7,7 @@
 
 Ad_LedSi::Ad_LedSi(QObject *parent) : BaseThread(parent)
 {
-    mPacket = sDataPacket::bulid();
+    mRtu = Dev_SiRtu::bulid();
 }
 
 Ad_LedSi *Ad_LedSi::bulid(QObject *parent)
@@ -22,7 +22,7 @@ bool Ad_LedSi::transmit(uchar *buf, int len)
 {
     bool ret = false;
     uchar recv[64] = {0};
-    len = mModbus->transmit(buf, len, recv, 10);
+    len = mModbus->transmit(buf, len, recv, 20);
     if(len > 0) {
         if(recv[1] == buf[1]) ret = true;
     } else {
@@ -48,11 +48,15 @@ bool Ad_LedSi::writeCmd(uchar fn, uchar line)
 
 bool Ad_LedSi::writeDc()
 {
-    updatePro(tr("发送直流偏移命令！"));
-    bool ret = writeCmd(0xA2, 0);
-    if(ret) ret = delay(15);//15
-    if(!ret) return ret;
+    bool ret = true;
+    for(int i=0; i<3; ++i) {
+        updatePro(tr("发送直流偏移命令 %1").arg(i+1));
+        ret = writeCmd(0xA2, 0); delay(5);
+        ret = mRtu->readPduData(); if(!ret) ret = mRtu->readPduData();
+        if(mData->cur.value[0]) ret = false; else break; delay(5);
+    }
 
+    if(!ret) return ret;
     updatePro(tr("设置标准源电流6A"));
     ret = YC_Dc107::bulid()->setCur(60, 10);
     if(ret) ret = writeCmd(0xA1, 0);
@@ -63,8 +67,8 @@ bool Ad_LedSi::writeDc()
 bool Ad_LedSi::writeAc()
 {
     bool res = true;
-    int line = mDt->lines;    
-    updatePro(tr("正在校准：请等待..."), res, 5);
+    int line = mDt->lines;
+    updatePro(tr("正在校准：请等待..."), res, 6);
     for(int i=0; i<line; ++i) {
         bool ret = writeCmd(0xA1, i);
         QString str = tr("L%1 校准").arg(i+1);
@@ -91,7 +95,7 @@ bool Ad_LedSi::sentCmd()
 bool Ad_LedSi::startAdjust()
 {
     bool ret = sentCmd();
-    if(ret) {       
+    if(ret) {
         if(mItem->aiMode) mPro->step = Test_Over;
         else mPro->step = Test_vert;
     } else {

@@ -19,6 +19,9 @@ protected:
 
     bool writeDc();
     bool writeAc();
+
+private:
+    Dev_SiRtu *mRtu;
 };
 
 #endif // AD_LEDSI_H
