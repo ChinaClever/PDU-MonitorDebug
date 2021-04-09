@@ -50,7 +50,7 @@ bool Ad_LedSi::writeDc()
 {
     updatePro(tr("发送直流偏移命令！"));
     bool ret = writeCmd(0xA2, 0);
-    if(ret) ret = delay(10);//15
+    if(ret) ret = delay(15);//15
     if(!ret) return ret;
 
     updatePro(tr("设置标准源电流6A"));
@@ -69,7 +69,7 @@ bool Ad_LedSi::writeAc()
         bool ret = writeCmd(0xA1, i);
         QString str = tr("L%1 校准").arg(i+1);
         if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
-        updatePro(str, ret, 2);
+        updatePro(str, ret, 3);
     }
 
     return res;
