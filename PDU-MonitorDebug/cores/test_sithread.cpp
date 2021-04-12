@@ -79,8 +79,7 @@ bool Test_SiThread::setAlarm()
 bool Test_SiThread::clearEle()
 {
     QString str = tr("清除设备电能");
-    if(mCfg->si_standar) str = tr("设备模式切换");
-    bool ret = mCtrl->factorySet();
+    bool ret = mCtrl->clearEle();
     if(ret) {
         str += tr("正常");
     } else {
@@ -88,6 +87,19 @@ bool Test_SiThread::clearEle()
     }
 
     return  updatePro(str, ret);
+}
+
+bool Test_SiThread::factorySet()
+{
+    bool ret = true;
+    if(mCfg->si_standar) {
+        QString str = tr("设备模式切换");
+        ret = mCtrl->factorySet();
+        if(ret) str += tr("正常"); else str += tr("错误");
+        updatePro(str, ret);
+    }
+
+    return ret;
 }
 
 bool Test_SiThread::readDev()
@@ -176,10 +188,11 @@ bool Test_SiThread::setDev()
     bool ret = initDev();
     if(ret) ret = readDev();
     if(mPro->step <= Test_Seting) {
+        if(ret) ret = clearEle();
         if(ret) ret = setData();
         if(ret) ret = checkLine();
         if(ret) ret = setAlarm();
-        if(ret) ret = clearEle();
+        if(ret) ret = factorySet();
     } else {
         if(mPro->step > Test_Collect)
             ret = delay(10);

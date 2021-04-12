@@ -12,6 +12,7 @@ public:
 
     bool setDev();
     bool unClock();
+    bool clearEle();
     bool factorySet();
 
     bool setCurTh(int i);

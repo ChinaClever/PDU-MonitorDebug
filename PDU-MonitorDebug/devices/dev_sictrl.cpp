@@ -88,9 +88,14 @@ bool Dev_SiCtrl::setDev()
     return ret;
 }
 
+bool Dev_SiCtrl::clearEle()
+{
+    return sentRtuCmd(0x1013, 0x00F0); // 清除电能
+}
+
 bool Dev_SiCtrl::factorySet()
 {
-    bool ret = sentRtuCmd(0x1013, 0x00F0); // 清除电能
+    bool ret = true;
     if(mCfg->si_standar) {
         ret = sentRtuCmd(0x1019, mCfg->si_standar);
     }
