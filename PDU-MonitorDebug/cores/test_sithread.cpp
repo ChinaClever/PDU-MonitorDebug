@@ -117,7 +117,12 @@ bool Test_SiThread::readDev()
     }
 
     QString str = tr("Modbus-RTU通讯 ");
-    if(ret) str += tr("正常"); else str += tr("错误");
+    if(mData->size) {
+        if(ret) str += tr("正常"); else str += tr("错误");
+    } else {
+        str = tr("未识别到相数"); ret = false;
+    }
+
     return  updatePro(str, ret);
 }
 
