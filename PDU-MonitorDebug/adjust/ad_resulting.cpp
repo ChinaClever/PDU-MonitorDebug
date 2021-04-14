@@ -231,11 +231,17 @@ bool Ad_Resulting::noLoadEnter()
 bool Ad_Resulting::powerOn()
 {
     initRtuThread();
-    mPro->step = Test_vert;
-    updatePro(tr("自动验证开始"), true, 2);
+    updatePro(tr("自动验证开始"),true, 2);
     mSource = Yc_Obj::bulid()->get();
+    if(mItem->modeId == SI_PDU) {
+        updatePro(tr("等待设备重启"));
+        mSource->setVol(0,3);
+        //mSource->setCur(0,0);
+    }
+
+    mPro->step = Test_vert;
     mSource->setVol(200, 1);
-    bool ret = mSource->setCur(40, 3);
+    bool ret = mSource->setCur(40, 5);
     QString str = tr("验证电流：期望电流4A");
     return updatePro(str, ret, 3);
 }
