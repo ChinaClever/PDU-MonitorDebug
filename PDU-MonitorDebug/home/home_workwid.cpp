@@ -211,4 +211,13 @@ void Home_WorkWid::on_startBtn_clicked()
     }
 }
 
+void Home_WorkWid::on_upBtn_clicked()
+{
+    Yc_Obj::bulid()->get()->setVol(220);
+}
 
+void Home_WorkWid::on_downBtn_clicked()
+{
+    Yc_Obj::bulid()->get()->setVol(0);
+    Yc_Obj::bulid()->get()->setCur(0);
+}
