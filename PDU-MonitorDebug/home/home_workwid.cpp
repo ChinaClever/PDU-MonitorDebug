@@ -122,9 +122,10 @@ void Home_WorkWid::updateResult()
     mPro->step = Test_End;
     ui->timeLab->setText(str);
     ui->modeBox->setEnabled(true);
+    ui->groupBox_4->setEnabled(true);
     ui->timeLab->setStyleSheet(style);
     ui->startBtn->setText(tr("开 始"));
-    ui->cntLab->setNum(mItem->cnt.cnt);
+    ui->cntLab->setNum(mItem->cnt.cnt);    
     int cnt = MacAddr::bulid()->macCnt(mItem->startMac, mItem->mac);
     ui->macCntLab->setNum(cnt);
     if(mItem->cnt.cnt < 1) {
@@ -192,6 +193,7 @@ bool Home_WorkWid::initWid()
         mPacket->init();
         ui->textEdit->clear();
         ui->modeBox->setEnabled(false);
+        ui->groupBox_4->setEnabled(false);
         mPro->step = ui->modeBox->currentIndex()+Test_Start;
     }
 
