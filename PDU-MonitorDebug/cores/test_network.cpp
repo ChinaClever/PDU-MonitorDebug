@@ -39,27 +39,27 @@ bool Test_NetWork::startProcess()
 {
     QString exe = "pyweb_ctrlset_ip.exe";
 
-    int t = 30;
+    int t = 35;
     mac = true;
+    updateMacAddr(1);
     mProcess->close();
     mProcess->start(exe);
     updatePro(tr("正在启动网页"));
     if(mPro->step == Test_Seting) t = 60;
     mProcess->waitForFinished(t*1000);
-    bool ret = checkNet(); {
-        if(ret && mac) updateMacAddr();
-    }
+    bool ret = checkNet();
+    if(ret){if(!mac) updateMacAddr(-1);}
 
     return ret;
 }
 
 
-void Test_NetWork::updateMacAddr()
+void Test_NetWork::updateMacAddr(int step)
 {
     if(mItem->mac.size() > 5) {
         BaseLogs::bulid()->writeMac(mItem->mac);
         MacAddr *mac = MacAddr::bulid();
-        mItem->mac = mac->macAdd(mItem->mac);
+        mItem->mac = mac->macAdd(mItem->mac, step);
     }
 }
 
