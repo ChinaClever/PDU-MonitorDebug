@@ -654,9 +654,53 @@
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>预留区</string>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
      </property>
+     <property name="title">
+      <string>标准源</string>
+     </property>
+     <widget class="QPushButton" name="upBtn">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>40</y>
+        <width>120</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>上 电</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="downBtn">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>120</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>下 电</string>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>

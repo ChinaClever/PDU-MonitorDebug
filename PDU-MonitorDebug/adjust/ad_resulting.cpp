@@ -143,7 +143,7 @@ bool Ad_Resulting::eachCurCheck(int k, int exValue)
     for(int i=0; i<5; ++i) {
         if(i) str += tr(" 第%1次").arg(i+1); //else delay(4);
         ret = curRangeByID(k, exValue, i);
-        if(ret) break; else if(!delay(i+4)) break;
+        if(ret) break; else if(!delay(i+5)) break;
         mCollect->readPduData();
     }
 
@@ -208,10 +208,10 @@ bool Ad_Resulting::noLoadCurFun()
     bool ret = true;
     for(int i=0; i<5; ++i) {
         QString str = tr("空载校验: 第%1次检查").arg(i+1);
-        if(i)updatePro(str, true, 3); else delay(5);
+        if(i)updatePro(str, true, 5); else delay(6);
         mCollect->readPduData();
         ret = noLoadCurCheck(i);
-        if(ret) break; else if(!delay(i+3)) break;
+        if(ret) break; else if(!delay(i+4)) break;
     }
 
     return ret;
@@ -237,6 +237,11 @@ bool Ad_Resulting::powerOn()
         updatePro(tr("等待设备重启"));
         mSource->setVol(0,3);
         //mSource->setCur(0,0);
+    } else if(mDt->version == 1){
+        if(mDt->lines == 3) {
+            updatePro(tr("等待设备稳定"));
+            mSource->setVol(200, 15);
+        }
     }
 
     mPro->step = Test_vert;

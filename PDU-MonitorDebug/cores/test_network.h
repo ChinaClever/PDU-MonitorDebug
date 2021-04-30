@@ -17,7 +17,7 @@ public:
 protected:
     void run();
     void workDown();
-    void updateMacAddr();
+    void updateMacAddr(int step);
 
 protected slots:
     void initFunSlot();
