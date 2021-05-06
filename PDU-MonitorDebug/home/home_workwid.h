@@ -42,6 +42,7 @@ private:
     Ui::Home_WorkWid *ui;
 
     int mId;
+    bool isCheck;
     QTimer *timer;
     Test_CoreThread *mCoreThread;
 };
