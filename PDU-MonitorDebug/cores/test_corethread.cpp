@@ -152,7 +152,7 @@ void Test_CoreThread::run()
         case Test_Ading: mAd->startAdjust(); break;
         case Test_vert: mAd->verifyResult(); break;
         }
-    }
+    } else mPro->result = Test_Fail;
 
     workResult();
     isRun = false;
