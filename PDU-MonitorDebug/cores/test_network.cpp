@@ -28,7 +28,7 @@ void Test_NetWork::initFunSlot()
 
 bool Test_NetWork::checkNet()
 {
-    QString str = tr("检测设备网络");
+    QString str = tr("检测设备网络通讯");
     bool ret = cm_pingNet("192.168.1.163");
     if(ret) str += tr("正常"); else str += tr("错误");
 
@@ -47,10 +47,9 @@ bool Test_NetWork::startProcess()
     updatePro(tr("正在启动网页"));
     if(mPro->step == Test_Seting) t = 60;
     mProcess->waitForFinished(t*1000);
-    bool ret = checkNet();
-    if(ret){if(!mac) updateMacAddr(-1);}
+    if(!mac) updateMacAddr(-1);
 
-    return ret;
+    return checkNet();
 }
 
 
