@@ -114,7 +114,7 @@ void Home_WorkWid::updateResult()
         QString str = getTime().at(1);
         if(!str.toInt() || (mId<40)) mPro->result = Test_Fail;
     } else if(isCheck) {
-        if(mId < 25) mPro->result = Test_Fail;
+        if(mId < 23) mPro->result = Test_Fail;
     }
 
     if (Test_Fail == mPro->result) {
