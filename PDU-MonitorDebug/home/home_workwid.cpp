@@ -112,7 +112,9 @@ void Home_WorkWid::updateResult()
     QString str = tr("---");
     if(mItem->modeId && isCheck) {
         QString str = getTime().at(1);
-        if(!str.toInt()) mPro->result = Test_Fail;
+        if(!str.toInt() || (mId<40)) mPro->result = Test_Fail;
+    } else if(isCheck) {
+        if(mId < 25) mPro->result = Test_Fail;
     }
 
     if (Test_Fail == mPro->result) {
