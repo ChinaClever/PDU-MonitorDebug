@@ -110,6 +110,13 @@ void Home_WorkWid::updateResult()
 {
     QString style;
     QString str = tr("---");
+    if(mItem->modeId && isCheck) {
+        QString str = getTime().at(1);
+        if(!str.toInt() || (mId<40)) mPro->result = Test_Fail;
+    } else if(isCheck) {
+        if(mId < 23) mPro->result = Test_Fail;
+    }
+
     if (Test_Fail == mPro->result) {
         str = tr("失败");
         style = "background-color:red; color:rgb(255, 255, 255);";
@@ -125,7 +132,7 @@ void Home_WorkWid::updateResult()
     ui->groupBox_4->setEnabled(true);
     ui->timeLab->setStyleSheet(style);
     ui->startBtn->setText(tr("开 始"));
-    ui->cntLab->setNum(mItem->cnt.cnt);    
+    ui->cntLab->setNum(mItem->cnt.cnt);
     int cnt = MacAddr::bulid()->macCnt(mItem->startMac, mItem->mac);
     ui->macCntLab->setNum(cnt);
     if(mItem->cnt.cnt < 1) {
@@ -195,6 +202,7 @@ bool Home_WorkWid::initWid()
         ui->modeBox->setEnabled(false);
         ui->groupBox_4->setEnabled(false);
         mPro->step = ui->modeBox->currentIndex()+Test_Start;
+        if(mPro->step == Test_Start) isCheck = true; else isCheck = false;
     }
 
     return ret;
