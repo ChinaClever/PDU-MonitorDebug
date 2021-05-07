@@ -30,6 +30,7 @@ void Dev_IpCfg::initType()
 
     ptr->ip_language = read("ip_language", 1).toInt();
     ptr->ip_modbus = read("ip_modbus", 0).toInt();
+    ptr->security = read("security", 0).toInt();
     ptr->log_en = read("log_en", 0).toInt();
     ptr->ip_lcd = read("ip_lcd", 0).toInt();
 }
@@ -44,6 +45,7 @@ void Dev_IpCfg::writeType()
 
     write("ip_language", ptr->ip_language);
     write("ip_modbus", ptr->ip_modbus);
+    write("security", ptr->security);
     write("log_en", ptr->log_en);
     write("ip_lcd", ptr->ip_lcd);
 }

@@ -28,8 +28,10 @@ void Test_NetWork::initFunSlot()
 
 bool Test_NetWork::checkNet()
 {
+    QString ip = "192.168.1.163";
     QString str = tr("检测设备网络通讯");
-    bool ret = cm_pingNet("192.168.1.163");
+    bool ret = delay(3); ret = cm_pingNet(ip);
+    if(!ret) {delay(5); ret = cm_pingNet(ip);}
     if(ret) str += tr("正常"); else str += tr("错误");
 
     return updatePro(str, ret);
@@ -37,19 +39,24 @@ bool Test_NetWork::checkNet()
 
 bool Test_NetWork::startProcess()
 {
-    QString exe = "pyweb_ctrlset_ip.exe";
+    bool ret = checkNet();
+    if(!ret) return ret;
 
-    int t = 35;
-    mac = true;
     updateMacAddr(1);
-    mProcess->close();
-    mProcess->start(exe);
-    updatePro(tr("正在启动网页"));
-    if(mPro->step == Test_Seting) t = 60;
-    mProcess->waitForFinished(t*1000);
-    if(!mac) updateMacAddr(-1);
+    int t = 35; mac = true;
+    QString exe = "pyweb_ctrlset_ip.exe";
+    try {
+        mProcess->close();
+        mProcess->start(exe);
+        updatePro(tr("正在启动网页"));
+        if(mPro->step == Test_Seting) t = 90;
+        mProcess->waitForFinished(t*1000);
+        //if(!mac) updateMacAddr(-1);
+    } catch (...) {
+        return updatePro(tr("Web网页设置异常"), false);
+    }
 
-    return checkNet();
+    return ret;
 }
 
 
@@ -59,6 +66,7 @@ void Test_NetWork::updateMacAddr(int step)
         BaseLogs::bulid()->writeMac(mItem->mac);
         MacAddr *mac = MacAddr::bulid();
         mItem->mac = mac->macAdd(mItem->mac, step);
+        Cfg::bulid()->write("mac", mItem->mac, "Mac");
     }
 }
 

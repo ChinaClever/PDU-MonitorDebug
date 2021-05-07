@@ -50,13 +50,13 @@ bool Test_CoreThread::readDev()
 
         if(mCfg->ip_modbus) {
         } else {
-            if(mPro->step >= Test_Seting) return ret;
-            ret = Test_NetWork::bulid()->checkNet(); if(!ret) return ret;
-            str = tr("SNMP通讯 ");
-            Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
-            if(!ret) {snmp->resetSnmp(); ret = snmp->readPduData();}
-            if(ret) str += tr("正常"); else str += tr("错误");
-            updatePro(str, ret, 1);
+            //if(mPro->step >= Test_Seting) return ret;
+            //ret = Test_NetWork::bulid()->checkNet(); if(!ret) return ret;
+            //str = tr("SNMP通讯 ");
+            //Dev_IpSnmp *snmp = Dev_IpSnmp::bulid(); ret = snmp->readPduData();
+            //if(!ret) {snmp->resetSnmp(); ret = snmp->readPduData();}
+            //if(ret) str += tr("正常"); else str += tr("错误");
+            //updatePro(str, ret, 1);
         }
     }
 

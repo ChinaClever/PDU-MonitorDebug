@@ -107,6 +107,7 @@ struct sTypeCfg
     uchar ip_modbus;
     uchar ip_standard;
     uchar ip_version;
+    uchar security;
     uchar log_en;
     sObjCfg ip_cfg;
 };
