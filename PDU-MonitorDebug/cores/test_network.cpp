@@ -32,24 +32,23 @@ bool Test_NetWork::checkNet()
     QString str = tr("检测设备网络通讯");
     bool ret = cm_pingNet(ip);
     if(ret) str += tr("正常"); else str += tr("错误");
-
-    return updatePro(str, ret);
+    return updatePro(str+ip, ret);
 }
 
 bool Test_NetWork::startProcess()
 {
     bool ret = true;
     updateMacAddr(1);
-    int t = 30; mac = true;
+    int t = 22; mac = true;
     QString exe = "pyweb_ctrlset_ip.exe";
     try {
         mProcess->close();
         mProcess->start(exe);
-        updatePro(tr("正在启动网页"), ret, 5);
+        updatePro(tr("正在启动网页"), ret, 13);
         if(ret) ret = checkNet();
         if(mPro->step == Test_Seting) t = 90;
         if(ret) mProcess->waitForFinished(t*1000);
-        //if(!mac) updateMacAddr(-1);
+        if(!mac) updateMacAddr(-1);
     } catch (...) {
         return updatePro(tr("Web网页设置异常"), false);
     }
