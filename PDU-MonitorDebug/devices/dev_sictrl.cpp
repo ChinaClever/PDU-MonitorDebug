@@ -105,11 +105,17 @@ bool Dev_SiCtrl::factorySet()
 
 bool Dev_SiCtrl::sentRtuCmd(ushort reg, ushort value, uchar fn)
 {
+    bool ret = true;
     sRtuSetItem it;
     it.addr = mItem->addr;
     it.fn = fn;
     it.reg = reg;
     it.data = value;
 
-    return mModbus->write(it);
+    for(int i=0; i<3; ++i) {
+        ret = mModbus->write(it);
+        if(ret) break; else delay(5+i);
+    }
+
+    return ret;
 }

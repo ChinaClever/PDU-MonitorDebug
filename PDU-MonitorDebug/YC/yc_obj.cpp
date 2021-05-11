@@ -49,7 +49,7 @@ bool Yc_Obj::powerOn()
         if(mCfg->si_ac == DC) yc->setCur(0);
     }
 
-    return updatePro(str, ret);
+    return updatePro(str, ret, 7);
 }
 
 bool Yc_Obj::powerDown()

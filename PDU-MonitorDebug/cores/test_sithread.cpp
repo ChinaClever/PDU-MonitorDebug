@@ -165,7 +165,8 @@ bool Test_SiThread::initDev()
         mDt->lines = mDev->data.size;
         mDt->dev_type = tr("SI/BM数码管");
     }
-    updatePro(str, true, 6);
+
+    updatePro(str, true, 8);
     return setStandard();
 }
 
