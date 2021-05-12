@@ -107,7 +107,7 @@ bool Test_SiThread::readDev()
     bool ret = true;
     for(int i=0; i<5; ++i) {
         QString str = tr("开始读取设备数据：第%1次").arg(i);if(i>1)updatePro(str);
-        ret = mRtu->readPduData(); if(ret) break; else if(!delay(4)) return false;
+        ret = mRtu->readPduData(); if(ret) break; else if(!delay(5+i)) return false;
         if(i>3)Rtu_Modbus::bulid(this)->get()->changeBaudRate();
     }
 

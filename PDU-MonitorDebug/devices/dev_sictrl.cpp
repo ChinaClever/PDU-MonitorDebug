@@ -114,7 +114,7 @@ bool Dev_SiCtrl::sentRtuCmd(ushort reg, ushort value, uchar fn)
 
     for(int i=0; i<3; ++i) {
         ret = mModbus->write(it);
-        if(ret) break; else delay(5+i);
+        if(ret) break; else delay(2+i);
     }
 
     return ret;

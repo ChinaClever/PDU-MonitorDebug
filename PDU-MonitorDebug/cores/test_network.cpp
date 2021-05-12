@@ -28,24 +28,29 @@ void Test_NetWork::initFunSlot()
 
 bool Test_NetWork::checkNet()
 {
+    bool ret = true;
     QString ip = "192.168.1.163";
     QString str = tr("检测设备网络通讯");
-    bool ret = cm_pingNet(ip);
+    for(int i=0; i<3; ++i) {
+        ret = cm_pingNet(ip);
+        if(ret) break; else delay(6);
+    }
+
     if(ret) str += tr("正常"); else str += tr("错误");
     return updatePro(str+ip, ret);
 }
 
 bool Test_NetWork::startProcess()
 {
-    bool ret = true;
-    updateMacAddr(1);
-    int t = 22; mac = true;
+    bool ret = checkNet();
+    if(ret) updateMacAddr(1); else return ret;
+
+    int t = 33; mac = true;
     QString exe = "pyweb_ctrlset_ip.exe";
     try {
         mProcess->close();
         mProcess->start(exe);
-        updatePro(tr("正在启动网页"), ret, 13);
-        if(ret) ret = checkNet();
+        updatePro(tr("正在启动网页"));
         if(mPro->step == Test_Seting) t = 90;
         if(ret) mProcess->waitForFinished(t*1000);
         if(!mac) updateMacAddr(-1);
