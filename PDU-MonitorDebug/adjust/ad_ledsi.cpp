@@ -68,12 +68,12 @@ bool Ad_LedSi::writeAc()
 {
     bool res = true;
     int line = mDt->lines;
-    updatePro(tr("正在校准：请等待..."), res, 6);
+    updatePro(tr("正在校准：请等待..."), res, 8);
     for(int i=0; i<line; ++i) {
         bool ret = writeCmd(0xA1, i);
         QString str = tr("L%1 校准").arg(i+1);
         if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
-        updatePro(str, ret, 3);
+        updatePro(str, ret, 5);
     }
 
     return res;

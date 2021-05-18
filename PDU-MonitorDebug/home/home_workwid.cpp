@@ -114,7 +114,7 @@ void Home_WorkWid::updateResult()
         QString str = getTime().at(1);
         if(!str.toInt() || (mId<40)) mPro->result = Test_Fail;
     } else if(isCheck) {
-        if(mId < 23) mPro->result = Test_Fail;
+        if(mId < 14) mPro->result = Test_Fail;
     }
 
     if (Test_Fail == mPro->result) {
@@ -150,7 +150,7 @@ void Home_WorkWid::updateWid()
     str = mDt->dev_type;
     if(str.isEmpty()) str = "--- ---";
     ui->devLab->setText(str);
-
+    ui->userLab->setText(mItem->user);
     if(mPro->step < Test_Over) {
         updateTime();
     } else if(mPro->step < Test_End){
