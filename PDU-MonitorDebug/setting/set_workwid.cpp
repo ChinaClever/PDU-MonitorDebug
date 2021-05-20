@@ -1,16 +1,17 @@
 #include "set_workwid.h"
 #include "ui_set_workwid.h"
 #include "macaddr.h"
+#include "dblogs.h"
 
 Set_WorkWid::Set_WorkWid(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Set_WorkWid)
 {
     ui->setupUi(this);
-     QTimer::singleShot(450,this,SLOT(initFunSlot()));
-     QGridLayout *gridLayout = new QGridLayout(parent);
-     gridLayout->setContentsMargins(0, 0, 0, 0);
-     gridLayout->addWidget(this);
+    QTimer::singleShot(450,this,SLOT(initFunSlot()));
+    QGridLayout *gridLayout = new QGridLayout(parent);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    gridLayout->addWidget(this);
 }
 
 Set_WorkWid::~Set_WorkWid()
@@ -34,6 +35,9 @@ void Set_WorkWid::initFunSlot()
     timer = new QTimer(this);
     timer->start(3*1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+
+    DbLogs *db = DbLogs::bulid();
+    connect(db, SIGNAL(itemChanged(int, int)),this, SLOT(updateSlot(int,int)));
 }
 
 
@@ -109,6 +113,11 @@ void Set_WorkWid::initMac()
     ui->endMacLab->setText(mItem->endMac);
 }
 
+void Set_WorkWid::updateSlot(int,int)
+{
+    initMac();
+    ui->cntSpin->setValue(mItem->cnt.cnt);
+}
 
 void Set_WorkWid::timeoutDone()
 {

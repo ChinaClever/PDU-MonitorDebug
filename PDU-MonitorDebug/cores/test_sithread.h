@@ -13,6 +13,7 @@ public:
 
     bool setDev();
     bool readDev();
+    bool clearEle();
 
 protected:
     bool initDev();
@@ -24,7 +25,6 @@ protected:
     bool envAlarmWrite();
     bool writeAlarmTh();
     bool setAlarm();
-    bool clearEle();
     bool factorySet();
 
 protected slots:

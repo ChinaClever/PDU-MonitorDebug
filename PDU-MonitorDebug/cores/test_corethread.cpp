@@ -46,7 +46,7 @@ bool Test_CoreThread::readDev()
         QString str = tr("Modbus RTU通讯 ");
         ret = dev->readPduData();
         if(ret) str += tr("正常"); else str += tr("错误");
-        updatePro(str, ret);        
+        updatePro(str, ret);
 
         if(mCfg->ip_modbus) {
         } else {
@@ -120,6 +120,12 @@ void Test_CoreThread::workDown()
 {
     bool ret = checkDev();
     if(ret) ret = mAd->startAdjust();
+    if(mItem->modeId) {
+    } else {
+        for(int i=0; i<mData->size; ++i) {
+            if(mData->ele[i]) mCtrl->clearEle();
+        }
+    }
 }
 
 void Test_CoreThread::collectData()

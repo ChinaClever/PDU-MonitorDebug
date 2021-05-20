@@ -151,6 +151,7 @@ void Home_WorkWid::updateWid()
     if(str.isEmpty()) str = "--- ---";
     ui->devLab->setText(str);
     ui->userLab->setText(mItem->user);
+    ui->cntLab->setNum(mItem->cnt.cnt);
     if(mPro->step < Test_Over) {
         updateTime();
     } else if(mPro->step < Test_End){

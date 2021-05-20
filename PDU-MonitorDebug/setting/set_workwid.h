@@ -29,6 +29,7 @@ private slots:
     void initFunSlot();
     void saveFunSlot();
     void saveErrSlot();
+    void updateSlot(int,int);
     void on_setBtn_clicked();
     void on_typeComboBox_currentIndexChanged(int index);
 
