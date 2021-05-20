@@ -11,6 +11,7 @@ include(msgcom/msgcom.pri)
 include(tabcom/tabcom.pri)
 include(modbus/modbus.pri)
 include(network/network.pri)
+include(qrencode/qrencode.pri)
 include(websocket/websocket.pri)
 include(smtpclient/smtpclient.pri)
 include(snmpclient/snmpclient.pri)
@@ -18,7 +19,6 @@ include(datapacket/datapacket.pri)
 include(serialport/serialport.pri)
 include(backcolour/backcolour.pri)
 include(qtsingleapplication/qtsingleapplication.pri)
-
 
 HEADERS += \
     $$PWD/common.h
