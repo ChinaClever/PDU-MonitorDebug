@@ -1,11 +1,15 @@
 #include "qrwidget.h"
 #include <QPainter>
 #include <QImage>
+#include <QGridLayout>
 
 QRWidget::QRWidget(QWidget *parent) : QWidget(parent)
 {
     qr = NULL;
     //setString("Hello QR Code");
+    QGridLayout *gridLayout = new QGridLayout(parent);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    gridLayout->addWidget(this);
 }
 
 QRWidget::~QRWidget()
