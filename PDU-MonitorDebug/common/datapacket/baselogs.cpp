@@ -80,7 +80,11 @@ bool BaseLogs::writeLog()
     }
 
     Cfg::bulid()->writeCnt();
-    if(it.sn.isEmpty()) return false;
+    if(it.sn.isEmpty()) {
+        emit DbLogs::bulid()->itemChanged(0, 1);
+        return false;
+    }
+
     return DbLogs::bulid()->insertItem(it);
 }
 
