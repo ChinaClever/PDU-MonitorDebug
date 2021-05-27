@@ -26,6 +26,7 @@ void Dev_SiCfg::initType()
     ptr->si_lines = read("si_lines", 1).toInt();
     ptr->si_series = read("si_series", 0).toInt();
     ptr->si_standar = read("si_standar", 0).toInt();
+    ptr->si_version = read("si_version", 0).toInt();
 }
 
 void Dev_SiCfg::writeType()
@@ -35,6 +36,7 @@ void Dev_SiCfg::writeType()
     write("si_lines", ptr->si_lines);
     write("si_series", ptr->si_series);
     write("si_standar", ptr->si_standar);
+    write("si_version", ptr->si_version);
 }
 
 void Dev_SiCfg::initData()

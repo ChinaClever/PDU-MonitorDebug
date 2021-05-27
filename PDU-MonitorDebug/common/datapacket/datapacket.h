@@ -98,6 +98,7 @@ struct sTypeCfg
     uchar si_lines;
     uchar si_series;
     uchar si_standar;
+    uchar si_version;
     sObjCfg si_cfg;
 
     uchar ip_ac;

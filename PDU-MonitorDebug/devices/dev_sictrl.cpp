@@ -83,7 +83,7 @@ bool Dev_SiCtrl::setDev()
 {
     bool ret = sentRtuCmd(0x1049, mCfg->si_lines);
     if(ret) ret = sentRtuCmd(0x1051, mCfg->si_series);
-    if(ret) ret = sentRtuCmd(0x1050, 0); //mCfg->si_standar
+    if(ret) ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
 
     return ret;
 }
