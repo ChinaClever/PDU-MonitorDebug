@@ -122,9 +122,8 @@ void Test_CoreThread::workDown()
     if(ret) ret = mAd->startAdjust();
     if(mItem->modeId) {
     } else {
-        for(int i=0; i<mData->size; ++i) {
-            if(mData->ele[i]) mCtrl->clearEle();
-        }
+        mCtrl->clearEle();
+        //for(int i=0; i<mData->size; ++i)if(mData->ele[i])mCtrl->clearEle();
     }
 }
 
