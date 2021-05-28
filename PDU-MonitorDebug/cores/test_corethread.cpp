@@ -120,10 +120,17 @@ void Test_CoreThread::workDown()
 {
     bool ret = checkDev();
     if(ret) ret = mAd->startAdjust();
-    if(mItem->modeId) {
-    } else {
+    if(!mItem->modeId) {
         mCtrl->clearEle();
-        //for(int i=0; i<mData->size; ++i)if(mData->ele[i])mCtrl->clearEle();
+        Ad_Resulting::bulid(this)->initRtuThread();
+    }
+
+    for(int i=0; i<3; ++i) {
+        if(mData->ele[i]) {
+            QString e = QString::number(mData->ele[i]/COM_RATE_ELE,'f',2)+"kWh";
+            QString str = tr("L%1 存在电能 %2").arg(i+1).arg(e);
+            updatePro(str, false);
+        }
     }
 }
 
