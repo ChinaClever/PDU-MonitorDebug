@@ -102,6 +102,25 @@ bool Test_SiThread::factorySet()
     return ret;
 }
 
+bool Test_SiThread::setHorizontalOrVertical()
+{
+    QString str = tr("切换水平");
+    bool ret = true;
+    if(!mCfg->si_led) {
+        if(mCfg->si_horizontal == 0x01) str = tr("切换垂直");
+        bool ret = mCtrl->setHorizontaOrVertical();
+        if(ret) {
+            str += tr("正常");
+        } else {
+            str += tr("错误");
+        }
+       ret =  updatePro(str, ret);
+    }
+
+
+    return  ret;
+}
+
 bool Test_SiThread::readDev()
 {
     bool ret = true;
@@ -198,6 +217,7 @@ bool Test_SiThread::setDev()
         if(ret) ret = setData();
         if(ret) ret = checkLine();
         if(ret) ret = setAlarm();
+        if(ret) ret = setHorizontalOrVertical();
         if(ret) ret = factorySet();
     } else {
         if(mPro->step > Test_Collect)

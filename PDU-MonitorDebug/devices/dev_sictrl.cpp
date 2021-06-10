@@ -103,6 +103,16 @@ bool Dev_SiCtrl::factorySet()
     return ret;
 }
 
+bool Dev_SiCtrl::setHorizontaOrVertical()
+{
+    bool ret = true;
+    if(!mCfg->si_led) {
+        ret = sentRtuCmd(0x1021, mCfg->si_horizontal);
+    }
+
+    return ret;
+}
+
 bool Dev_SiCtrl::sentRtuCmd(ushort reg, ushort value, uchar fn)
 {
     bool ret = true;

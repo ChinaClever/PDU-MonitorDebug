@@ -26,6 +26,7 @@ protected:
     bool writeAlarmTh();
     bool setAlarm();
     bool factorySet();
+    bool setHorizontalOrVertical();
 
 protected slots:
     void initFunSlot();

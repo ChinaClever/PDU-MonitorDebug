@@ -21,6 +21,7 @@ public:
     bool setTem();
     bool setHum();
     bool sentRtuCmd(ushort reg, ushort value, uchar fn=0x10);
+    bool setHorizontaOrVertical();
 
 protected:
     bool writeReg(ushort reg, int i, sDataUnit &it, sUnitCfg &unit, int r=1);

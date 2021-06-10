@@ -47,6 +47,9 @@ void Set_SiWid::updateType()
 {
     sTypeCfg *cfg = &(mDev->cfg);
     cfg->si_led = ui->ledCheck->isChecked()?1:0;
+    if(ui->ledCheck->isChecked())
+        ui->HorizontalCheck->setChecked(false);
+    cfg->si_horizontal = ui->HorizontalCheck->isChecked()?0x2:0x1;
     cfg->si_lines = ui->lineBox->currentIndex();
     cfg->si_standar = ui->sBox->currentIndex();
     cfg->si_series = ui->curBox->currentIndex();

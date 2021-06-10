@@ -95,6 +95,7 @@ struct sTypeCfg
 {
     uchar si_ac;
     uchar si_led;
+    uchar si_horizontal;
     uchar si_lines;
     uchar si_series;
     uchar si_standar;
