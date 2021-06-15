@@ -29,7 +29,7 @@ YC_StandSource *Yc_Obj::get()
 
 bool Yc_Obj::powerOn()
 {
-    YC_StandSource *yc = get();
+    YC_StandSource *yc = get(); yc->setVol(220);
     QString str = tr("连接标准源");
     bool ret = yc->handShake();
     if(!ret) {
