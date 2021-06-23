@@ -14,6 +14,7 @@ public:
     bool setDev();
     bool readDev();
     bool clearEle();
+    bool setAlarm();
 
 protected:
     bool initDev();
@@ -24,7 +25,7 @@ protected:
     bool curAlarmWrite(int i);
     bool envAlarmWrite();
     bool writeAlarmTh();
-    bool setAlarm();
+
     bool factorySet();
     bool setHorizontalOrVertical();
 

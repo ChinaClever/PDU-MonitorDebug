@@ -112,6 +112,10 @@ bool Test_CoreThread::initFun()
     bool ret = mYc->powerOn();
     if(ret) ret = setDev();
     if(ret) ret = readDev();
+    if(ret && !mDt->devType) {
+        ret = mCtrl->setAlarm();
+    }
+
     return ret;
 }
 

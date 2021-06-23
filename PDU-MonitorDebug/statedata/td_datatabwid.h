@@ -21,6 +21,7 @@ protected slots:
 
 private:
     sObjData *mData;
+    sDevType *mSceen;
 };
 
 #endif // DATATABLEWID_H

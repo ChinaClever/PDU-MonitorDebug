@@ -51,7 +51,7 @@
          </size>
         </property>
         <property name="text">
-         <string>电流规格</string>
+         <string>锰铜规格</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -133,12 +133,12 @@
         </property>
         <item>
          <property name="text">
-          <string>32A</string>
+          <string>小锰铜207μΩ</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>63A</string>
+          <string>大锰铜75μΩ</string>
          </property>
         </item>
        </widget>
@@ -183,6 +183,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
         <item>
          <property name="text">
           <string>标准</string>
@@ -195,17 +198,12 @@
         </item>
         <item>
          <property name="text">
-          <string>液晶科华黑底白字</string>
+          <string>黑底白字</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>液晶集团两路定制</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string/>
+          <string>液晶版本集团两路</string>
          </property>
         </item>
        </widget>

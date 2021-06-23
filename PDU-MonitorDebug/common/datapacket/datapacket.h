@@ -118,6 +118,7 @@ struct sDevType
 {
     uchar devId;
     uchar devType; // 0 SI-PDU  1 IP-PDU
+    uchar screen;//0 液晶 1 断码屏 2 数码管
     uchar lines;
     uchar ac;
     uchar version; // IP V1 V3

@@ -21,9 +21,10 @@ Ad_Resulting *Ad_Resulting::bulid(QObject *parent)
 bool Ad_Resulting::curErrRange(int exValue, int cur)
 {
     bool ret = false;
-    int min = exValue - mItem->curErr * 10;
-    int max = exValue + mItem->curErr * 10;
-
+    int crate = 1;
+    if( mDev->dt.screen == 1 ) crate = 10;
+    int min = (exValue - mItem->curErr * 10)*crate;
+    int max = (exValue + mItem->curErr * 10)*crate;
     if((cur >= min) && (cur <= max )) {
         ret =  true;
     }
@@ -37,7 +38,6 @@ bool Ad_Resulting::powErrRange(int exValue, int pow)
     int err = exValue * mItem->powErr/1000.0;
     int min = exValue - err;
     int max = exValue + err;
-
     if((pow >= min) && (pow <= max )) {
         ret =  true;
     } else {
@@ -52,6 +52,9 @@ bool Ad_Resulting::powRangeByID(int i, int exValue, int cnt)
     exValue = mItem->vol * exValue/AD_CUR_RATE; //mData->cur.value[i]/COM_RATE_CUR;
     if(AC == mDt->ac) exValue *= 0.5;
     QString str = tr("期望功率%1kW 第%2位 功率 ").arg(exValue/1000.0).arg(i+1);
+    int crate = 1;
+    if( mDev->dt.screen == 1 ) crate = 10;
+    mData->pow[i] *= crate;
     bool ret = powErrRange(exValue, mData->pow[i]);
     mData->powed[i] = mData->pow[i];
     if(ret) {
@@ -72,7 +75,7 @@ bool Ad_Resulting::powRangeByID(int i, int exValue, int cnt)
 
 bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
 {
-    int cur = mData->cur.value[i] * 10;
+    int cur = mData->cur.value[i] * 10 ;
     if(mDt->lines == 2 &&i == 0) exValue *= 2;
     QString str = tr("期望电流%1A 第%2位 电流 ").arg(exValue/AD_CUR_RATE).arg(i+1);
     bool ret = curErrRange(exValue, cur);
@@ -97,9 +100,11 @@ bool Ad_Resulting::volErrRangeByID(int i)
 {
     bool ret = true;
     int vol = mData->vol.value[i];
-    int min = mItem->vol - mItem->volErr;
-    int max = mItem->vol + mItem->volErr;
-    QString str = tr("期望电压200V，实际电压%1V 第%2位 电压 ").arg(vol).arg(i+1);
+    int crate = 1;
+    if( mDev->dt.screen == 1 ) crate = 10;
+    int min = (mItem->vol - mItem->volErr)*crate;
+    int max = (mItem->vol + mItem->volErr)*crate;
+    QString str = tr("期望电压200V，实际电压%1V 第%2位 电压 ").arg(vol/(crate*1.0)).arg(i+1);
     if((vol >= min) && (vol <= max)) {
         str += tr("正常");
         updatePro(str);

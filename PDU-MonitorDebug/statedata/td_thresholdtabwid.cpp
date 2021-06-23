@@ -30,14 +30,18 @@ void Td_ThresholdTabWid::setDataUnit(int id, sDataUnit &unit)
         suffix = "V";
         str = tr("电压");
     }
+    double crate = 1.0;
+    sDevData *dev = sDataPacket::bulid()->getDev();
+    mSceen = &(dev->dt);
+    if(mSceen->screen == 1) crate = 10.0;
 
     for(int i=0; i<unit.size; ++i) {
         QStringList listStr;
 
         listStr << str;
-        listStr << QString::number(unit.value[i]/rate,'f',2)+suffix;
-        listStr << QString::number(unit.min[i]/rate,'f',2)+suffix;
-        listStr << QString::number(unit.max[i]/rate,'f',2)+suffix;
+        listStr << QString::number(unit.value[i]/rate/crate,'f',2)+suffix;
+        listStr << QString::number(unit.min[i]/rate/crate,'f',2)+suffix;
+        listStr << QString::number(unit.max[i]/rate/crate,'f',2)+suffix;
         setTableRow(id+i, listStr);
 
         if((unit.value[i] < unit.min[i]) || (unit.value[i] > unit.max[i])) {

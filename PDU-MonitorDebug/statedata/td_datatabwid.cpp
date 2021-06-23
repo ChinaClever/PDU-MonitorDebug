@@ -25,20 +25,30 @@ void Td_DataTabWid::appendItem(sObjData *unit)
 {
     for(int i=0; i<unit->size; ++i) {
         QStringList listStr;
+        double crate = 1.0;
+        sDevData *dd = sDataPacket::bulid()->getDev();
+        mSceen = &(dd->dt);
+        if(mSceen->screen == 1) crate = 10.0;
 
         if(1 == unit->sw[i]) listStr << tr("开"); else listStr << tr("关");
-        listStr << QString::number(unit->cur.value[i]/COM_RATE_CUR,'f',1)+"A";
-        listStr << QString::number(unit->vol.value[i]/COM_RATE_VOL,'f',1)+"V";
-        listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
-        listStr << QString::number(unit->ele[i]/COM_RATE_ELE,'f',1)+"kWh";
+        listStr << QString::number(unit->cur.value[i]/COM_RATE_CUR/crate,'f',2)+"A";
+        listStr << QString::number(unit->vol.value[i]/COM_RATE_VOL/crate,'f',1)+"V";
+        if(mSceen->screen == 1)
+            listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+        else
+            listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
+        listStr << QString::number(unit->ele[i]/COM_RATE_ELE,'f',2)+"kWh";
         if(unit->cured[i]) {
-            listStr << QString::number(unit->cured[i]/COM_RATE_CUR,'f',1)+"A";
+            listStr << QString::number(unit->cured[i]/COM_RATE_CUR/crate,'f',2)+"A";
         } else {
             listStr << "---";
         }
 
         if(unit->powed[i]) {
-            listStr << QString::number(unit->powed[i]/COM_RATE_POW,'f',3)+"kW";
+            if(mSceen->screen == 1 )
+                listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+            else
+                listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
         } else {
             listStr << "---";
         }

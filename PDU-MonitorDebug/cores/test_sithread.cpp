@@ -106,7 +106,7 @@ bool Test_SiThread::setHorizontalOrVertical()
 {
     QString str = tr("切换水平");
     bool ret = true;
-    if(!mCfg->si_led) {
+    if(mDev->dt.screen == 0) {
         if(mCfg->si_horizontal == 0x01) str = tr("切换垂直");
         bool ret = mCtrl->setHorizontaOrVertical();
         if(ret) {
@@ -216,7 +216,7 @@ bool Test_SiThread::setDev()
         if(ret) ret = clearEle();
         if(ret) ret = setData();
         if(ret) ret = checkLine();
-        if(ret) ret = setAlarm();
+        //if(ret) ret = setAlarm();
         if(ret) ret = setHorizontalOrVertical();
         if(ret) ret = factorySet();
     } else {

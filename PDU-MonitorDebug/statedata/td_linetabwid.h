@@ -20,6 +20,7 @@ protected slots:
 
 private:
     sObjData *mData;
+    sDevType *mSceen;
 };
 
 #endif // HOME_LINETABWID_H

@@ -27,10 +27,18 @@ void Td_LineTabWid::appendItem(sObjData *dev)
     for(int i=0; i<dev->size; ++i) {
         QStringList listStr;
 
+        double crate = 1.0;
+        sDevData *dd = sDataPacket::bulid()->getDev();
+        mSceen = &(dd->dt);
+        if(mSceen->screen == 1) crate = 10.0;
+
         if(1 == dev->sw[i]) listStr << tr("开"); else listStr << tr("关");
-        listStr << QString::number(dev->cur.value[i]/COM_RATE_CUR,'f',2)+"A";
-        listStr << QString::number(dev->vol.value[i]/COM_RATE_VOL,'f',1)+"V";
-        listStr << QString::number(dev->pow[i]/COM_RATE_POW,'f',3)+"kW";
+        listStr << QString::number(dev->cur.value[i]/COM_RATE_CUR/crate,'f',2)+"A";
+        listStr << QString::number(dev->vol.value[i]/COM_RATE_VOL/crate,'f',1)+"V";
+        if(mSceen->screen == 1)
+            listStr << QString::number(dev->pow[i]/COM_RATE_PF,'f',3)+"kW";
+        else
+            listStr << QString::number(dev->pow[i]/COM_RATE_POW,'f',3)+"kW";
         listStr << QString::number(dev->pf[i]/COM_RATE_PF,'f',2);
         listStr << QString::number(dev->ele[i]/COM_RATE_ELE,'f',2)+"kWh";
         setTableRow(i, listStr);
