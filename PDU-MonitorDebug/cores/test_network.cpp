@@ -75,6 +75,7 @@ void Test_NetWork::updateMacAddr(int step)
 
 void Test_NetWork::workDown()
 {
+    QReadLocker locker(mUdp->getLock());
     UdpBaseData *res = mUdp->getData();
     if(res) {
         QStringList list = QString(res->datagram).split(";");
@@ -87,6 +88,7 @@ void Test_NetWork::workDown()
                 qDebug() <<"Test_NetWork workDown err" << list.size();
         }
         delete res;
+        if(res) res = nullptr;
     } else {
         msleep(1);
     }

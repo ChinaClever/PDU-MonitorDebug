@@ -45,7 +45,7 @@ void Td_DataTabWid::appendItem(sObjData *unit)
         }
 
         if(unit->powed[i]) {
-            if(mSceen->screen == 1 )
+            if(mSceen->screen == 1)
                 listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
             else
                 listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
