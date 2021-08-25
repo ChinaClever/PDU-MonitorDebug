@@ -101,7 +101,8 @@ bool Ad_Resulting::volErrRangeByID(int i)
     bool ret = true;
     int vol = mData->vol.value[i];
     int crate = 1;
-    if( mDev->dt.screen == 1 ) crate = 10;
+    //黑底白字和腾讯定制的电压四位有小数点
+    if( mDev->dt.screen == 1 || mDev->cfg.si_version == 1 || mDev->cfg.si_version == 2) crate = 10;
     int min = (mItem->vol - mItem->volErr)*crate;
     int max = (mItem->vol + mItem->volErr)*crate;
     QString str = tr("期望电压200V，实际电压%1V 第%2位 电压 ").arg(vol/(crate*1.0)).arg(i+1);
