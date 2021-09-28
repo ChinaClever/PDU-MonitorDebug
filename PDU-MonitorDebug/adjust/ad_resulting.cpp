@@ -81,7 +81,7 @@ bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
     bool ret = curErrRange(exValue, cur);
     mData->cured[i] = mData->cur.value[i];
     if(ret) {
-        // if(mItem->si_led) return ret;   ////===========
+        //if(mCfg->si_led) return ret;   ////===========
         ret = powRangeByID(i, exValue, cnt);
         if(ret){str += tr("正常"); updatePro(str);}
     } else {
