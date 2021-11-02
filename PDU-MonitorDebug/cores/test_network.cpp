@@ -54,7 +54,7 @@ bool Test_NetWork::startProcess()
         if(mCfg->security) t = 45;
         if(mPro->step == Test_Seting) t = 90;
         if(ret) mProcess->waitForFinished(t*1000);
-        if(!mac) updateMacAddr(-1);
+//        if(!mac) updateMacAddr(-1);
     } catch (...) {
         return updatePro(tr("Web网页设置异常"), false);
     }
