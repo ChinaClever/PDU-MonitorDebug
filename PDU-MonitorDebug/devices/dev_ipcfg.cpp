@@ -33,6 +33,10 @@ void Dev_IpCfg::initType()
     ptr->security = read("security", 0).toInt();
     ptr->log_en = read("log_en", 0).toInt();
     ptr->ip_lcd = read("ip_lcd", 0).toInt();
+    ptr->ip_inFirst = read("ip_inFirst", "IEC309").toString();
+    ptr->ip_inSecond = read("ip_inSecond", "18A").toString();
+    ptr->ip_outFirst = read("ip_outFirst", "20xC13").toString();
+    ptr->ip_outSecond = read("ip_outSecond", "4xC19").toString();
 }
 
 void Dev_IpCfg::writeType()
@@ -48,6 +52,10 @@ void Dev_IpCfg::writeType()
     write("security", ptr->security);
     write("log_en", ptr->log_en);
     write("ip_lcd", ptr->ip_lcd);
+    write("ip_inFirst", ptr->ip_inFirst);
+    write("ip_inSecond", ptr->ip_inSecond);
+    write("ip_outFirst", ptr->ip_outFirst);
+    write("ip_outSecond", ptr->ip_outSecond);
 }
 
 void Dev_IpCfg::initData()
