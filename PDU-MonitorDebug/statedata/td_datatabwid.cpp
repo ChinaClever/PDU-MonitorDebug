@@ -37,7 +37,10 @@ void Td_DataTabWid::appendItem(sObjData *unit)
         listStr << QString::number(unit->vol.value[i]/COM_RATE_VOL/crate,'f',1)+"V";
         if(dd->cfg.si_version == 1 || dd->cfg.si_version == 2) crate = 1.0;//后面恢复进制，防止电流也缩小
         if(mSceen->screen == 1)
-            listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+        {
+            if(mSceen->devType == 0) listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+            else listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
+        }
         else
             listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
         listStr << QString::number(unit->ele[i]/COM_RATE_ELE,'f',2)+"kWh";
@@ -49,7 +52,10 @@ void Td_DataTabWid::appendItem(sObjData *unit)
 
         if(unit->powed[i]) {
             if(mSceen->screen == 1)
-                listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+            {
+               if(mSceen->devType == 0) listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
+               else listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
+            }
             else
                 listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
         } else {
