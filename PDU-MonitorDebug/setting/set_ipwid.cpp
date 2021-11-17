@@ -64,7 +64,8 @@ void Set_IpWid::updateType()
     dt->ip_modbus = ui->ipModeBox->currentIndex();
     dt->ip_standard = ui->sBox->currentIndex();
     dt->log_en = ui->logBox->currentIndex();
-    dt->security = ui->securityBox->currentIndex();
+    if(!ui->securityBox->isHidden()) dt->security = ui->securityBox->currentIndex();
+    else dt->security = 0;
     dt->ip_language = ui->languageBox->currentIndex();
     if(dt->ip_lines) dt->ip_ac = AC; else dt->ip_ac = DC;
     dt->ip_inFirst = ui->InFirst->text();

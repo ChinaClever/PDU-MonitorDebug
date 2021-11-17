@@ -21,12 +21,13 @@ enum eDevTypes {
 };
 
 enum eIpTypes {
-    IP_PDUV1=1,         // IPV1标准
-    IP_PDUV3=3,         // IPV3标准
-    IP_PDUV3_C3,        // IP-PDU 俄罗斯C3
-    IP_PDUV3_EATON,     // IP-PDU伊顿
-    IP_PDUV6,           // IPV6标准
-    IP_PDUV6_HUAWEI     // IPV6华为
+    IP_PDUV1=1,         // IPV1标准 1
+    IP_PDUV3=3,         // IPV3标准 3
+    IP_PDUV3_C3,        // IP-PDU 俄罗斯C3 4
+    IP_PDUV3_EATON,     // IP-PDU伊顿  5
+    IP_PDUV6,           // IPV6标准    6
+    IP_PDUV6_HUAWEI,     // IPV6华为   7
+    IP_PDUV6_ALI        // IPV6阿里    8
 };
 
 
