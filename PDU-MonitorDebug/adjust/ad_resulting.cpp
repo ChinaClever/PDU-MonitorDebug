@@ -53,7 +53,7 @@ bool Ad_Resulting::powRangeByID(int i, int exValue, int cnt)
     if(AC == mDt->ac) exValue *= 0.5;
     QString str = tr("期望功率%1kW 第%2位 功率 ").arg(exValue/1000.0).arg(i+1);
     int crate = 1;
-    if( mDev->dt.screen == 1 ) crate = 10;
+    if( mDev->dt.screen == 1 && mDev->dt.devType == 0 ) crate = 10;
     mData->pow[i] *= crate;
     bool ret = powErrRange(exValue, mData->pow[i]);
     mData->powed[i] = mData->pow[i];
