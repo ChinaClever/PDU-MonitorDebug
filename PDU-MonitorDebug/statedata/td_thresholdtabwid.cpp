@@ -39,7 +39,9 @@ void Td_ThresholdTabWid::setDataUnit(int id, sDataUnit &unit)
         QStringList listStr;
 
         listStr << str;
+        if(str == tr("电压") && ((dev->dt.devType == 0 && dev->cfg.si_version == 1) || (dev->dt.devType == 0 && dev->cfg.si_version == 2))) crate = 10.0;//黑底白字和腾讯定制的电压四位有小数点
         listStr << QString::number(unit.value[i]/rate/crate,'f',2)+suffix;
+        if(str == tr("电压") && ((dev->dt.devType == 0 && dev->cfg.si_version == 1) || (dev->dt.devType == 0 && dev->cfg.si_version == 2))) crate = 1.0;//后面恢复进制，防止电流也缩小
         listStr << QString::number(unit.min[i]/rate/crate,'f',2)+suffix;
         listStr << QString::number(unit.max[i]/rate/crate,'f',2)+suffix;
         setTableRow(id+i, listStr);

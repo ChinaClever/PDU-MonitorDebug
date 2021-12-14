@@ -69,7 +69,6 @@ int Sn_DevType::getDevType(const QString &str)
             mDt->version = IP_PDUV3;
         }else if(str.contains("V6")){
             if(str.contains("HUAWEI")) mDt->version = IP_PDUV6_HUAWEI;
-            else if(str.contains("ALI")) mDt->version = IP_PDUV6_ALI;
             else mDt->version = IP_PDUV6;
         }
         else mDt->version = IP_PDUV1;

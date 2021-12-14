@@ -33,13 +33,17 @@ void Td_DataTabWid::appendItem(sObjData *unit)
         if(1 == unit->sw[i]) listStr << tr("开"); else listStr << tr("关");
         listStr << QString::number(unit->cur.value[i]/COM_RATE_CUR/crate,'f',2)+"A";
 
-        if(dd->cfg.si_version == 1 || dd->cfg.si_version == 2) crate = 10.0;//黑底白字和腾讯定制的电压四位有小数点
+        if((dd->dt.devType == 0 && dd->cfg.si_version == 1 )|| (dd->dt.devType == 0 &&dd->cfg.si_version == 2)) crate = 10.0;//黑底白字和腾讯定制的电压四位有小数点
         listStr << QString::number(unit->vol.value[i]/COM_RATE_VOL/crate,'f',1)+"V";
-        if(dd->cfg.si_version == 1 || dd->cfg.si_version == 2) crate = 1.0;//后面恢复进制，防止电流也缩小
+        if((dd->dt.devType == 0 && dd->cfg.si_version == 1) || (dd->dt.devType == 0 && dd->cfg.si_version == 2)) crate = 1.0;//后面恢复进制，防止电流也缩小
         if(mSceen->screen == 1)
         {
             if(mSceen->devType == 0) listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
             else listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
+        }
+        else if(dd->dt.devType == 0 && dd->cfg.si_version == 2)//SI,BM黑底白字功率只有10倍
+        {
+            listStr << QString::number(unit->pow[i]/COM_RATE_ELE,'f',3)+"kW";
         }
         else
             listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
@@ -55,6 +59,10 @@ void Td_DataTabWid::appendItem(sObjData *unit)
             {
                if(mSceen->devType == 0) listStr << QString::number(unit->pow[i]/COM_RATE_PF,'f',3)+"kW";
                else listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";
+            }
+            else if(dd->dt.devType == 0 && dd->cfg.si_version == 2)//SI,BM黑底白字功率只有10倍
+            {
+                listStr << QString::number(unit->pow[i]/COM_RATE_ELE,'f',3)+"kW";
             }
             else
                 listStr << QString::number(unit->pow[i]/COM_RATE_POW,'f',3)+"kW";

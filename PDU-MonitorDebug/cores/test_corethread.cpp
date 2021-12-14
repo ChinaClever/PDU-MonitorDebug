@@ -161,6 +161,7 @@ void Test_CoreThread::run()
 {
     if(isRun) return; else isRun = true;
     bool ret = initFun();
+//    bool ret = readDev();
     if(ret) {
         switch (mPro->step) {
         case Test_Start: workDown(); break;

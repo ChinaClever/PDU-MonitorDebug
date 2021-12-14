@@ -120,7 +120,7 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->OutSecond->setHidden(res);
 
     res = true;
-    if(index <= IP_PDUV3 - 2 || index == IP_PDUV3_EATON - 2)  res = false;
+    if(index <= IP_PDUV3_EATON - 2)  res = false;
     ui->label_9->setHidden(res);
     ui->lcdBox->setHidden(res);
 
@@ -135,6 +135,10 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->ipModeBox->setHidden(res);
     ui->label_11->setHidden(res);
     ui->logBox->setHidden(res);
+
+    if(index == IP_PDUV3_EATON - 2)  res = false;
+    ui->label_4->setHidden(res);
+    ui->securityBox->setHidden(res);
 
     res = true;
     if(index == IP_PDUV3 - 2)  res = false;

@@ -54,6 +54,7 @@ bool Ad_Resulting::powRangeByID(int i, int exValue, int cnt)
     QString str = tr("期望功率%1kW 第%2位 功率 ").arg(exValue/1000.0).arg(i+1);
     int crate = 1;
     if( mDev->dt.screen == 1 && mDev->dt.devType == 0 ) crate = 10;
+    if( mDev->cfg.si_version == 2 && mDev->dt.devType == 0 ) crate = 100;
     mData->pow[i] *= crate;
     bool ret = powErrRange(exValue, mData->pow[i]);
     mData->powed[i] = mData->pow[i];
@@ -102,7 +103,9 @@ bool Ad_Resulting::volErrRangeByID(int i)
     int vol = mData->vol.value[i];
     int crate = 1;
     //黑底白字和腾讯定制的电压四位有小数点
-    if( mDev->dt.screen == 1 || mDev->cfg.si_version == 1 || mDev->cfg.si_version == 2) crate = 10;
+    if( mDev->dt.screen == 1 ||
+      (mDev->dt.devType == 0 && mDev->cfg.si_version == 1 )
+      || (mDev->dt.devType == 0 && mDev->cfg.si_version == 2)) crate = 10;//断码屏,SI-PDU腾讯定制和SI-PDU黑底白字定制
     int min = (mItem->vol - mItem->volErr)*crate;
     int max = (mItem->vol + mItem->volErr)*crate;
     QString str = tr("期望电压200V，实际电压%1V 第%2位 电压 ").arg(vol/(crate*1.0)).arg(i+1);
