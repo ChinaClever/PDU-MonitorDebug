@@ -66,6 +66,8 @@ void Dev_IpCfg::initData()
 
     initUnit("tem", ptr->tem);
     initUnit("hum", ptr->hum);
+    initFanTemUnit("fantem", ptr->fantem);
+    initFanTemUnit("pwm", ptr->pwm);
 }
 
 void Dev_IpCfg::writeData()
@@ -76,6 +78,9 @@ void Dev_IpCfg::writeData()
 
     writeUnit("tem", ptr->tem);
     writeUnit("hum", ptr->hum);
+
+    writeFanTemUnit("fantem", ptr->fantem);
+    writeFanTemUnit("pwm", ptr->pwm);
 }
 
 void Dev_IpCfg::initCfg()

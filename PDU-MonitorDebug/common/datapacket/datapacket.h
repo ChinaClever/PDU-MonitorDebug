@@ -89,6 +89,8 @@ struct sObjCfg
 
     sUnitCfg tem; // 温度
     sUnitCfg hum; // 湿度
+    sUnitCfg fantem;
+    sUnitCfg pwm;
 };
 
 struct sTypeCfg

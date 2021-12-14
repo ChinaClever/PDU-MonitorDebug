@@ -27,7 +27,7 @@ void Set_IpWid::initFunSlot()
     mObj = Dev_IpCfg::bulid(this);
     mItem = Cfg::bulid()->item;
     mDev = mObj->getDev();
-    mUnitWid->init(&(mDev->cfg.ip_cfg));
+    mUnitWid->init(&(mDev->cfg.ip_cfg) , (&(mDev->cfg))->ip_version-1);
     initType();
 }
 
@@ -146,4 +146,5 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->logBox->setHidden(res);
     ui->label_8->setHidden(res);
     ui->label_11->setHidden(res);
+    mUnitWid->changeIndex(index);
 }
