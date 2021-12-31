@@ -26,6 +26,18 @@ void Dev_Object::initUnit(const QString& prefix, sUnitCfg &unit, int f)
     }
 }
 
+void Dev_Object::initFanTemUnit(const QString& prefix, sUnitCfg &unit, int f)
+{
+    unit.min = read(prefix+"_min", 20).toFloat();
+    unit.max = read(prefix+"_max", 60).toFloat();
+}
+
+void Dev_Object::writeFanTemUnit(const QString& prefix, sUnitCfg &unit, int f)
+{
+    write(prefix+"_min", QString::number(unit.min));
+    write(prefix+"_max", QString::number(unit.max));
+}
+
 void Dev_Object::writeUnit(const QString& prefix, sUnitCfg &unit, int f)
 {
     write(prefix+"_min", QString::number(unit.min));

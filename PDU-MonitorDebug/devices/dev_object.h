@@ -16,7 +16,9 @@ public:
 protected:
     virtual QString cfgGroup(){return "siCfg";}
     void initUnit(const QString& prefix, sUnitCfg &unit, int f=0);
+    void initFanTemUnit(const QString& prefix, sUnitCfg &unit, int f=0);
     void writeUnit(const QString& prefix, sUnitCfg &unit, int f=0);
+    void writeFanTemUnit(const QString& prefix, sUnitCfg &unit, int f=0);
 
     void write(const QString &key, const QVariant& v);
     QVariant read(const QString &key, const QVariant &v = QVariant());

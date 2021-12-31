@@ -133,7 +133,7 @@ bool Dev_IpSnmp::readPduData()
     bool ret = true;
     if(mCfg->ip_version == 3) {
         ret = devDataV3();
-    } else {
+    } else if(mCfg->ip_version == 1){
         ret = devDataV1();
     }
 
