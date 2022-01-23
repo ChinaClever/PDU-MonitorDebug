@@ -19,6 +19,12 @@ protected:
 
     bool writeDc();
     bool writeAc();
+    bool readData();
+    bool waitDcRecv();
+    int readSerial(uchar *recv, int sec=25);
+    bool recvStatus(uchar *recv, int len);
+    bool updateStatus(ushort status);
+    bool overWork(const QString &str);
 
 private:
     Dev_SiRtu *mRtu;

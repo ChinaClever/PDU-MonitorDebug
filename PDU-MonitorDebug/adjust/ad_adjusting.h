@@ -12,6 +12,7 @@ public:
     static Ad_Adjusting *bulid(QObject *parent = nullptr);
     bool startAdjust();
 
+
 protected:
     bool sentCmd();
     bool writeCmd(uchar fn, uchar line);
