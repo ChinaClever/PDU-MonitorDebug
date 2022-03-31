@@ -172,6 +172,8 @@ bool Home_WorkWid::initSerial()
     if(!ret) {MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
     ret = mItem->source->isOpened();
     if(!ret) {MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
+    ret = mItem->control->isOpened();
+    if(!ret) {MsgBox::critical(this, tr("请先打开控制继电器串口")); return ret;}
     return ret;
 }
 

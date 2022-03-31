@@ -2,7 +2,7 @@
 #define AD_ADJUSTING_H
 
 #include "ad_ledsi.h"
-
+#include "ctrl_zpduthread.h"
 
 class Ad_Adjusting : public BaseThread
 {
@@ -11,10 +11,12 @@ class Ad_Adjusting : public BaseThread
 public:
     static Ad_Adjusting *bulid(QObject *parent = nullptr);
     bool startAdjust();
+    bool startAdjustOneByOne(int lines);
 
 
 protected:
     bool sentCmd();
+    bool sentCmdkPhase(int k);
     bool writeCmd(uchar fn, uchar line);
     bool transmit(uchar *buf, int len);
 
@@ -27,6 +29,9 @@ protected:
     bool recvStatus(uchar *recv, int len);
     bool updateStatus(ushort status);
     bool overWork(const QString &str);
+
+private:
+    Ctrl_ZpduThread *mControlOp;
 };
 
 #endif // AD_ADJUSTING_H

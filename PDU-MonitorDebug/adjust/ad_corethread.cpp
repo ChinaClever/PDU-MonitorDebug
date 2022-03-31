@@ -29,11 +29,17 @@ bool Ad_CoreThread::workDown()
     if(!mDt->devType && mCfg->si_led) {
         ret = mLedSi->startAdjust();
     } else {
-        ret = mAdjust->startAdjust();
+        if(mItem->aiMode == Test_Onebyone)
+            ret = mAdjust->startAdjustOneByOne(mDt->lines);
+        else
+            ret = mAdjust->startAdjust();
     }
 
     if(mPro->step == Test_vert) {
-        ret = mResult->resEnter();
+        if(mItem->aiMode == Test_Onebyone)
+            ret = mResult->resEnterOneByOne();
+        else
+            ret = mResult->resEnter();
     } else if(mPro->step == Test_Over) {
         ret = mResult->initRtuThread();
     }

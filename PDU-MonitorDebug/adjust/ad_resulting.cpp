@@ -171,6 +171,26 @@ bool Ad_Resulting::eachCurEnter(int exValue)
     return res;
 }
 
+bool Ad_Resulting::eachCurEnterOneByOne(int exValue)
+{
+    bool res = true;
+    mCollect->readPduData();
+    mControlOp = Ctrl_ZpduThread::bulid();
+    for(int k=0; k<mData->size; ++k) {
+        if( mControlOp ){
+            mControlOp->openOnlySwitch(k+1);
+            mControlOp->delay(10);
+            mControlOp->openOnlySwitch(k+1);
+        }
+        else
+            return false;
+        bool ret = eachCurCheck(k, exValue);
+        if(!ret) res = false;
+    }
+
+    return res;
+}
+
 bool Ad_Resulting::initRtuThread()
 {
     switch (mItem->modeId) {
@@ -265,6 +285,22 @@ bool Ad_Resulting::resEnter()
     bool ret = powerOn();
     if(ret) {
         ret = workDown(4*AD_CUR_RATE);
+        if(ret) ret = noLoadEnter();
+    }
+
+    return ret;
+}
+
+bool Ad_Resulting::workDownOneByOne(int exValue)
+{
+    return eachCurEnterOneByOne(exValue);
+}
+
+bool Ad_Resulting::resEnterOneByOne()
+{
+    bool ret = powerOn();
+    if(ret) {
+        ret = workDownOneByOne(4*AD_CUR_RATE);
         if(ret) ret = noLoadEnter();
     }
 

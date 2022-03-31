@@ -57,6 +57,9 @@ void Setup_MainWid::initSerial()
 
     mSourceWid = new SerialStatusWid(ui->sourceWid);
     mItem->source = mSourceWid->initSerialPort(tr("标准源"));
+
+    mControlWid = new SerialStatusWid(ui->controlWid);
+    mItem->control = mControlWid->initSerialPort(tr("继电器"));
 }
 
 void Setup_MainWid::initLogCount()

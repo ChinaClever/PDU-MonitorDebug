@@ -12,6 +12,7 @@ Cfg::Cfg()
     item = new sCfgItem();
     item->com = nullptr;
     item->source = nullptr;
+    item->control = nullptr;
     item->vol = 200;
 
     initMac();

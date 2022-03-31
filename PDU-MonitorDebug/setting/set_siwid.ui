@@ -141,6 +141,11 @@
           <string>大锰铜75μΩ</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>互感器63A</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="4" column="1">

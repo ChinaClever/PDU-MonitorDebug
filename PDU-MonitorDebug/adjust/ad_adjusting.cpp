@@ -124,7 +124,7 @@ bool Ad_Adjusting::updateStatus(ushort status)
     if(0x1100 == status) {
         uchar step = Test_vert;
         str = tr("校准返回正常！");
-        if(mItem->aiMode) step = Test_Over;
+        if(mItem->aiMode == Test_AI) step = Test_Over;
         mPro->step = step;
     } else if(0x1101 == status) {
         str = tr("校准失败");
@@ -159,6 +159,8 @@ bool Ad_Adjusting::updateStatus(ushort status)
         str = tr("电流校准失败：输出位%1").arg(status-0x1140);
     } else if(status <= 0x116F) {
         str = tr("电压校准失败：输出位%1").arg(status-0x1160);
+    } else if(status <= 0x1172) {
+        str = tr("第%1相偏移（0A）校准完成状态").arg(status-0x1170+1);
     } else {
         str = tr("校准失败：状态返回错误%1 ").arg(QString::number(status, 16));
     }
@@ -237,5 +239,42 @@ bool Ad_Adjusting::startAdjust()
         ret = readData();
     }
 
+    return ret;
+}
+
+bool Ad_Adjusting::sentCmdkPhase(int k)
+{
+    updatePro(tr("发送校准解锁命令！"));
+    bool ret = writeCmd(0xA0, 0);
+    if(!ret){
+        delay(5); ret = writeCmd(0xA0, 0);  // 重复发一次命令
+        if(!ret) return ret;
+    }
+
+    updatePro(tr("发送启动校准命令！"),ret, 1);
+    ret = writeCmd(0xA2, k);
+    //ret = writePhase();
+
+    return ret;
+}
+
+bool Ad_Adjusting::startAdjustOneByOne(int lines)
+{
+    bool ret = false;
+    mControlOp = Ctrl_ZpduThread::bulid();
+    if( lines == 2 ) lines = 3;
+    for(int i = 1 ; i < lines + 1; i++){
+        if(mControlOp){
+            mControlOp->openOnlySwitch(i);
+            mControlOp->delay(10);
+            mControlOp->openOnlySwitch(i);
+        }
+        else
+            return false;
+        ret = sentCmdkPhase(i);
+        if(ret){
+            ret = readData();
+        }
+    }
     return ret;
 }

@@ -40,6 +40,7 @@ private:
     UserMainWid *mUserWid;
     SerialStatusWid *mComWid;
     SerialStatusWid *mSourceWid;
+    SerialStatusWid *mControlWid;
 };
 
 #endif // SETUP_MAINWID_H

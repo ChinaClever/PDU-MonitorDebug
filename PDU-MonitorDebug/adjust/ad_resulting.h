@@ -12,6 +12,7 @@ public:
     static Ad_Resulting *bulid(QObject *parent = nullptr);
 
     bool resEnter();
+    bool resEnterOneByOne();
     bool initRtuThread();
 
 protected:
@@ -23,8 +24,10 @@ protected:
     bool volErrRangeByID(int i);
     bool volErrRange();
     bool workDown(int exValue);
+    bool workDownOneByOne(int exValue);
 
     bool eachCurEnter(int exValue);
+    bool eachCurEnterOneByOne(int exValue);
     bool eachCurCheck(int k, int exValue);
 
     bool noLoadEnter();
@@ -35,6 +38,7 @@ protected:
 private:
     YC_StandSource *mSource;
     Dev_Object *mCollect;
+    Ctrl_ZpduThread *mControlOp;
 };
 
 #endif // AD_RESULTING_H

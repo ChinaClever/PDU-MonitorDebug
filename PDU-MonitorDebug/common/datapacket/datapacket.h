@@ -158,6 +158,9 @@ enum {
     Test_Info=0,
     Test_Pass=1,
     Test_Fail=2,
+    Test_Standard=0,
+    Test_AI=1,
+    Test_Onebyone=2,
 };
 
 struct sProgress

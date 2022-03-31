@@ -66,6 +66,7 @@ struct sCfgItem
 
     SerialPort *com;
     SerialPort *source;
+    SerialPort *control;
 };
 
 

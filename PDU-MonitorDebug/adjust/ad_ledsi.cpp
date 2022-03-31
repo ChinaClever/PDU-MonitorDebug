@@ -102,7 +102,7 @@ bool Ad_LedSi::startAdjust()
 {
     bool ret = sentCmd();
     if(ret) {
-        if(mItem->aiMode) mPro->step = Test_Over;
+        if(mItem->aiMode == Test_AI) mPro->step = Test_Over;
         else mPro->step = Test_vert;
     } else {
         mPro->step = Test_vert;
@@ -133,7 +133,7 @@ bool Ad_LedSi::updateStatus(ushort status)
     if(0x1100 == status) {
         uchar step = Test_vert;
         str = tr("校准返回正常！");
-        if(mItem->aiMode) step = Test_Over;
+        if(mItem->aiMode == Test_AI) step = Test_Over;
         mPro->step = step;
     } else if(0x1101 == status) {
         str = tr("校准失败");
@@ -168,6 +168,8 @@ bool Ad_LedSi::updateStatus(ushort status)
         str = tr("电流校准失败：输出位%1").arg(status-0x1140);
     } else if(status <= 0x116F) {
         str = tr("电压校准失败：输出位%1").arg(status-0x1160);
+    } else if(status <= 0x1172) {
+        str = tr("第%1相偏移（0A）校准完成状态").arg(status-0x1170+1);
     } else {
         str = tr("校准失败：状态返回错误%1 ").arg(QString::number(status, 16));
     }
