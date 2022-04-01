@@ -144,6 +144,7 @@ bool Ad_Adjusting::updateStatus(ushort status)
     }else if(status <= 0x1115) {
         if(status%3 == 0) {
             str = tr("L%1相， 正在校准").arg((status-0x110D)/3+1);
+            mPro->step = Test_Ading;
         } else if(status%3 == 1) {
             str = tr("L%1相， 校准成功").arg((status-0x110D)/3+1);
         } else if(status%3 == 2) {
@@ -262,16 +263,15 @@ bool Ad_Adjusting::startAdjustOneByOne(int lines)
 {
     bool ret = false;
     mControlOp = Ctrl_ZpduThread::bulid();
-    if( lines == 2 ) lines = 3;
-    for(int i = 1 ; i < lines + 1; i++){
+    for(int i = 0 ; i < lines; i++){
         if(mControlOp){
             mControlOp->openOnlySwitch(i);
-            mControlOp->delay(10);
+            mControlOp->delay(5);
             mControlOp->openOnlySwitch(i);
         }
         else
             return false;
-        ret = sentCmdkPhase(i);
+        ret = sentCmdkPhase(i+1);
         if(ret){
             ret = readData();
         }

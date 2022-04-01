@@ -176,15 +176,16 @@ bool Ad_Resulting::eachCurEnterOneByOne(int exValue)
     bool res = true;
     mCollect->readPduData();
     mControlOp = Ctrl_ZpduThread::bulid();
-    for(int k=0; k<mData->size; ++k) {
+    int lines = mDt->lines;
+    for(int k=0; k<lines; ++k) {
         if( mControlOp ){
-            mControlOp->openOnlySwitch(k+1);
-            mControlOp->delay(10);
-            mControlOp->openOnlySwitch(k+1);
+            mControlOp->openOnlySwitch(k);
+            mControlOp->delay(5);
+            mControlOp->openOnlySwitch(k);
         }
         else
             return false;
-        bool ret = eachCurCheck(k, exValue);
+        bool ret = eachCurCheck(lines==2 ?k+1:k, exValue);
         if(!ret) res = false;
     }
 

@@ -3,6 +3,7 @@
 #include "yc_obj.h"
 #include "test_sithread.h"
 #include "ad_corethread.h"
+#include "ctrl_zpduthread.h"
 
 class Test_CoreThread : public BaseThread
 {
@@ -28,6 +29,7 @@ private:
     Sn_SerialNum *mSn;
     Test_SiThread *mCtrl;
     Ad_CoreThread *mAd;
+    Ctrl_ZpduThread *mControlOp;
 };
 
 #endif // TEST_CORETHREAD_H

@@ -159,6 +159,14 @@ void Test_CoreThread::collectData()
 
 void Test_CoreThread::run()
 {
+    if(mItem->aiMode == Test_Onebyone){
+        mControlOp = Ctrl_ZpduThread::bulid();
+        if(mControlOp){
+            mControlOp->openAllSwitch();
+            delay(5);
+            mControlOp->openAllSwitch();
+        }
+    }
     if(isRun) return; else isRun = true;
     bool ret = initFun();
 //    bool ret = mSn->snEnter();
