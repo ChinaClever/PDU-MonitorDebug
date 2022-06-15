@@ -42,7 +42,7 @@ void Td_LineTabWid::appendItem(sObjData *dev)
             if(mSceen->devType == 0)listStr << QString::number(dev->pow[i]/COM_RATE_PF,'f',3)+"kW";
             else listStr << QString::number(dev->pow[i]/COM_RATE_POW,'f',3)+"kW";
         }
-        else if(dd->dt.devType == 0 && dd->cfg.si_version == 2)//SI,BM黑底白字功率只有10倍
+        else if(dd->dt.devType == 0 &&(dd->cfg.si_version == 1 || dd->cfg.si_version == 2) )//SI,BM黑底白字功率只有10倍
         {
             listStr << QString::number(dev->pow[i]/COM_RATE_ELE,'f',3)+"kW";
         }

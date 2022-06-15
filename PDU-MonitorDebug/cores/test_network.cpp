@@ -51,7 +51,7 @@ bool Test_NetWork::startProcess()
         mProcess->close();
         mProcess->start(exe);
         updatePro(tr("正在启动网页"));
-        if(mCfg->security) t = 80;
+        if(mCfg->security) t = 150;
         if(mPro->step == Test_Seting) t = 150;
         if(ret) mProcess->waitForFinished(t*1000);
 //        if(!mac) updateMacAddr(-1);
