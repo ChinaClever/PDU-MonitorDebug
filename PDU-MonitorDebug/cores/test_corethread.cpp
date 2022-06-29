@@ -80,7 +80,7 @@ bool Test_CoreThread::checkDev()
             }
 
             str = tr("设备版本验证");
-            ret = mDt->version == mCfg->ip_version ? true:false;
+            ret = mDt->version == mCfg->ip_version ?true:(IP_PDUV1_HUADA  == mCfg->ip_version ?true:false);
             if(ret) str += tr("正常"); else str += tr("错误");
             updatePro(str, ret);
         }

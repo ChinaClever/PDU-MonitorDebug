@@ -34,6 +34,7 @@ void Td_ThresholdTabWid::setDataUnit(int id, sDataUnit &unit)
     sDevData *dev = sDataPacket::bulid()->getDev();
     mSceen = &(dev->dt);
     if(mSceen->screen == 1) crate = 10.0;
+    if( mSceen->screen == 3 && dev->cfg.log_en  == 0 && dev->cfg.security  == 1) crate = 10.0;
 
     for(int i=0; i<unit.size; ++i) {
         QStringList listStr;

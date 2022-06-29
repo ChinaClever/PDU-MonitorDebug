@@ -27,7 +27,8 @@ enum eIpTypes {
     IP_PDUV3_EATON,     // IP-PDU 伊顿 5
     IP_PDUV6,           // IPV6标准    6
     IP_PDUV6_HUAWEI,     // IPV6华为   7
-    IP_PDUV1_YIXIN     // IPV1易信   8
+    IP_PDUV1_YIXIN,     // IPV1易信   8
+    IP_PDUV1_HUADA     // IPV1华大    9
 };
 
 

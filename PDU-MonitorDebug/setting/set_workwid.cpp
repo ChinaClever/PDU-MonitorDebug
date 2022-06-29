@@ -29,7 +29,7 @@ void Set_WorkWid::initFunSlot()
     ui->userEdit->setText(mItem->user);
     ui->addrSpin->setValue(mItem->addr);
     ui->cntSpin->setValue(mItem->cnt.cnt);
-    ui->aiBox->setCurrentIndex(mItem->aiMode);
+    ui->aiBox->setCurrentIndex(0);
 
     initMac();
     timer = new QTimer(this);
