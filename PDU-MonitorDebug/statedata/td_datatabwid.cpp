@@ -29,6 +29,7 @@ void Td_DataTabWid::appendItem(sObjData *unit)
         sDevData *dd = sDataPacket::bulid()->getDev();
         mSceen = &(dd->dt);
         if(mSceen->screen == 1) crate = 10.0;
+        if( mSceen->screen == 3 && dd->cfg.log_en  == 0 && dd->cfg.security  == 1) crate = 10;
 
         if(1 == unit->sw[i]) listStr << tr("开"); else listStr << tr("关");
         listStr << QString::number(unit->cur.value[i]/COM_RATE_CUR/crate,'f',2)+"A";

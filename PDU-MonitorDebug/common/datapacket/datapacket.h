@@ -110,7 +110,10 @@ struct sTypeCfg
     uchar ip_language;
     uchar ip_modbus;
     uchar ip_standard;
-    uchar ip_version; // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
+    uchar ip_version;
+    // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3
+    // 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
+    // 9:IP_PDUV1_HUADA// IPV1华大
     uchar security;
     uchar log_en;
     sObjCfg ip_cfg;
@@ -124,7 +127,7 @@ struct sDevType
 {
     uchar devId;
     uchar devType; // 0 SI-PDU  1 IP-PDU
-    uchar screen;//0 液晶 1 断码屏 2 数码管
+    uchar screen;//0 液晶 1 断码屏 2 数码管 3 V1和断码屏
     uchar lines;
     uchar ac;
     uchar version; // IP V1 V3 // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI

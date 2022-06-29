@@ -23,6 +23,7 @@ bool Ad_Resulting::curErrRange(int exValue, int cur)
     bool ret = false;
     int crate = 1;
     if( mDev->dt.screen == 1 ) crate = 10;
+    if( mDev->dt.screen == 3 && mCfg->log_en  == 0 && mCfg->security  == 1) crate = 10;
     int min = (exValue - mItem->curErr * 10)*crate;
     int max = (exValue + mItem->curErr * 10)*crate;
     if((cur >= min) && (cur <= max )) {
@@ -106,6 +107,7 @@ bool Ad_Resulting::volErrRangeByID(int i)
     if( mDev->dt.screen == 1 ||
       (mDev->dt.devType == 0 && mDev->cfg.si_version == 1 )
       || (mDev->dt.devType == 0 && mDev->cfg.si_version == 2)) crate = 10;//断码屏,SI-PDU腾讯定制和SI-PDU黑底白字定制
+    if( mDev->dt.screen == 3 && mCfg->log_en  == 0 && mCfg->security  == 1) crate = 10;
     int min = (mItem->vol - mItem->volErr)*crate;
     int max = (mItem->vol + mItem->volErr)*crate;
     QString str = tr("期望电压200V，实际电压%1V 第%2位 电压 ").arg(vol/(crate*1.0)).arg(i+1);

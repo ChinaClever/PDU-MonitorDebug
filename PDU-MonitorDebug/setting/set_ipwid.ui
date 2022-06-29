@@ -149,6 +149,11 @@
           <string>IP-V1-YIXIN</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>IP-V1-华大</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="5" column="3">

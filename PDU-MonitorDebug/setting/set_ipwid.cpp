@@ -120,21 +120,21 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->OutSecond->setHidden(res);
 
     res = true;
-    if(index <= IP_PDUV3_EATON - 2)  res = false;
+    if(index <= IP_PDUV3_EATON - 2 || index == IP_PDUV1_HUADA - 2)  res = false;
     ui->label_9->setHidden(res);
     ui->lcdBox->setHidden(res);
 
 
     res = false;
-    if(index >= IP_PDUV3_C3 - 2)  res = true;
+    if(index >= IP_PDUV3_C3 - 2 )  res = true;
     ui->label_4->setHidden(res);
     ui->securityBox->setHidden(res);
     ui->label_8->setHidden(res);
     ui->sBox->setHidden(res);
-    ui->label_3->setHidden(res);
-    ui->ipModeBox->setHidden(res);
     ui->label_11->setHidden(res);
     ui->logBox->setHidden(res);
+    ui->label_3->setHidden(res);
+    ui->ipModeBox->setHidden(res);
 
     if(index == IP_PDUV3_EATON - 2)  res = false;
     ui->label_4->setHidden(res);
@@ -146,5 +146,32 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->logBox->setHidden(res);
     ui->label_8->setHidden(res);
     ui->label_11->setHidden(res);
+
+    if( index == IP_PDUV1_HUADA - 2){//IP_PDUV1_HUADA
+        res = false;
+        ui->label_8->setHidden(res);
+        ui->sBox->setHidden(res);
+        ui->label_11->setHidden(res);
+        ui->logBox->setHidden(res);
+        ui->label_4->setText(tr("屏类型"));
+        ui->securityBox->setItemText(0 , tr("液晶屏"));
+        ui->securityBox->setItemText(1 , tr("段码屏"));
+        ui->label_11->setText(tr("电压显示"));
+        ui->logBox->setItemText(0 , tr("显示0.1"));
+        ui->logBox->setItemText(1 , tr("整数"));
+        ui->label_3->setHidden(res);
+        ui->ipModeBox->setHidden(res);//电流小数 1 2； 屏类型 段码屏 和 液晶屏
+        ui->label_4->setHidden(res);
+        ui->securityBox->setHidden(res);
+    }else{
+        ui->label_4->setText(tr("安全加密"));
+        ui->securityBox->setItemText(0 , tr("标准版本"));
+        ui->securityBox->setItemText(1 , tr("安全加密"));
+        ui->label_11->setText(tr("日志功能"));
+        ui->logBox->setItemText(0 , tr("无日志"));
+        ui->logBox->setItemText(1 , tr("带日志"));
+    }
+
+
     mUnitWid->changeIndex(index);
 }
