@@ -220,13 +220,13 @@ bool Ad_Adjusting::readData()
     updatePro(tr("正在校准：请等待..."));
 
     do {
+        if(mPro->step >= Test_vert) break;
         int len = readSerial(buf);
         if(len > 0){
             ret = recvStatus(buf, len);
         } else {
             ret = overWork(tr("校准超时！")); break;
         }
-        if(mPro->step >= Test_vert) break;
     } while(true == ret);
 
     return ret;
