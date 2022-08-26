@@ -111,15 +111,6 @@ void Set_IpWid::enabledSlot(bool en)
 void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
 {
     bool res = true;
-    if(index == IP_PDUV3_EATON - 2)  res = false;
-    ui->label->setHidden(res);
-    ui->InFirst->setHidden(res);
-    ui->InSecond->setHidden(res);
-    ui->label_5->setHidden(res);
-    ui->OutFirst->setHidden(res);
-    ui->OutSecond->setHidden(res);
-
-    res = true;
     if(index <= IP_PDUV3_EATON - 2 || index == IP_PDUV1_HUADA - 2)  res = false;
     ui->label_9->setHidden(res);
     ui->lcdBox->setHidden(res);
@@ -136,16 +127,30 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->label_3->setHidden(res);
     ui->ipModeBox->setHidden(res);
 
-    if(index == IP_PDUV3_EATON - 2)  res = false;
-    ui->label_4->setHidden(res);
-    ui->securityBox->setHidden(res);
-
     res = true;
     if(index == IP_PDUV3 - 2)  res = false;
     ui->sBox->setHidden(res);
     ui->logBox->setHidden(res);
     ui->label_8->setHidden(res);
     ui->label_11->setHidden(res);
+
+    if(index == IP_PDUV3_EATON - 2){
+        res = false;
+        ui->label->setHidden(res);
+        ui->InFirst->setHidden(res);
+        ui->InSecond->setHidden(res);
+        ui->label_5->setHidden(res);
+        ui->OutFirst->setHidden(res);
+        ui->OutSecond->setHidden(res);
+        ui->label_4->setHidden(res);
+        ui->securityBox->setHidden(res);
+        ui->sBox->setHidden(res);
+        ui->logBox->setHidden(res);
+        ui->label_8->setHidden(res);
+        ui->label_11->setHidden(res);
+        ui->label_3->setHidden(res);
+        ui->ipModeBox->setHidden(res);
+    }
 
     if( index == IP_PDUV1_HUADA - 2){//IP_PDUV1_HUADA
         res = false;
