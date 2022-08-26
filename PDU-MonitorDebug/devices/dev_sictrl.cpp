@@ -89,7 +89,9 @@ bool Dev_SiCtrl::unClock()
 
 bool Dev_SiCtrl::setDev()
 {
-    bool ret =  sentRtuCmd(0x1049, mCfg->si_lines); ret = true;  //断码屏没有返回，上面命令默认都能成功
+    bool ret =  false;
+    if(mCfg->si_lines == 2 && mDt->devType == 0 && mDt->screen == 1) sentRtuCmd(0x1049, 0x03);
+    ret = sentRtuCmd(0x1049, mCfg->si_lines); ret = true;  //断码屏没有返回，上面命令默认都能成功
     if(ret) ret = sentRtuCmd(0x1051, mCfg->si_series);
     if(ret) ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
 
