@@ -128,29 +128,19 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
     ui->ipModeBox->setHidden(res);
 
     res = true;
+    ui->label->setHidden(res);
+    ui->InFirst->setHidden(res);
+    ui->InSecond->setHidden(res);
+    ui->label_5->setHidden(res);
+    ui->OutFirst->setHidden(res);
+    ui->OutSecond->setHidden(res);
     if(index == IP_PDUV3 - 2)  res = false;
     ui->sBox->setHidden(res);
     ui->logBox->setHidden(res);
     ui->label_8->setHidden(res);
     ui->label_11->setHidden(res);
 
-    if(index == IP_PDUV3_EATON - 2){
-        res = false;
-        ui->label->setHidden(res);
-        ui->InFirst->setHidden(res);
-        ui->InSecond->setHidden(res);
-        ui->label_5->setHidden(res);
-        ui->OutFirst->setHidden(res);
-        ui->OutSecond->setHidden(res);
-        ui->label_4->setHidden(res);
-        ui->securityBox->setHidden(res);
-        ui->sBox->setHidden(res);
-        ui->logBox->setHidden(res);
-        ui->label_8->setHidden(res);
-        ui->label_11->setHidden(res);
-        ui->label_3->setHidden(res);
-        ui->ipModeBox->setHidden(res);
-    }
+
 
     if( index == IP_PDUV1_HUADA - 2){//IP_PDUV1_HUADA
         res = false;
@@ -177,6 +167,23 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
         ui->logBox->setItemText(1 , tr("带日志"));
     }
 
+    if(index == IP_PDUV3_EATON - 2){
+        res = false;
+        ui->label->setHidden(res);
+        ui->InFirst->setHidden(res);
+        ui->InSecond->setHidden(res);
+        ui->label_5->setHidden(res);
+        ui->OutFirst->setHidden(res);
+        ui->OutSecond->setHidden(res);
+        ui->label_4->setHidden(res);
+        ui->securityBox->setHidden(res);
+        ui->sBox->setHidden(res);
+        ui->logBox->setHidden(res);
+        ui->label_8->setHidden(res);
+        ui->label_11->setHidden(res);
+        ui->label_3->setHidden(res);
+        ui->ipModeBox->setHidden(res);
+    }
 
     mUnitWid->changeIndex(index);
 }
