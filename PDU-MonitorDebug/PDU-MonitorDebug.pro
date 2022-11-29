@@ -34,8 +34,7 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    navbarwid.h \
-    hidapi.h
+    navbarwid.h
 
 FORMS += \
     mainwindow.ui \
@@ -51,8 +50,3 @@ RESOURCES += \
 
 RC_FILE += \
     images/icon.rc
-
-win32: LIBS += -L$$PWD/../build-PDU-MonitorDebug-Desktop_Qt_5_14_2_MinGW_64_bit-Release/ -lhidapi
-
-INCLUDEPATH += $$PWD/../build-PDU-MonitorDebug-Desktop_Qt_5_14_2_MinGW_64_bit-Release
-DEPENDPATH += $$PWD/../build-PDU-MonitorDebug-Desktop_Qt_5_14_2_MinGW_64_bit-Release
