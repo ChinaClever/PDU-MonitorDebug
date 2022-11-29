@@ -164,6 +164,7 @@ void Test_CoreThread::collectData()
 
 void Test_CoreThread::run()
 {
+
     if(mItem->aiMode == Test_Onebyone){
         mControlOp = Ctrl_ZpduThread::bulid();
         if(mControlOp){

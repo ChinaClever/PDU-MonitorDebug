@@ -2,6 +2,7 @@
 #include "msgbox.h"
 #include <QApplication>
 #include "qtsingleapplication.h"
+#include "hidapi.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +12,13 @@ int main(int argc, char *argv[])
         a.sendMessage("raise_window_noop", 1000); //4s后激活前个实例
         return EXIT_SUCCESS;
     }
-
+    hid_device *handle;
+    handle = hid_open(0x413c, 0x2113, NULL);
+    if (!handle) {
+       qDebug()<<"unable to open device\n";
+    }else{
+       qDebug()<<"open device\n";
+    }
     MainWindow w;
     w.show();
     return a.exec();
