@@ -48,6 +48,7 @@ void Dev_IpRtu::initRtuItem(sRtuItem &it)
     if(mCfg->ip_version >= 3 && mCfg->ip_version <= 5) {//标准 ， C3 , 伊顿
         it.num = IP_RTU_THREE_LEN;  // V3
     }
+    if(mCfg->ip_version == IP_PDUV3_BYTE) it.num = IP_RTU_THREE_LEN;  // V3
 }
 
 
@@ -115,33 +116,63 @@ int Dev_IpRtu::recvDataV3(uchar *ptr)
     int line = IP_LINE_NUM;
 
     sObjData *obj = &(mDev->data);
-    ptr =  toShort(ptr, line, obj->vol.value);
-    ptr =  toShort(ptr, line, obj->cur.value);
-    ptr =  getShort(ptr, line, obj->pf);
-    ptr =  toShort(ptr, line, obj->pow);
-    ptr =  toShort(ptr, line, obj->aPow);
-    ptr =  toInt(ptr, line, obj->ele);
-    obj->hz[0] = getShort(ptr); ptr +=2;
-    ptr = getSwitch(ptr, line, obj->sw); // 开关状态
+    if(mDt->version != IP_PDUV3_BYTE){
+        ptr =  toShort(ptr, line, obj->vol.value);
+        ptr =  toShort(ptr, line, obj->cur.value);
+        ptr =  getShort(ptr, line, obj->pf);
+        ptr =  toShort(ptr, line, obj->pow);
+        ptr =  toShort(ptr, line, obj->aPow);
+        ptr =  toInt(ptr, line, obj->ele);
+        obj->hz[0] = getShort(ptr); ptr +=2;
+        ptr = getSwitch(ptr, line, obj->sw); // 开关状态
 
-    obj->tem.size = obj->hum.size = 1;
-    ptr =  toShort(ptr, 1, obj->tem.value);
-    ptr =  toShort(ptr, 1, obj->hum.value);
-    obj->tem.max[0] = 40; obj->hum.max[0] = 99;
+        obj->tem.size = obj->hum.size = 1;
+        ptr =  toShort(ptr, 1, obj->tem.value);
+        ptr =  toShort(ptr, 1, obj->hum.value);
+        obj->tem.max[0] = 40; obj->hum.max[0] = 99;
 
-    ptr = toThreshold(ptr, line, obj->vol);
-    ptr = toThreshold(ptr, line, obj->cur);
-    ptr += 8 + (2*2*line + 2 + 2); // 报警
+        ptr = toThreshold(ptr, line, obj->vol);
+        ptr = toThreshold(ptr, line, obj->cur);
+        ptr += 8 + (2*2*line + 2 + 2); // 报警
 
-    obj->size = getShort(ptr); ptr +=2;
-    obj->version = getShort(ptr); ptr +=2;
-    obj->br = getShort(ptr); ptr +=2;
-    ptr = toChar(ptr, 8, obj->ip);
-    obj->reserve = getShort(ptr); ptr +=2;
+        obj->size = getShort(ptr); ptr +=2;
+        obj->version = getShort(ptr); ptr +=2;
+        obj->br = getShort(ptr); ptr +=2;
+        ptr = toChar(ptr, 8, obj->ip);
+        obj->reserve = getShort(ptr); ptr +=2;
 
-    mDt->lines = obj->size;
-    if(obj->size == 2)  obj->size = 3;
-    obj->vol.size = obj->cur.size = obj->size;
+        mDt->lines = obj->size;
+        if(obj->size == 2)  obj->size = 3;
+        obj->vol.size = obj->cur.size = obj->size;
+    }else{
+        ptr =  toShort(ptr, line, obj->vol.value);
+        ptr =  toShort(ptr, line, obj->cur.value);
+        ptr =  getShort(ptr, line, obj->pf);
+        ptr =  toShort(ptr, line, obj->pow);
+        ptr =  calcaPow(ptr, line, obj->aPow , obj->vol.value , obj->cur.value);
+        ptr =  toInt(ptr, line, obj->ele);
+        obj->hz[0] = getShort(ptr); ptr +=2;
+        ptr = getSwitch(ptr, line, obj->sw); // 开关状态
+
+        obj->tem.size = obj->hum.size = 1;
+        ptr =  toShort(ptr, 1, obj->tem.value);
+        ptr =  toShort(ptr, 1, obj->hum.value);
+        obj->tem.max[0] = 40; obj->hum.max[0] = 99;
+
+        ptr = toThreshold(ptr, line, obj->vol);
+        ptr = toCurThreshold(ptr, line, obj->cur);
+        ptr += 8 + (2*2*line + 2 + 2); // 报警
+
+        obj->size = getShort(ptr); ptr +=2;
+        obj->version = getShort(ptr); ptr +=2;
+        obj->br = getShort(ptr); ptr +=2;
+        ptr = toChar(ptr, 8, obj->ip);
+        obj->reserve = getShort(ptr); ptr +=2;
+
+        mDt->lines = obj->size;
+        if(obj->size == 2)  obj->size = 3;
+        obj->vol.size = obj->cur.size = obj->size;
+    }
 
     return ptr-ret;
 }
@@ -168,4 +199,24 @@ bool Dev_IpRtu::readPduData()
     initRtuItem(it);
     int len = mModbus->read(it, recv);
     return recvPacket(recv, len);
+}
+
+
+uchar* Dev_IpRtu::calcaPow(uchar *ptr, int line, ushort *value , ushort *vol, ushort *cur)
+{
+    for(int i=0; i<line; ++i) {
+        value[i] =  vol[i]*cur[i]/1000.0;  ptr += 2;
+    }
+    return ptr;
+}
+
+uchar* Dev_IpRtu::toCurThreshold(uchar *ptr, int line,sDataUnit &unit)
+{
+    for(int i=0; i<line; ++i) {
+        ptr = toShort(ptr, 1, &unit.min[i]);
+        ptr += 2;
+        ptr = toShort(ptr, 1, &unit.max[i]);
+    }
+
+    return ptr;
 }

@@ -26,6 +26,7 @@ include(common/common.pri)
 include(devices/devices.pri)
 include(setting/setting.pri)
 include(statedata/statedata.pri)
+include(web_ip/web_ip.pri)
 
 SOURCES += \
     main.cpp \

@@ -272,6 +272,7 @@ bool Ad_Adjusting::startAdjustOneByOne(int lines)
         else
             return false;
         ret = sentCmdkPhase(i+1);
+        delay(15);
         if(ret){
             ret = readData();
         }
