@@ -6,6 +6,7 @@ import socket
 import time
 import os
 
+
 class IpWeb:
 
     def __init__(self):
@@ -19,8 +20,6 @@ class IpWeb:
             self.driver = webdriver.Firefox(executable_path="geckodriver.exe")
         except ValueError:
             self.driver = webdriver.Chrome(executable_path="chromedriver.exe")
-        #finally:
-            #self.driver.minimize_window()
 
     def initNetWork(self):
         hostname = socket.gethostname()  # 获取计算机名称
@@ -32,61 +31,42 @@ class IpWeb:
             self.dest_ip = '127.0.0.1'
             # self.sendtoMainapp("Mac地址错误：" + mac, 0)
 
+    def udpSendTo(self, message):
+        self.sock.sendto(message.encode('utf-8-sig'), (self.dest_ip, 10086))
+
     def sendtoMainapp(self, parameter, res):
         message = parameter + ";" + str(res)
-        self.sock.sendto(message.encode('utf-8-sig'), (self.dest_ip, 10010))
+        self.udpSendTo(message)
+
+    def setMacAddr(self):
+        cfg = self.cfgs
+        it = self.driver.find_element_by_id('mac1')
+        mac = it.get_attribute('value')
+        if "2C:26:5F:" in mac:
+            self.udpSendTo("MAC-1")
+        else:
+            self.setItById("mac1", cfg['mac'], 'Mac地址')
 
     @staticmethod
     def getCfg():
         cf = configparser.ConfigParser()
-        fn = os.path.expanduser('~') + "/.PDU-MonitorTest/cfg.ini"
+        fn = os.path.expanduser('~') + "/.PDU-Settings/cfg.ini"
         cf.read(fn, 'utf-8-sig')  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块
+        # cf.read("cfg.ini")
         return cf
 
     def initCfg(self):
         items = IpWeb.getCfg().items("ipCfg")  # 获取section名为Mysql-Database所对应的全部键值对
-        self.cfgs = {'version':1, 'sw_ver': '','ip_addr': '192.168.1.163', 'ac':1, 'log_en':0, 'security':0,'lcd':0,'ip_infirst': 'IEC309', 'ip_insecond': '18A', 'ip_outfirst': '20xC13', 'ip_outsecond': '4xC19', 'protocol':0 , 'lcd_switch':1,'maccheck':1}
+        self.cfgs = {'ip_version': 1, 'user': 'admin', 'pwd': 'admin',
+                     'ip': '192.168.1.163', 'debug_web': 'correct.html', 'security':0,
+                     'ip_lines': 1, 'ip_modbus': 1, 'ip_language': 1, 'lcd_switch': 1,
+                     'mac': '', 'ip_ac': 1, 'ip_lcd': 0, 'log_en': 1, 'ip_standard': 0, 'ip_inFirst': 'IEC309', 'ip_inSecond': '18A', 'ip_outFirst': '20xC13', 'ip_outSecond': '4xC19'}
+        self.cfgs['mac'] = IpWeb.getCfg().get("Mac", "mac")
         for it in items:
             self.cfgs[it[0]] = it[1]
-            
-        cfgitems = IpWeb.getCfg().items("Cfg")  # 
-        for it in cfgitems:
-            self.cfgs[it[0]] = it[1]
-        if int(self.cfgs['lines']) == 0:
-            self.cfgs['lines'] = 1
-            self.cfgs['ac'] = 0
-
-    def verCheck(self):
-        tt = self.driver.find_element_by_xpath('//div/div/div/div[last()]/span')
-        try:
-            #try:
-            #    jsSheet = 'if(confirm("确认网页Logo是否正确")){alert("Logo正确");}else{alert("Logo错误");}'
-            #    self.execJs(jsSheet)
-            #    time.sleep(1)
-            #    while( True ):
-            #        alert = self.driver.switch_to_alert().text
-            #        if( alert == '确认网页Logo是否正确' ):
-            #            time.sleep(1)
-            #        elif( alert == 'Logo正确' ):
-            #            self.sendtoMainapp('Logo正确',1)
-            #            break
-            #        elif( alert == 'Logo错误' ):
-            #            self.sendtoMainapp('Logo错误',0)
-            #            break
-            #    self.driver.switch_to.alert.accept()
-            #except :
-            #    print('exception')
-            #finally:
-            #    name, ver = tt.text.split(':')
-            name, ver = tt.text.split(':')
-        except:
-            str1, str2 = tt.text.split(' ')
-            name, ver = str1.split(':')
-        msg = '版本号检测，V{0}'.format(ver)
-        if(self.cfgs['sw_ver'] in ver):
-            self.sendtoMainapp(msg, 1)
-        else:
-            self.sendtoMainapp(msg+" 错误",0)
+        if int(self.cfgs['ip_lines']) == 0:
+            self.cfgs['ip_lines'] = 1
+            self.cfgs['ip_ac'] = 0
 
     def createAccount(self):
         self.ip_prefix = 'https://'
@@ -95,33 +75,33 @@ class IpWeb:
         pwd = self.cfgs['pwd'] = 'abcd123'
         self.driver.get(ip); time.sleep(3)
         try:
-            self.setItById('old_pwd' , user)
-            self.setItById('sign_pwd' , pwd)
-            self.setItById('sign_repwd' , pwd)
+            self.setItById('old_pwd' , user ,'创建账号')
+            self.setItById('sign_pwd' , pwd,'创建密码')
+            self.setItById('sign_repwd' , pwd,'确认密码')
             self.execJs('changePwd()'); time.sleep(1.2)
             self.sendtoMainapp("创建测试账号成功", 1)
         except:
             self.sendtoMainapp("创建测试账号失败", 1)
         finally:
             self.driver.refresh(); time.sleep(1)
-            self.setItById("name", user)
-            self.setItById("psd", pwd)
-            self.execJs("login()");time.sleep(3)
+            self.setItById("name", user, '账号')
+            self.setItById("psd", pwd, '密码')
+            self.execJs("login()");time.sleep(2)
 
     def inputAccount(self):
         ip = self.ip_prefix + self.cfgs['ip'] + '/'
         user = self.cfgs['user'] = 'admin'
         pwd = self.cfgs['pwd'] = 'admin'
-        if(int(self.cfgs['version'])==5):
-            user = self.cfgs['user'] = 'abcd123'
-            pwd = self.cfgs['pwd'] = 'abcd123'
-        elif(int(self.cfgs['version'])==7):
+        if(int(self.cfgs['ip_version'])==5):
+            user = self.cfgs['user'] = 'eaton'
+            pwd = self.cfgs['pwd'] = 'eaton'
+        elif(int(self.cfgs['ip_version'])==7):
             user = self.cfgs['user'] = 'huawei'
             pwd = self.cfgs['pwd'] = 'huawei'
         self.driver.get(ip); time.sleep(2.2)
         try:
-            self.setItById("name", user)
-            self.setItById("psd", pwd)
+            self.setItById("name", user, '账号')
+            self.setItById("psd", pwd, '密码')
             self.execJs("login()")
             self.sendtoMainapp("网页登陆成功", 1)
         except:
@@ -130,21 +110,86 @@ class IpWeb:
             time.sleep(1.2)
 
     def login(self):
-        self.cfgs['ip'] = self.cfgs['ip_addr']
         security = int(self.cfgs['security'])
-        v = int(self.cfgs['version'])
+        v = int(self.cfgs['ip_version'])
+        
         if(security and v != 9):
             self.createAccount()
         else:
             self.inputAccount()
-        self.verCheck()
 
-    def checkEnv(self):
+    def setCur(self, lines, min, max):
+        p = '电流阈值'
+        size = lines
+        if (size == 2):
+            lines = 3
+        for num in range(1, lines + 1):
+            if (size == 2 and num == 2):
+                max = int((int(max) + 1) // 2)
+            self.setItById("min" + str(num), int(min), p)
+            self.setItById("max" + str(num), int(max), p)
+            self.execJs("setlimit({0})".format(num))
+            
+    def setIpv3ByteCur(self, lines, min, max):
+        p = '电流阈值'
+        size = lines
+        if (size == 2):
+            lines = 3
+        for num in range(1, lines + 1):
+            if (size == 2 and num == 2):
+                max = int((int(max) + 1) // 2)
+            self.setItById("min" + str(num), int(min), p)
+            self.setItById("Lmax" + str(num), round(int(max)*0.8,1), p)
+            self.setItById("max" + str(num), int(max), p)
+            self.execJs("setlimit({0})".format(num))
+            
+    def setIpv3ByteThreshold(self):
+        curMin = self.cfgs['cur_min']
+        curMax = self.cfgs['cur_max']
+        volMin = self.cfgs['vol_min']
+        volMax = self.cfgs['vol_max']
+        line = int(self.cfgs['ip_lines'])
         self.divClick(2)
-        self.itemCheck("min7", 0, '温度最小值')
-        self.itemCheck("max7", 40, '温度最大值')
-        self.itemCheck("min8", 0, '湿度最小值')
-        self.itemCheck("max8", 99, '湿度最大值')
+        self.setIpv3ByteCur(line, curMin, curMax)
+        self.setVol(line, volMin, volMax)
+        self.setEnv()
+        self.sendtoMainapp("设备报警阈值设置成功", 1)
+            
+    def setIpv6Cur(self, lines, min, max):
+        p = '电流阈值'
+        lines = 3
+        for num in range(1, lines + 1):
+            self.setItById("min" + str(num), int(min), p)
+            self.setItById("lower_L" + str(num), int(min), p)
+            self.setItById("Upper_L" + str(num), int(max), p)
+            self.setItById("max" + str(num), int(max), p)
+            self.execJs("setlimit({0})".format(num))
+
+    def setVol(self, lines, min, max):
+        p = '电压阈值'
+        size = lines
+        if (size == 2):
+            lines = 3
+        for num in range(4, lines + 4):
+            self.setItById("min" + str(num), min, p)
+            self.setItById("max" + str(num), max, p)
+            self.execJs("setlimit({0})".format(num))
+
+    def setEnv(self):
+        temMin = self.cfgs['tem_min']
+        temMax = self.cfgs['tem_max']
+        humMin = self.cfgs['hum_min']
+        humMax = self.cfgs['hum_max']
+
+        p = '温度阈值'
+        self.setItById("min7", temMin, p)
+        self.setItById("max7", temMax, p)
+        self.execJs("setlimit(7)")
+
+        p = '湿度阈值'
+        self.setItById("min8", humMin, p)
+        self.setItById("max8", humMax, p)
+        self.execJs("setlimit(8)")
 
     def setSelectLcd(self, id, v):
         try:
@@ -153,56 +198,80 @@ class IpWeb:
         except NoSuchElementException:
             msg = '网页上找不到{0}'.format(id)
         else:
-            if it.is_displayed():
-                self.itemCheck(id, v, 'LCD方向')
-                #Select(it).select_by_index(v); time.sleep(1)
-                #self.execJs("setdevice()"); time.sleep(1)
-                #self.driver.switch_to.alert.accept()
+            try:
+                if it.is_displayed():
+                    Select(it).select_by_index(v); time.sleep(1)
+                    self.execJs("setdevice()"); time.sleep(1)
+                    self.driver.switch_to.alert.accept()
+            except:
+                pass
 
-    def checkLcdDir(self):
-        dir = self.cfgs['lcd']
+    def setLcdDir(self):
+        dir = self.cfgs['ip_lcd']
         self.setSelectLcd("dir", dir)
-        if(int(self.cfgs['version']) == 8):
-            self.setSelectLcd("direction", dir)
-        
+        self.setSelectLcd("direction", dir)
+
     def setEle(self):
-        if(int(self.cfgs['version']) <= 5 or int(self.cfgs['version']) == 10):
-            self.checkEnv()
         self.divClick(3)
-        self.checkLcdDir()
+        self.setLcdDir()
         jsSheet = " claerset = createXmlRequest();claerset.onreadystatechange = clearrec;ajaxget(claerset, \"/energyzero?a=\" + {0}+\"&\");"
         for num in range(0, 4):
             self.execJs(jsSheet.format(num))
         self.sendtoMainapp("设备电能清除成功", 1)
 
-    def setSelect(self, id, v):
-        it = self.findItById(id)
-        Select(it).select_by_index(v)
-        time.sleep(0.7)
+    def setThreshold(self):
+        curMin = self.cfgs['cur_min']
+        curMax = self.cfgs['cur_max']
+        volMin = self.cfgs['vol_min']
+        volMax = self.cfgs['vol_max']
+        line = int(self.cfgs['ip_lines'])
+        self.divClick(2)
+        self.setCur(line, curMin, curMax)
+        self.setVol(line, volMin, volMax)
+        self.setEnv()
+        self.sendtoMainapp("设备报警阈值设置成功", 1)
+    
+    def setIpv6Threshold(self):
+        curMin = self.cfgs['cur_min']
+        curMax = self.cfgs['cur_max']
+        volMin = self.cfgs['vol_min']
+        volMax = self.cfgs['vol_max']
+        line = 3
+        self.setIpv6Cur(line, curMin, curMax)
+        self.setVol(line, volMin, volMax)
+        self.setEnv()
+        self.sendtoMainapp("设备后台报警阈值设置成功", 1)
 
-    def findItById(self, id):
+    def setSelect(self, id, v):
+        time.sleep(0.35)
+        it = self.driver.find_element_by_id(id)
+        if it.is_displayed():
+            Select(it).select_by_index(v)
+            time.sleep(0.8)
+
+    def setItById(self, id, v, parameter):
         try:
-            time.sleep(0.15)
+            time.sleep(0.1)
             it = self.driver.find_element_by_id(id)
         except NoSuchElementException:
             msg = '网页上找不到{0}'.format(id)
-            #self.sendtoMainapp(msg, 1)
-            return None
         else:
-            return it
-
-    def setItById(self, id, v):
-        it = self.findItById(id)
-        if it != None:
-            it.clear()
-            it.send_keys(str(v))
+            if it.is_displayed():
+                it.clear();time.sleep(0.1)
+                it.send_keys(str(v))
+                msg = '设置{0} {1}：{2}'.format(parameter, id, v)
+                self.sendtoMainapp(msg, 1)
 
     def btnClick(self, id):
-        self.driver.find_element_by_id(id).click()
-        time.sleep(0.8)
+        try:
+            self.driver.find_element_by_id(id).click()
+            time.sleep(0.8)
+        except:
+            msg = '网页上找不到{0}'.format(id)
+        
 
     def alertClick(self, id):
-        self.btnClick(id)
+        self.btnClick(id); time.sleep(0.5)
         self.driver.switch_to.alert.accept()
         time.sleep(0.8)
 
@@ -218,48 +287,26 @@ class IpWeb:
         try:
             security = int(self.cfgs['security'])
             self.driver.execute_script(js);time.sleep(1)
-            if(security):time.sleep(1.5)
+            if(security):time.sleep(2.5)
         except:
             msg = '网页上找不到此方法{0}'.format(js)
 
     def execJsAlert(self, js):
-        self.execJs(js);time.sleep(0.4)
+        self.execJs(js); time.sleep(0.6)
         self.driver.switch_to.alert.accept()
-        time.sleep(1)
+        time.sleep(0.8)
 
     def resetFactory(self):
-        v = self.cfgs['version']
-        if( int(v) > 2 ):
-            self.divClick(10)
-        else:
+        v = IpWeb.getCfg().get("ipCfg", "ip_version")
+        if (1 == int(v)):
             self.divClick(8)
-        self.setSelect("order",1)
+        else:
+            self.divClick(10)
+        self.setSelect("order", 1)
         self.execJsAlert("setdevice();")
         self.sendtoMainapp("设备Web出厂设置成功", 1)
-        time.sleep(0.5)
-    
-    def reStart(self):
-        v = self.cfgs['version']
-        if( int(v) > 2 ):
-            self.divClick(10)
-        else:
-            self.divClick(8)
-        self.setSelect("order",0)
-        self.execJsAlert("setdevice();")
-        self.sendtoMainapp("设备重启设置成功", 1)
-        time.sleep(0.5)
-
-    def macAddrCheck(self):
-        it = self.findItById('mac1')
-        mac = it.get_attribute('value')
-        if(int(self.cfgs['maccheck']) == 1):
-            if "2C:26:5F:" in mac:
-                self.sendtoMainapp("Mac地址合法："+mac, 1)
-            else:
-                self.sendtoMainapp("Mac地址错误："+mac, 0)
-        else:
-            self.sendtoMainapp("Mac地址："+mac, 1)
-
+        time.sleep(8)
+        
     def itemCheck(self, ssid, value, parameter):
         try:
             it = self.findItById(ssid)
@@ -272,53 +319,33 @@ class IpWeb:
                     self.sendtoMainapp(msg, 1)
         except:
             pass
+    
+    def macAddrCheck(self):
+        it = self.findItById('mac1')
+        mac = it.get_attribute('value')
+        if "2C:26:5F:" in mac:
+            self.sendtoMainapp("Mac地址合法："+mac, 1)
+        else:
+            self.sendtoMainapp("Mac地址错误："+mac, 0)
+    
+    def findItById(self, id):
+        try:
+            time.sleep(0.15)
+            it = self.driver.find_element_by_id(id)
+        except NoSuchElementException:
+            msg = '网页上找不到{0}'.format(id)
+            #self.sendtoMainapp(msg, 1)
+            return None
+        else:
+            return it
+    
+    def reStart(self):
+        self.divClick(10)
+        self.setSelect("order", 0)
+        self.execJsAlert("setdevice();")
+        self.sendtoMainapp("重启成功", 1)
+        time.sleep(10)
 
-    def checkIpv6Threshold(self):
-        curMin = self.cfgs['cur_min']
-        curMax = self.cfgs['cur_max']
-        volMin = self.cfgs['vol_min']
-        volMax = self.cfgs['vol_max']
-        line = 3
-        self.checkCur(line, curMin, curMax)
-        self.checkVol(line, volMin, volMax)
-        self.checkEnv()
-        self.sendtoMainapp("检查设备报警阈值成功", 1)
-        
-    def checkCur(self, lines, min, max):
-        p = '电流阈值'
-        for num in range(1, lines + 1):
-            self.itemCheck("min" + str(num), int(min), p)
-            self.itemCheck("lower_L" + str(num), int(min), p)
-            self.itemCheck("Upper_L" + str(num), int(int(max)/10), p)
-            self.itemCheck("max" + str(num), int(int(max)/10), p)
 
-    def checkVol(self, lines, min, max):
-        p = '电压阈值'
-        for num in range(4, lines + 4):
-            self.itemCheck("min" + str(num), min, p)
-            self.itemCheck("max" + str(num), max, p)
-            
-    def checkIpv6Env(self):
 
-        p = '温度阈值'
-        self.itemCheck("min7", 0, p)
-        self.itemCheck("max7", 40, p)
-
-        p = '湿度阈值'
-        self.itemCheck("min8", 0, p)
-        self.itemCheck("max8", 99, p)
-        
-    def checkIpv3ByteCur(self):
-        p = '电流预警值'
-        min = self.cfgs['cur_min']
-        max = self.cfgs['cur_max']
-        lines = 3
-        self.divClick(2)
-        size = lines
-        if (size == 2):
-            lines = 3
-        for num in range(1, lines + 1):
-            if (size == 2 and num == 2):
-                max = int((int(max) + 1) // 2)
-            self.itemCheck("Lmax" + str(num), round(int(max)/10*0.8,1), p)
 

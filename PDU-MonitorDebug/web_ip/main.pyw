@@ -1,14 +1,17 @@
-from monitor_ip.ip_v1 import  *
-from monitor_ip.ip_v3 import  *
-from monitor_ip.ip_v3c3 import  *
-from monitor_ip.ip_v3eaton import  *
-from monitor_ip.ip_v6 import  *
-from monitor_ip.ip_v1yixin import  *
-from monitor_ip.ip_v1huada import  *
-from monitor_ip.ip_v3byte import  *
+from ctrlset_ip.ip_v1 import  *
+from ctrlset_ip.ip_v3 import  *
+from ctrlset_ip.ip_v3c3 import  *
+from ctrlset_ip.ip_v3eaton import  *
+from ctrlset_ip.ip_v6 import  *
+from ctrlset_ip.ip_v1yixin import  *
+from ctrlset_ip.ip_v1huada import  *
+from ctrlset_ip.ip_v3byte import  *
+
+
 
 if __name__ == '__main__':
-    v = IpWeb.getCfg().get("ipCfg", "version")
+    v = IpWeb.getCfg().get("ipCfg", "ip_version")
+
     if(int(v) == 3 ):
         app = IpV3()
         app.start_fun()
@@ -29,7 +32,7 @@ if __name__ == '__main__':
         app.start_fun()
     elif(int(v) == 10):
         app = IpV3BYTE()
-        app.start_fun()
+        app.start_fun()    
     else:
         app = IpV1()
         app.start_fun()

@@ -1,56 +1,47 @@
-from monitor_ip.ip_web import  *
+from ctrlset_ip.ip_web import  *
 
 class IpV3C3(IpWeb):
 
     def start_fun(self):
         self.login()
+        self.setCorrect()
         self.setEle()
-        self.checkCorrect()
+        self.setThreshold()
         self.clearLogs()
-        self.resetFactory()
+        #self.resetFactory()
         self.driver.quit()
 
     def setTime(self):
         self.divClick(8)
         self.execJsAlert("check_time()")
-
-    def timeCheck(self):
-        self.divClick(8); time.sleep(0.25)
-        nowTime = self.driver.find_element_by_id('loctime').text.split( )
-        devTime = self.driver.find_element_by_id('devtime1').text.split( )
-        if( nowTime[0] == devTime[0]):
-            h1 , m1 , s1 = nowTime[1].split(':')
-            t1 = int(h1)*3600 + int(m1)*60 + int(s1)
-            h2 , m2 , s2 = devTime[1].split(':')
-            t2 = int(h2)*3600 + int(m2)*60 + int(s2)
-            if( abs( t1-t2 ) >= 10*60 ):
-                self.sendtoMainapp("检查时间时分秒失败",0)
-                return False
-            else:
-                #print(abs(t1-t2))
-                self.sendtoMainapp("检查时间成功",1)
-                return True
-        else:
-            self.sendtoMainapp("检查时间年月日失败",0)
-            return False
+        self.sendtoMainapp("设置设备时间", 1)
 
     def clearLogs(self):
-        self.timeCheck()
+        self.setTime()
         self.divClick(9)
         jsSheet = "xmlset = createXmlRequest();xmlset.onreadystatechange = setdata;ajaxgets(xmlset, \"/setlclear?a=\" + {0} + \"&\");"
         for num in range(0, 2):
             self.setSelect("loglist", num)
             self.execJs(jsSheet.format(num))
-            time.sleep(0.2)
-        self.sendtoMainapp('清除日志', 1)
+            time.sleep(1)
+        self.sendtoMainapp("设备日志清除成功", 1)
 
-    def checkCorrect(self):
+    def setCorrect(self):
         cfg = self.cfgs
-        ip =  self.ip_prefix + cfg['ip_addr'] + '/correct.html'
-        self.driver.get(ip); time.sleep(1.1)
+        ip = self.ip_prefix + cfg['ip'] + '/correct.html'
+        self.driver.get(ip); time.sleep(1.2)
         self.driver.switch_to.default_content()
-        self.itemCheck("language", int(cfg['language']), '语言选择')
-        self.itemCheck("lcdled", cfg['lines'], '相数选择')
-        self.macAddrCheck()
-        
+        self.setItById("language", cfg['ip_language'], '设备语言')
+        self.setItById("lcdled", cfg['ip_lines'], '设备相数')
+        self.setItById("LCDswitch", cfg['lcd_switch'], '新旧屏')
+        self.setMacAddr()
+        self.alertClick("Button3")
+        self.sendtoMainapp("设备后台网页配置成功", 1)
         self.driver.back(); time.sleep(1)
+
+    
+
+
+
+
+
