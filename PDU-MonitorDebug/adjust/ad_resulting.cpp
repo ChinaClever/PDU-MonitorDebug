@@ -5,6 +5,7 @@
  */
 #include "ad_resulting.h"
 #define AD_CUR_RATE 100
+#include <QDateTime>
 
 Ad_Resulting::Ad_Resulting(QObject *parent) : BaseThread(parent)
 {
@@ -79,7 +80,7 @@ bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
 {
     int cur = mData->cur.value[i] * 10 ;
     if(mDt->lines == 2 &&i == 0) exValue *= 2;
-    QString str = tr("期望电流%1A 第%2位 电流 ").arg(exValue/AD_CUR_RATE).arg(i+1);
+    QString str = tr("期望电流%1A: 实际电流 %2A 第%3位 电流 ").arg(exValue/AD_CUR_RATE).arg(mData->cur.value[i]/100.0).arg(i+1);
     bool ret = curErrRange(exValue, cur);
     mData->cured[i] = mData->cur.value[i];
     if(ret) {
@@ -156,6 +157,61 @@ bool Ad_Resulting::eachCurCheck(int k, int exValue)
         ret = curRangeByID(k, exValue, i);
         if(ret) break; else if(!delay(i+5)) break;
         mCollect->readPduData();
+    }
+
+    return ret;
+}
+
+bool Ad_Resulting::eachCurCheckInAdjusting(int k, int exValue)
+{
+    bool ret = false;
+    //if(AC == mDt->ac) value = value*0.5;
+
+    ret = curRangeByIDInAdjusting(k, exValue);
+    QString str = tr("检查数据: 期望电流%1A").arg(exValue/AD_CUR_RATE);
+    updatePro(str);
+    mCollect->readPduData();
+
+    return ret;
+}
+
+bool Ad_Resulting::curRangeByIDInAdjusting(int i, int exValue)
+{
+    int cur = mData->cur.value[i] * 10 ;
+    if(mDt->lines == 2 &&i == 0) exValue *= 2;
+    QString str = tr("期望电流%1A 第%2位 电流 ").arg(exValue/AD_CUR_RATE).arg(i+1);
+    bool ret = curErrRange(exValue, cur);
+    mData->cured[i] = mData->cur.value[i];
+    if(ret) {
+        //if(mCfg->si_led) return ret;   ////===========
+        ret = volErrRangeByIDInAdjusting(i);
+        if(ret) str += tr("正常");
+        updatePro(str);
+    } else {
+        ret = false;
+    }
+
+    return ret;
+}
+
+bool Ad_Resulting::volErrRangeByIDInAdjusting(int i)
+{
+    bool ret = true;
+    int vol = mData->vol.value[i];
+    int crate = 1;
+    //黑底白字和腾讯定制的电压四位有小数点
+    if( mDev->dt.screen == 1 ||
+      (mDev->dt.devType == 0 && mDev->cfg.si_version == 1 )
+      || (mDev->dt.devType == 0 && mDev->cfg.si_version == 2)) crate = 10;//断码屏,SI-PDU腾讯定制和SI-PDU黑底白字定制
+    if( mDev->dt.screen == 3 && mCfg->log_en  == 0 && mCfg->security  == 1) crate = 10;
+    int min = (220 - mItem->volErr)*crate;
+    int max = (220 + mItem->volErr)*crate;
+    QString str = tr("期望电压220V，实际电压%1V 第%2位 电压 ").arg(vol/(crate*1.0)).arg(i+1);
+    if((vol >= min) && (vol <= max)) {
+        str += tr("正常");
+        updatePro(str);
+    } else {
+        ret = false;
     }
 
     return ret;

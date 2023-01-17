@@ -14,6 +14,9 @@ public:
     bool resEnter();
     bool resEnterOneByOne();
     bool initRtuThread();
+    bool eachCurCheckInAdjusting(int k, int exValue);
+    bool volErrRangeByIDInAdjusting(int i);
+    bool curRangeByIDInAdjusting(int i, int exValue);
 
 protected:
     bool powErrRange(int exValue, int cur);

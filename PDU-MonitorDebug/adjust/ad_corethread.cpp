@@ -30,7 +30,25 @@ bool Ad_CoreThread::workDown()
         ret = mLedSi->startAdjust();
     } else {
         if(mItem->aiMode == Test_Onebyone)
-            ret = mAdjust->startAdjustOneByOne(mDt->lines);
+            //ret = mAdjust->startAdjustOneByOne(mDt->lines);
+        {
+            mControlOp = Ctrl_ZpduThread::bulid();
+            for(int i = 0 ; i < mDt->lines; i++){
+                if(mControlOp){
+                    mControlOp->openOnlySwitch(i);
+                    mControlOp->delay(5);
+                    mControlOp->openOnlySwitch(i);
+                }
+                else
+                    return false;
+                ret = mAdjust->sentCmdkPhase(i+1);
+                sleep(20);
+                if(ret){
+                    ret = mAdjust->readData();
+                }
+                mResult->eachCurCheckInAdjusting(i , 6*100);
+            }
+        }
         else
             ret = mAdjust->startAdjust();
     }

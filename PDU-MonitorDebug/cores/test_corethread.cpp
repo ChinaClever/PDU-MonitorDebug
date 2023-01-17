@@ -128,6 +128,7 @@ bool Test_CoreThread::initFun()
 void Test_CoreThread::workDown()
 {
     bool ret = checkDev();
+    Ad_Resulting::bulid(this)->initRtuThread();
     if(ret) ret = mAd->startAdjust();
     if(!mItem->modeId) {
         mCtrl->clearEle();

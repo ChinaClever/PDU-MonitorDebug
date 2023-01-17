@@ -3,7 +3,6 @@
 
 #include "ad_ledsi.h"
 #include "ctrl_zpduthread.h"
-
 class Ad_Adjusting : public BaseThread
 {
     Q_OBJECT
@@ -11,19 +10,21 @@ class Ad_Adjusting : public BaseThread
 public:
     static Ad_Adjusting *bulid(QObject *parent = nullptr);
     bool startAdjust();
-    bool startAdjustOneByOne(int lines);
+//    bool startAdjustOneByOne(int lines );
+    bool sentCmdkPhase(int k);
+    bool readData();
 
 
 protected:
     bool sentCmd();
-    bool sentCmdkPhase(int k);
+
     bool writeCmd(uchar fn, uchar line);
     bool transmit(uchar *buf, int len);
 
     bool writePhase();
     bool writeOffset();
 
-    bool readData();
+
     bool waitDcRecv();
     int readSerial(uchar *recv, int sec=25);
     bool recvStatus(uchar *recv, int len);

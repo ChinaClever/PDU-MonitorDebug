@@ -259,23 +259,32 @@ bool Ad_Adjusting::sentCmdkPhase(int k)
     return ret;
 }
 
-bool Ad_Adjusting::startAdjustOneByOne(int lines)
-{
-    bool ret = false;
-    mControlOp = Ctrl_ZpduThread::bulid();
-    for(int i = 0 ; i < lines; i++){
-        if(mControlOp){
-            mControlOp->openOnlySwitch(i);
-            mControlOp->delay(5);
-            mControlOp->openOnlySwitch(i);
-        }
-        else
-            return false;
-        ret = sentCmdkPhase(i+1);
-        delay(15);
-        if(ret){
-            ret = readData();
-        }
-    }
-    return ret;
-}
+//bool Ad_Adjusting::startAdjustOneByOne(int lines)
+//{
+//    bool ret = false;
+//    mControlOp = Ctrl_ZpduThread::bulid();
+//    for(int i = 0 ; i < lines; i++){
+//        if(mControlOp){
+//            mControlOp->openOnlySwitch(i);
+//            mControlOp->delay(5);
+//            mControlOp->openOnlySwitch(i);
+//        }
+//        else
+//            return false;
+//        ret = sentCmdkPhase(i+1);
+//        int count = 35;
+//        while(count--){
+//            Ad_Resulting *result = Ad_Resulting::bulid(this);
+//            bool flag = false;
+//            if(result){
+//                flag= result->eachCheckCurCheck( i , 6*100);
+//                if(flag == true) break;
+//            }
+//            sleep(1);
+//        }
+//        if(ret){
+//            ret = readData();
+//        }
+//    }
+//    return ret;
+//}
