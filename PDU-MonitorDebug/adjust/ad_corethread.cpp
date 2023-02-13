@@ -42,7 +42,7 @@ bool Ad_CoreThread::workDown()
                 else
                     return false;
                 ret = mAdjust->sentCmdkPhase(i+1);
-                sleep(20);
+                sleep(35);
                 if(ret){
                     ret = mAdjust->readData();
                 }
