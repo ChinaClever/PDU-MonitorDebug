@@ -35,22 +35,31 @@ void Set_LineUnitWid::init(sObjCfg *obj , int index)
     ui->humMinSpin->setValue(obj->hum.min);
     ui->humMaxSpin->setValue(obj->hum.max);
 
-    ui->fanTemMinSpin->setValue(obj->fantem.min);
-    ui->fanTemMaxSpin->setValue(obj->fantem.max);
-    ui->PWMMaxSpin->setValue(obj->pwm.max);
-
-    bool res = true;
+    bool res = true , secondflag = true;
     mIndex = index;
-    if(index == 6){
-        res = false;
+    if(index == IP_PDUV1_YIXIN-2){
+        res = false;secondflag = false;
+        ui->fanTemMinSpin->setValue(obj->fantem.min);
+        ui->fanTemMaxSpin->setValue(obj->fantem.max);
+        ui->fanTemMinSpin->setSuffix("℃");
+        ui->fanTemMaxSpin->setSuffix("℃");
+        ui->label->setText(tr("风扇曲线温度："));
+    }
+    else if(index == IP_PDUV3_SHATE-2){
+        res = true;secondflag = false;
+        ui->fanTemMinSpin->setValue(obj->loopcur.min);
+        ui->fanTemMaxSpin->setValue(obj->loopcur.max);
+        ui->fanTemMinSpin->setSuffix("A");
+        ui->fanTemMaxSpin->setSuffix("A");
+        ui->label->setText(tr("回路电流："));
     }
     else{
-        res = true;
+        res = true;secondflag = true;
     }
-    ui->fanTemMinSpin->setHidden(res);
-    ui->fanTemMaxSpin->setHidden(res);
+    ui->fanTemMinSpin->setHidden(secondflag);
+    ui->fanTemMaxSpin->setHidden(secondflag);
     ui->PWMMaxSpin->setHidden(res);
-    ui->label->setHidden(res);
+    ui->label->setHidden(secondflag);
     ui->label_2->setHidden(res);
     ui->label_3->setHidden(res);
 
@@ -68,27 +77,42 @@ void Set_LineUnitWid::updateData()
     obj->tem.max = ui->temMaxSpin->value();
     obj->hum.min = ui->humMinSpin->value();
     obj->hum.max = ui->humMaxSpin->value();
-    if(mIndex == 6){
+    if(mIndex == IP_PDUV1_YIXIN-2){
         obj->fantem.min = ui->fanTemMinSpin->value();
         obj->fantem.max = ui->fanTemMaxSpin->value();
         obj->pwm.max = ui->PWMMaxSpin->value();
+    }else if(mIndex == IP_PDUV3_SHATE-2){
+        obj->loopcur.min = ui->fanTemMinSpin->value();
+        obj->loopcur.max = ui->fanTemMaxSpin->value();
     }
 }
 
 void Set_LineUnitWid::changeIndex(int index)
 {
     mIndex = index;
-    bool res = true;
-    if(index == 6){
-        res = false;
+    bool res = true,secondflag = true;
+    if(index == IP_PDUV1_YIXIN-2){
+        res = false;secondflag = false;
+        ui->fanTemMinSpin->setValue(mDev->fantem.min);
+        ui->fanTemMaxSpin->setValue(mDev->fantem.max);
+        ui->fanTemMinSpin->setSuffix("℃");
+        ui->fanTemMaxSpin->setSuffix("℃");
+        ui->label->setText(tr("风扇曲线温度："));
+    }else if(index == IP_PDUV3_SHATE-2){
+        res = true;secondflag = false;
+        ui->fanTemMinSpin->setValue(mDev->loopcur.min);
+        ui->fanTemMaxSpin->setValue(mDev->loopcur.max);
+        ui->fanTemMinSpin->setSuffix("A");
+        ui->fanTemMaxSpin->setSuffix("A");
+        ui->label->setText(tr("回路电流："));
     }
     else{
-        res = true;
+        res = true;secondflag = true;
     }
-    ui->fanTemMinSpin->setHidden(res);
-    ui->fanTemMaxSpin->setHidden(res);
+    ui->fanTemMinSpin->setHidden(secondflag);
+    ui->fanTemMaxSpin->setHidden(secondflag);
     ui->PWMMaxSpin->setHidden(res);
-    ui->label->setHidden(res);
+    ui->label->setHidden(secondflag);
     ui->label_2->setHidden(res);
     ui->label_3->setHidden(res);
 }

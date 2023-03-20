@@ -91,6 +91,7 @@ struct sObjCfg
     sUnitCfg hum; // 湿度
     sUnitCfg fantem;
     sUnitCfg pwm;
+    sUnitCfg loopcur;
 };
 
 struct sTypeCfg
@@ -113,7 +114,7 @@ struct sTypeCfg
     uchar ip_version;
     // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3
     // 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
-    // 9:IP_PDUV1_HUADA// IPV1华大
+    // 9:IP_PDUV1_HUADA// IPV1华大 10:IP_PDUV3_BYTE 11:IP_PDUV3_SHATE
     uchar security;
     uchar log_en;
     sObjCfg ip_cfg;
@@ -130,7 +131,10 @@ struct sDevType
     uchar screen;//0 液晶 1 断码屏 2 数码管 3 V1和断码屏
     uchar lines;
     uchar ac;
-    uchar version; // IP V1 V3 // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
+    uchar version;
+    // IP V1 V3
+    // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
+    // 8:IP-PDUV1-YIXIN 9:IP_PDUV1_HUADA 10:IP_PDUV3_BYTE 11:IP_PDUV3_SHATE
     QString dev_type;
     QString sn;
 };
