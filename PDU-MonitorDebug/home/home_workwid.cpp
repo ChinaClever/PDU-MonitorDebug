@@ -169,12 +169,19 @@ void Home_WorkWid::timeoutDone()
 bool Home_WorkWid::initSerial()
 {
     bool ret = mItem->com->isOpened();
+
+
+    if(ui->modeBox->currentIndex() == 1) ret = true;
     if(!ret) {MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
+    if(ui->modeBox->currentIndex() == 1) ret = false;//跳过读取PDU串口检查
+
+
     ret = mItem->source->isOpened();
+    //ret = true;
     if(!ret) {MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
     ret = mItem->control->isOpened();
 //    if(!ret) {MsgBox::critical(this, tr("请先打开控制继电器串口")); return ret;}
-//    return ret;
+   return ret;
 }
 
 bool Home_WorkWid::initWid()

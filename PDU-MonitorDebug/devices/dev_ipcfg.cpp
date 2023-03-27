@@ -63,6 +63,7 @@ void Dev_IpCfg::initData()
     sObjCfg *ptr = &(mCfg->ip_cfg);
     initUnit("vol", ptr->vol);
     initUnit("cur", ptr->cur);
+    initUnit("loopcur", ptr->loopcur);
 
     initUnit("tem", ptr->tem);
     initUnit("hum", ptr->hum);
@@ -75,6 +76,7 @@ void Dev_IpCfg::writeData()
     sObjCfg *ptr = &(mCfg->ip_cfg);
     writeUnit("vol", ptr->vol);
     writeUnit("cur", ptr->cur);
+    writeUnit("loopcur", ptr->loopcur);
 
     writeUnit("tem", ptr->tem);
     writeUnit("hum", ptr->hum);

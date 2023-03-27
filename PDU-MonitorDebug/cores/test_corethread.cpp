@@ -114,15 +114,21 @@ void Test_CoreThread::workResult()
 bool Test_CoreThread::initFun()
 {
     updatePro(tr("即将开始"));
-    bool ret = mYc->powerOn();
-    if(mPro->step != Test_Collect){
-        ret = mSn->snEnter();
-        if(ret) ret= readDev();
-    }
-    if(ret) ret = setDev();
-    if(ret) ret = readDev();
-    if(ret && !mDt->devType) {
-        ret = mCtrl->setAlarm();
+    bool ret = false;
+    if(mCfg->ip_version != IP_PDUV3_SHATE){
+        ret = mYc->powerOn();
+        if(mPro->step != Test_Collect){
+            ret = mSn->snEnter();
+            if(ret) ret= readDev();
+        }
+        if(ret) ret = setDev();
+        if(ret) ret = readDev();
+        if(ret && !mDt->devType) {
+            ret = mCtrl->setAlarm();
+
+        }
+    }else{
+        ret = mYc->powerOn(0);
     }
 
     return ret;
@@ -183,6 +189,7 @@ void Test_CoreThread::run()
     if(ret) {
         switch (mPro->step) {
         case Test_Start: workDown(); break;
+        case Test_Seting:Test_NetWork::bulid()->startProcess();break;
         case Test_Collect: collectData(); break;
         case Test_Ading: mAd->startAdjust(); break;
         case Test_vert: mAd->verifyResult(); break;

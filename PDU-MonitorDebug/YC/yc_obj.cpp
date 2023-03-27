@@ -27,7 +27,7 @@ YC_StandSource *Yc_Obj::get()
     return yc;
 }
 
-bool Yc_Obj::powerOn()
+bool Yc_Obj::powerOn(int v)
 {
     YC_StandSource *yc = get(); yc->setVol(220);
     QString str = tr("连接标准源");
@@ -40,7 +40,7 @@ bool Yc_Obj::powerOn()
     updatePro(str, ret);
 
     str = tr("标准源上电");
-    if(ret) ret = yc->powerOn();
+    if(ret) ret = yc->powerOn(v);
     if(ret) str += tr("成功"); else str += tr("失败");
 
     if(mItem->modeId) {

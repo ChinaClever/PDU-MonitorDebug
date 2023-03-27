@@ -159,6 +159,11 @@
           <string>IP-V3-字节</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>IP-V3-沙特</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="5" column="3">
