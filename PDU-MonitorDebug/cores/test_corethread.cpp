@@ -115,6 +115,10 @@ bool Test_CoreThread::initFun()
 {
     updatePro(tr("即将开始"));
     bool ret = mYc->powerOn();
+    if(mPro->step != Test_Collect){
+        ret = mSn->snEnter();
+        if(ret) ret= readDev();
+    }
     if(ret) ret = setDev();
     if(ret) ret = readDev();
     if(ret && !mDt->devType) {
@@ -174,10 +178,8 @@ void Test_CoreThread::run()
             mControlOp->openAllSwitch();
         }
     }
-    if(isRun) return; else isRun = true;
+    if(isRun) return; else isRun = true; 
     bool ret = initFun();
-//    bool ret = mSn->snEnter();
-//    if(ret) ret= readDev();
     if(ret) {
         switch (mPro->step) {
         case Test_Start: workDown(); break;
