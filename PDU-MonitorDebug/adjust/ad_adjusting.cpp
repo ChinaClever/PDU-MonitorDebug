@@ -112,7 +112,7 @@ bool Ad_Adjusting::sentCmd()
     if(!ret) return ret;
 
     updatePro(tr("发送启动校准命令！"),ret, 1);
-    ret = writeCmd(0xA2, 0);
+    ret = writeCmd(0xA2, 0);sleep(10);//IPV1 gd返回结果慢
     //ret = writePhase();
 
     return ret;

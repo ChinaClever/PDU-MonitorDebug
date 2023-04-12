@@ -61,7 +61,9 @@ bool Test_SiThread::writeAlarmTh()
 
     for(int i=0; i<size; ++i) {
         ret = curAlarmWrite(i); if(!ret) break;
+        if(i==2 || i==3)sleep(2);
         ret = volAlarmWrite(i); if(!ret) break;
+        if(i==2 || i==3)sleep(2);
     }
 
     return ret;
