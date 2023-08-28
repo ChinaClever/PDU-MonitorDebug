@@ -221,7 +221,7 @@ bool Ad_Adjusting::readData()
 
     do {
         if(mPro->step >= Test_vert) break;
-        int len = readSerial(buf);
+        int len = readSerial(buf, 35);
         if(len > 0){
             ret = recvStatus(buf, len);
         } else {
