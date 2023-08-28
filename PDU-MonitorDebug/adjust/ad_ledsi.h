@@ -25,6 +25,7 @@ protected:
     bool recvStatus(uchar *recv, int len);
     bool updateStatus(ushort status);
     bool overWork(const QString &str);
+    bool writeCmd1(uchar fn, uchar line);
 
 private:
     Dev_SiRtu *mRtu;

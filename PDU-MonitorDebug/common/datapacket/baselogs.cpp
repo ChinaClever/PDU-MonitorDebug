@@ -28,6 +28,21 @@ bool BaseLogs::writeMac()
     return DbMacs::bulid()->insertItem(it);
 }
 
+bool BaseLogs::appendValueItem(const QString &str, bool pass)
+{
+    sValueItem it;
+    if(pass) {
+        it.result = tr("通过");
+    } else {
+        it.result = tr("失败");
+    }
+
+
+    it.value = str;
+    mValueItems = it;
+    return pass;
+}
+
 bool BaseLogs::appendLogItem(const QString &str, bool pass)
 {
     sStateItem it;
@@ -49,6 +64,7 @@ void BaseLogs::saveLogs()
     if(ret) {
         writeLogs();
         if(mMac.size()) writeMac();
+        writeValues();
     } else {
         // updatePro(tr("因未创建序列号，日志无法保存！"), false);
     }
@@ -105,4 +121,20 @@ void BaseLogs::writeLogs()
         if(initItem(it)) DbStates::bulid()->insertItem(it);
     }
     mLogItems.clear();
+}
+
+
+bool BaseLogs::initValueItem(sValueItem &it)
+{
+    it.dev = mDt->dev_type.split("_").first();
+    it.user = mItem->user;
+    it.sn = mDt->sn;
+
+    return it.sn.size();
+}
+
+void BaseLogs::writeValues()
+{
+    sValueItem it = mValueItems;
+    if(initValueItem(it)) DbValue::bulid()->insertItem(it);
 }

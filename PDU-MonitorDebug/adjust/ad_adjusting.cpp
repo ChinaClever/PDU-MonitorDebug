@@ -236,6 +236,7 @@ bool Ad_Adjusting::startAdjust()
 {
     mPro->step = Test_Ading;
     bool ret = sentCmd();
+    //if(mDt->devType == BM_PDU || mDt->devType == SI_PDU) sleep(35);//返回结果慢
     if(ret && (mPro->step == Test_Ading)){
         ret = readData();
     }

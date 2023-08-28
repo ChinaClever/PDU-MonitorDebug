@@ -34,6 +34,7 @@ void Dev_SiCfg::writeType()
     sTypeCfg *ptr = mCfg;
     write("si_ac", ptr->si_ac);
     write("si_lines", ptr->si_lines);
+//    write("si_led", ptr->si_led);
     write("si_series", ptr->si_series);
     write("si_standar", ptr->si_standar);
     write("si_version", ptr->si_version);

@@ -48,6 +48,18 @@ bool BaseThread::updatePro(const QString &str, bool pass, int sec)
     return pass;
 }
 
+bool BaseThread::updateValuePro(const QString &str, bool pass, int sec)
+{
+    mPro->time = QTime::currentTime().toString("hh:mm:ss");
+    mPro->pass << pass;
+    mPro->status << str;
+    if(pass) pass = delay(sec);
+    else mPro->result = Test_Fail;
+    if(pass) BaseLogs::bulid()->appendValueItem(str, pass);
+
+    return pass;
+}
+
 bool BaseThread::mdelay(int s)
 {
     bool ret = true;

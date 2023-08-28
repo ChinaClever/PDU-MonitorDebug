@@ -37,5 +37,10 @@ void LogMainWid::initFunSLot()
     mMacWid = new LogComWid(ui->tabWidget);
     mMacWid->initWid(DbMacs::bulid(),new LogBtnBar(),  new Log_MacQueryDlg(this), str);
     ui->tabWidget->addTab(mMacWid, str);
+
+    str = tr("校准值");
+    mValueWid = new LogComWid(ui->tabWidget);
+    mValueWid->initWid(DbValue::bulid(),new LogBtnBar(),  new Log_LogQueryDlg(this), str);
+    ui->tabWidget->addTab(mValueWid, str);
 }
 

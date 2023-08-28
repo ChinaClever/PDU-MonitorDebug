@@ -97,6 +97,10 @@ bool Test_CoreThread::checkDev()
 void Test_CoreThread::workResult()
 {
     BaseLogs::bulid()->start();
+    //str save calibration value
+    QString calValStr = "";
+    mSn->readVal(mDt->lines , calValStr);
+    updateValuePro(calValStr, true, 2);
     bool res = mYc->powerDown();
     QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
@@ -117,10 +121,10 @@ bool Test_CoreThread::initFun()
     bool ret = false;
     if(mCfg->ip_version != IP_PDUV3_SHATE){
         ret = mYc->powerOn();
-        if(mPro->step != Test_Collect){
-            ret = mSn->snEnter();
-            if(ret) ret= readDev();
-        }
+//        if(mPro->step != Test_Collect){
+//            ret = mSn->snEnter();
+//            if(ret) ret= readDev();
+//        }
         if(ret) ret = setDev();
         if(ret) ret = readDev();
         if(ret && !mDt->devType) {
@@ -141,7 +145,7 @@ void Test_CoreThread::workDown()
     Ad_Resulting::bulid(this)->initRtuThread();
     if(ret) ret = mAd->startAdjust();
     if(!mItem->modeId) {
-        mCtrl->clearEle();
+        mCtrl->clearEle(); sleep(1); msleep(500);
         Ad_Resulting::bulid(this)->initRtuThread();
     }
 
