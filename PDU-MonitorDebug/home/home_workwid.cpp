@@ -179,7 +179,7 @@ bool Home_WorkWid::initSerial()
     ret = mItem->source->isOpened();
     //ret = true;
     if(!ret) {MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
-    ret = mItem->control->isOpened();
+//    ret = mItem->control->isOpened();
 //    if(!ret) {MsgBox::critical(this, tr("请先打开控制继电器串口")); return ret;}
    return ret;
 }

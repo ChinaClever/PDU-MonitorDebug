@@ -45,13 +45,34 @@ bool Ad_LedSi::writeCmd(uchar fn, uchar line)
     return transmit(cmd, len);
 }
 
+bool Ad_LedSi::writeCmd1(uchar fn, uchar line)
+{
+    uchar cmd[] = {0x7B, 0x00, 0xA0, 0x00, 0x66, 0xBB, 0xBB};
+    int len = sizeof(cmd);
+
+    cmd[2] = fn;
+    cmd[3] = line;
+
+    ushort crc = mModbus->rtu_crc(cmd, len-2);
+    cmd[len-2] = ((0xff) & crc);
+    cmd[len-1] = (crc >> 8);
+
+    return transmit(cmd, len);
+}
+
+
 
 bool Ad_LedSi::writeDc()
 {
     bool ret = true;
+    bool ans = writeCmd1(0xA0, 0);
+    if(!ans){
+        delay(5); ans = writeCmd1(0xA0, 0);  // 重复发一次命令
+        if(!ans) return ans;
+    }
     for(int i=0; i<3; ++i) {
         updatePro(tr("发送直流偏移命令 %1").arg(i+1));
-        ret = writeCmd(0xA2, 0); delay(15);
+        ret = writeCmd1(0xA2, 0); delay(15);
         if(ret) break;
         //ret = mRtu->readPduData(); if(!ret) ret = mRtu->readPduData();
         //if(mData->cur.value[0]) ret = false; else break; delay(5);
@@ -62,7 +83,7 @@ bool Ad_LedSi::writeDc()
     if(!ret) return ret;
     updatePro(tr("设置标准源电流6A"));
     ret = YC_Dc107::bulid()->setCur(60, 10);
-    if(ret) ret = writeCmd(0xA1, 0);
+    if(ret) ret = writeCmd1(0xA1, 0);
 
     return ret;
 }
@@ -71,15 +92,21 @@ bool Ad_LedSi::writeAc()
 {
     bool res = true;
     int line = mDt->lines;
-    updatePro(tr("正在校准：请等待..."), res, 8);
+    updatePro(tr("发送校准解锁命令！"));
 
-
-    for(int i=0; i<line; ++i) {
-        QString str = tr("L%1 校准").arg(i+1);
-        bool ret = writeCmd(0xA2 , i);
-        if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
-        updatePro(str, true, 7);
+    bool ans = writeCmd1(0xA0, 0);
+    if(!ans){
+        delay(5); ans = writeCmd1(0xA0, 0);  // 重复发一次命令
+        if(!ans) return ans;
     }
+//    for(int i=0; i<line; ++i) {
+//        QString str = tr("L%1 校准").arg(i+1);
+//        bool ret = writeCmd1(0xA2 , i);
+//        if(ret) str += tr("正常"); else {str += tr("错误"); res = false;}
+//        updatePro(str, true, 7);
+//    }
+    updatePro(tr("发送启动校准命令！"),res, 1);
+    res = writeCmd1(0xA2, 0);
 
     return res;
 }

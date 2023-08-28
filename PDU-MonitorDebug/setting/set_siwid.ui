@@ -211,6 +211,11 @@
           <string>液晶版本集团两路</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>北京宏晟</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="0" column="0">

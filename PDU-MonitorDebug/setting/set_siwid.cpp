@@ -39,7 +39,9 @@ void Set_SiWid::initType()
     ui->lineBox->setCurrentIndex(v);
     ui->sBox->setCurrentIndex(cfg->si_standar);
     ui->curBox->setCurrentIndex(cfg->si_series);
-    ui->sVer->setCurrentIndex(cfg->si_version);
+    int ver = cfg->si_version;
+    if(cfg->si_version == 9)  ver = 4;
+    ui->sVer->setCurrentIndex(ver);
     if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
 }
 
@@ -53,7 +55,9 @@ void Set_SiWid::updateType()
     cfg->si_lines = ui->lineBox->currentIndex();
     cfg->si_standar = ui->sBox->currentIndex();
     cfg->si_series = ui->curBox->currentIndex();
-    cfg->si_version = ui->sVer->currentIndex();
+    int ver = ui->sVer->currentIndex();
+    if(ui->sVer->currentIndex() == 4)  ver = 9;
+    cfg->si_version = ver;
     if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
 }
 
