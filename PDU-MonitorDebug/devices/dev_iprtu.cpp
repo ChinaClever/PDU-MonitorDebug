@@ -215,6 +215,11 @@ bool Dev_IpRtu::readPduData()
         recvVolRangePacket(recv);
         memset(recv , 0 , strlen((char*)recv));
 
+        initRtuCurTemHumItem(it);
+        mModbus->read(it, recv);
+        recvCurTemHumPacket(recv);
+        memset(recv , 0 , strlen((char*)recv));
+
         initRtuTemRangeItem(it);
         mModbus->read(it, recv);
         recvTemRangePacket(recv);
@@ -282,6 +287,14 @@ void Dev_IpRtu::initRtuVolRangeItem(sRtuItem &it)
     it.num = 0x02;
 }
 
+void Dev_IpRtu::initRtuCurTemHumItem(sRtuItem &it)
+{
+    it.addr = mItem->addr;
+    it.fn = 0x03;
+    it.reg = 0x01F4;
+    it.num = 0x02;
+}
+
 void Dev_IpRtu::initRtuTemRangeItem(sRtuItem &it)
 {
     it.addr = mItem->addr;
@@ -303,6 +316,8 @@ int Dev_IpRtu::recvLineNumPacket(uchar *buf)
     sObjData *obj = &(mDev->data);
     obj->size = m_Line =  (*buf) * 256 + *(buf+1);
     mDt->lines = 2;
+    obj->vol.size = obj->cur.size = obj->size;
+    obj->tem.size = obj->hum.size = 1;
     return 2;
 }
 
@@ -345,6 +360,8 @@ int Dev_IpRtu::recvTemRangePacket(uchar *buf)
     int len = 0;
     obj->tem.max[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
     obj->tem.min[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
+    obj->tem.max[0] -= 40;
+    obj->tem.min[0] -= 40;
     return len;
 }
 
@@ -354,5 +371,15 @@ int Dev_IpRtu::recvHumRangePacket(uchar *buf)
     int len = 0;
     obj->hum.max[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
     obj->hum.min[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
+    return len;
+}
+
+int Dev_IpRtu::recvCurTemHumPacket(uchar *buf)
+{
+    sObjData *obj = &(mDev->data);
+    int len = 0;
+    obj->tem.value[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
+    if(obj->tem.value[0])obj->tem.value[0] -= 40;
+    obj->hum.value[0] =  (*buf) * 256 + *(buf+1);  buf += 2; len += 2;
     return len;
 }

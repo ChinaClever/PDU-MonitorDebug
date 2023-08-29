@@ -30,6 +30,7 @@ protected:
     void initRtuVolRangeItem(sRtuItem &it);
     void initRtuTemRangeItem(sRtuItem &it);
     void initRtuHumRangeItem(sRtuItem &it);
+    void initRtuCurTemHumItem(sRtuItem &it);
 
     int recvBaseValuePacket(uchar *buf);
     int recvLineNumPacket(uchar *buf);
@@ -37,6 +38,7 @@ protected:
     int recvVolRangePacket(uchar *buf);
     int recvTemRangePacket(uchar *buf);
     int recvHumRangePacket(uchar *buf);
+    int recvCurTemHumPacket(uchar *buf);
 
 };
 
