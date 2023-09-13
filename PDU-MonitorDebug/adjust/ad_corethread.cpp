@@ -42,7 +42,7 @@ bool Ad_CoreThread::workDown()
                 else
                     return false;
                 ret = mAdjust->sentCmdkPhase(i+1);
-                sleep(35);//IPV3 段码屏返回结果慢
+                sleep(25);//IPV3 段码屏返回结果慢
                 if(ret){
                     ret = mAdjust->readData();
                 }

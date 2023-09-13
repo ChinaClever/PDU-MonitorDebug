@@ -67,8 +67,19 @@ bool Rtu_Read::recvCrc(uchar *buf, int len, sRtuReplyItem *msg)
     return ret;
 }
 
+bool Rtu_Read::recvIPCrc(uchar *buf, int len, sRtuReplyItem *msg)
+{
+    bool ret = rtuRecvCrc(buf, len);
+    if(ret) {
+        int rtn = len-2; uchar *ptr = buf+rtn;
+        msg->crc = (ptr[0]*256) + ptr[1]; // 获取校验码
+    }
 
-int Rtu_Read::rtuRecvData(uchar *ptr, sRtuReplyItem *pkt)
+    return ret;
+}
+
+
+int Rtu_Read::rtuRecvSIData(uchar *ptr, sRtuReplyItem *pkt)
 {
     pkt->addr = *(ptr++);// 从机地址码
     pkt->fn = *(ptr++);  /*功能码*/
@@ -85,15 +96,40 @@ int Rtu_Read::rtuRecvData(uchar *ptr, sRtuReplyItem *pkt)
     return pkt->len;
 }
 
-int Rtu_Read::rtuRead(sRtuItem *pkt, sRtuReplyItem *recv)
+int Rtu_Read::rtuRecvIPData(uchar *ptr, sRtuReplyItem *pkt)
+{
+    pkt->addr = *(ptr++);// 从机地址码
+    pkt->fn = *(ptr++);  /*功能码*/
+    pkt->len = *(ptr++); /*数据长度*/
+    pkt->len = *(ptr++); /*IP-PDU数据长度*/
+    pkt->len = *(ptr++); /*IP-PDU数据长度*/
+    pkt->len = *(ptr++); /*IP-PDU数据长度*/
+    pkt->len = *(ptr++); /*IP-PDU数据长度*/
+    if(pkt->len < MODBUS_RTU_SIZE) {
+        for(int i=0; i<pkt->len; ++i) {
+            pkt->data[i] = *(ptr++);
+        }
+    } else {
+        pkt->len = 0;
+    }
+
+    return pkt->len;
+}
+
+
+int Rtu_Read::rtuRead(sRtuItem *pkt, sRtuReplyItem *recv , int id)
 {
     uchar sendBuf[64]={0}, recvBuf[256]={0};
     int rtn = rtuPacket(pkt, sendBuf);
     rtn = transmit(sendBuf, rtn, recvBuf, 3);
     if(rtn > 0) {
         bool ret = recvCrc(recvBuf, rtn, recv);
+        if(1 == id ) ret = recvIPCrc(recvBuf, rtn, recv);
         if(ret) {
-            rtn = rtuRecvData(recvBuf, recv);
+            if( 0 == id )
+                rtn = rtuRecvSIData(recvBuf, recv);
+            else
+                rtn = rtuRecvIPData(recvBuf, recv);
         } else {
             rtn = 0;
         }
@@ -102,10 +138,10 @@ int Rtu_Read::rtuRead(sRtuItem *pkt, sRtuReplyItem *recv)
     return rtn;
 }
 
-int Rtu_Read::read(sRtuItem &pkt, uchar *recv)
+int Rtu_Read::read(sRtuItem &pkt, uchar *recv , int id)
 {
     sRtuReplyItem item;
-    int ret = rtuRead(&pkt, &item);
+    int ret = rtuRead(&pkt, &item , id);
     if(ret > 0) {
         for(int i=0; i<ret; ++i) {
             recv[i] = item.data[i];

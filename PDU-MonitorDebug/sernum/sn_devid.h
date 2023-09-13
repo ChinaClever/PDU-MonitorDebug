@@ -10,14 +10,14 @@ public:
     static Sn_DevId *bulid(QObject *parent = nullptr);
 
     bool readDevType();
-    bool readCalibrationValue(int size, QString &valStr);
+    bool readCalibrationValue(int size, QString &valStr, int id);
 protected:
     bool readDevId();
     void initReadType(sRtuItem &it);
     bool readPduData(){return false;}
     bool analysDevType(uchar *buf, int len);
 
-    bool readCalVal(int size, QString &valStr);
+    bool readCalVal(int size, QString &valStr, int id);
     void initReadCalVal(sRtuItem &it , int size);
     bool analysDevCalibrationValue(uchar *buf, int len, int size, QString &valStr);
 

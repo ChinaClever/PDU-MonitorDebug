@@ -99,7 +99,7 @@ void Test_CoreThread::workResult()
     BaseLogs::bulid()->start();
     //str save calibration value
     QString calValStr = "";
-    mSn->readVal(mDt->lines , calValStr);
+    mSn->readVal(mDt->lines , calValStr ,mItem->modeId);
     updateValuePro(calValStr, true, 2);
     bool res = mYc->powerDown();
     QString str = tr("最终结果 ");
@@ -119,7 +119,7 @@ bool Test_CoreThread::initFun()
 {
     updatePro(tr("即将开始"));
     bool ret = false;
-    if(mCfg->ip_version != IP_PDUV3_SHATE){
+    if(mItem->modeId == 0 || mCfg->ip_version != IP_PDUV3_SHATE){
         ret = mYc->powerOn();
 //        if(mPro->step != Test_Collect){
 //            ret = mSn->snEnter();

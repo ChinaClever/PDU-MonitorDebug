@@ -192,9 +192,9 @@ bool Sn_SerialNum::snEnter()
     return ret;
 }
 
-bool Sn_SerialNum::readVal(int size , QString& str)
+bool Sn_SerialNum::readVal(int size , QString& str , int id)
 {
-    bool ret = mTypeId->readCalibrationValue(size , str);
+    bool ret = mTypeId->readCalibrationValue(size , str , id);
     if(!ret){
         for(int i = 0 ; i < size ; ++i){
             str += "0";

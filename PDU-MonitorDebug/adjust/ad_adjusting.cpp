@@ -236,7 +236,7 @@ bool Ad_Adjusting::startAdjust()
 {
     mPro->step = Test_Ading;
     bool ret = sentCmd();
-    //if(mDt->devType == BM_PDU || mDt->devType == SI_PDU) sleep(35);//返回结果慢
+    if(mDt->devType == BM_PDU || mDt->devType == SI_PDU) sleep(35);//返回结果慢
     if(ret && (mPro->step == Test_Ading)){
         ret = readData();
     }
@@ -248,10 +248,32 @@ bool Ad_Adjusting::sentCmdkPhase(int k)
 {
     updatePro(tr("发送校准解锁命令！"));
     bool ret = writeCmd(0xA0, 0);
-    if(!ret){
-        delay(5); ret = writeCmd(0xA0, 0);  // 重复发一次命令
-        if(!ret) return ret;
+    uchar cmd[] = {0x7B, 0x00, 0xA0, 0x00, 0x66, 0xBB, 0xBB};
+    int len = sizeof(cmd);
+
+    cmd[1] = mItem->addr;
+    cmd[2] = 0xA0;
+    cmd[3] = 0;
+
+    ushort crc = mModbus->rtu_crc(cmd, len-2);
+    cmd[len-2] = ((0xff) & crc);
+    cmd[len-1] = (crc >> 8);
+    bool flag = false;
+    uchar recv[64] = {0};
+    flag = mModbus->writeSerial(cmd, len);
+    sleep(15);
+    if(ret) {
+        len = mModbus->readSerial(recv, 5);
     }
+    if(len > 0) {
+        flag = recvStatus(recv, len);
+    }
+    sleep(2);
+//    if(!ret){
+//        delay(5); ret = writeCmd(0xA0, 0);  // 重复发一次命令
+//        if(!ret) return ret;
+//    }
+
 
     updatePro(tr("发送启动校准命令！"),ret, 1);
     ret = writeCmd(0xA2, k);

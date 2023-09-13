@@ -84,17 +84,17 @@ void Sn_DevId::initReadCalVal(sRtuItem &it , int size)
     it.num = 2*size;
 }
 
-bool Sn_DevId::readCalibrationValue(int size , QString & valStr)
+bool Sn_DevId::readCalibrationValue(int size , QString & valStr , int id)
 {
     QString str = tr("开始读取设备校准值！");
     bool ret = updatePro(str);
-    if(ret) ret = readCalVal(size , valStr);
+    if(ret) ret = readCalVal(size , valStr , id);
 
     return ret;
 }
 
 
-bool Sn_DevId::readCalVal(int size , QString & valStr)
+bool Sn_DevId::readCalVal(int size , QString & valStr , int id)
 {
     sRtuItem it;
     initReadCalVal(it , size);
@@ -102,7 +102,7 @@ bool Sn_DevId::readCalVal(int size , QString & valStr)
     int len = 0;
     static uchar recv[255] = {0};
     for(int i=0; i<5; ++i) {
-        len = mModbus->read(it, recv);
+        len = mModbus->read(it, recv , id);
         if(len==size*4) break; else if(!delay(3+i)) break;
     }
 
@@ -117,7 +117,7 @@ bool Sn_DevId::analysDevCalibrationValue(uchar *buf, int len ,int size , QString
         str = tr("读取设备校准值失败：返回长度为%1").arg(len);
         return updatePro(str);
     }
-    str = tr("读取设备校准值成功");
+    str = tr("读取设备校准值成功：返回长度为%1").arg(len);
     uint id = 0;
     ret = true;
     for(int i = 0; i < len; i += 4) {
@@ -125,6 +125,7 @@ bool Sn_DevId::analysDevCalibrationValue(uchar *buf, int len ,int size , QString
         id <<= 16;
         id += buf[i+2]*256 + buf[i+3];
         if(i != len - 4) valStr += QString::number(id)+"/";
+        else valStr += QString::number(id);
     }
 
     return updatePro(str, ret);

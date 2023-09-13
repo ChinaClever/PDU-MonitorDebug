@@ -22,7 +22,7 @@ class Sn_SerialNum : public BaseThread
 public:
     static Sn_SerialNum *bulid(QObject *parent = nullptr);
     bool snEnter();
-    bool readVal(int size, QString &str);
+    bool readVal(int size, QString &str, int id);
 
 protected:
     void toSnStr(sSnItem &it);

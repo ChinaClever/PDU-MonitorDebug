@@ -30,17 +30,19 @@ class Rtu_Read : public Rtu_Serial
 public:
     explicit Rtu_Read(QObject *parent = nullptr);
 
-    int read(sRtuItem &pkt, uchar *recv);
+    int read(sRtuItem &pkt, uchar *recv, int id=0);
 
 protected:
     ushort calccrc (ushort crc, uchar crcbuf);
     int rtuPacket(sRtuItem *pkt, uchar *ptr);
-    int rtuRecvData(uchar *ptr,  sRtuReplyItem *pkt);
+    int rtuRecvSIData(uchar *ptr,  sRtuReplyItem *pkt);
+    int rtuRecvIPData(uchar *ptr,  sRtuReplyItem *pkt);
 
     bool rtuRecvCrc(uchar *buf, int len);
     bool recvCrc(uchar *buf, int len, sRtuReplyItem *msg);
+    bool recvIPCrc(uchar *buf, int len, sRtuReplyItem *msg);
 
-    int rtuRead(sRtuItem *pkt, sRtuReplyItem *recv);
+    int rtuRead(sRtuItem *pkt, sRtuReplyItem *recv , int id);
 };
 
 #endif // RTU_READ_H
