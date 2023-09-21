@@ -67,18 +67,6 @@ bool Rtu_Read::recvCrc(uchar *buf, int len, sRtuReplyItem *msg)
     return ret;
 }
 
-bool Rtu_Read::recvIPCrc(uchar *buf, int len, sRtuReplyItem *msg)
-{
-    bool ret = rtuRecvCrc(buf, len);
-    if(ret) {
-        int rtn = len-2; uchar *ptr = buf+rtn;
-        msg->crc = (ptr[0]*256) + ptr[1]; // 获取校验码
-    }
-
-    return ret;
-}
-
-
 int Rtu_Read::rtuRecvSIData(uchar *ptr, sRtuReplyItem *pkt)
 {
     pkt->addr = *(ptr++);// 从机地址码
@@ -124,7 +112,6 @@ int Rtu_Read::rtuRead(sRtuItem *pkt, sRtuReplyItem *recv , int id)
     rtn = transmit(sendBuf, rtn, recvBuf, 3);
     if(rtn > 0) {
         bool ret = recvCrc(recvBuf, rtn, recv);
-        if(1 == id ) ret = recvIPCrc(recvBuf, rtn, recv);
         if(ret) {
             if( 0 == id )
                 rtn = rtuRecvSIData(recvBuf, recv);

@@ -105,6 +105,7 @@ struct sTypeCfg
     uchar si_version;
     sObjCfg si_cfg;
 
+    uchar ip_bytepassword;
     uchar ip_ac;
     uchar ip_lcd;
     uchar ip_lines;

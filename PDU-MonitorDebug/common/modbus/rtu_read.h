@@ -40,8 +40,6 @@ protected:
 
     bool rtuRecvCrc(uchar *buf, int len);
     bool recvCrc(uchar *buf, int len, sRtuReplyItem *msg);
-    bool recvIPCrc(uchar *buf, int len, sRtuReplyItem *msg);
-
     int rtuRead(sRtuItem *pkt, sRtuReplyItem *recv , int id);
 };
 

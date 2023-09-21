@@ -45,6 +45,7 @@ void Set_IpWid::initType()
     ui->ipModeBox->setCurrentIndex(dt->ip_modbus);
     ui->securityBox->setCurrentIndex(dt->security);
     ui->languageBox->setCurrentIndex(dt->ip_language);
+    ui->PasswordTypeBox->setCurrentIndex(dt->ip_bytepassword);
     if(dt->ip_lines) dt->ip_ac = AC; else dt->ip_ac = DC;
     ui->InFirst->setText(dt->ip_inFirst);
     ui->InSecond->setText(dt->ip_inSecond);
@@ -62,6 +63,7 @@ void Set_IpWid::updateType()
     dt->ip_lcd = ui->lcdBox->currentIndex();
     dt->ip_lines = ui->lineBox->currentIndex();
     dt->ip_modbus = ui->ipModeBox->currentIndex();
+    dt->ip_bytepassword = ui->PasswordTypeBox->currentIndex();
     dt->ip_standard = ui->sBox->currentIndex();
     dt->log_en = ui->logBox->currentIndex();
     if(!ui->securityBox->isHidden()) dt->security = ui->securityBox->currentIndex();
@@ -112,6 +114,13 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
 {
     bool res = true;
     mUnitWid->changeIndex(index);
+    if(index == IP_PDUV3_BYTE - 2) {
+        ui->label_13->show();
+        ui->PasswordTypeBox->show();
+    }else{
+        ui->label_13->hide();
+        ui->PasswordTypeBox->hide();
+    }
     if( index == IP_PDUV3_BYTE - 2 || index == IP_PDUV3_SHATE - 2 || index == IP_PDUV3_ECC - 2) index = 1;
     if(index <= IP_PDUV3_EATON - 2 || index == IP_PDUV1_HUADA - 2)  res = false;
     ui->label_9->setHidden(res);
@@ -186,5 +195,6 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
         ui->label_3->setHidden(res);
         ui->ipModeBox->setHidden(res);
     }
+
 
 }
