@@ -315,7 +315,7 @@ int Dev_IpRtu::recvLineNumPacket(uchar *buf)
 {
     sObjData *obj = &(mDev->data);
     obj->size = m_Line =  (*buf) * 256 + *(buf+1);
-    mDt->lines = 2;
+    mDt->lines = mCfg->ip_lines;
     obj->vol.size = obj->cur.size = obj->size;
     obj->tem.size = obj->hum.size = 1;
     return 2;

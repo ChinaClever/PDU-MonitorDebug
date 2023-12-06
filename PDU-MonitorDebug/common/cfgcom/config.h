@@ -31,7 +31,8 @@ enum eIpTypes {
     IP_PDUV1_HUADA,     // IPV1华大    9
     IP_PDUV3_BYTE ,    // IPV3字节    10
     IP_PDUV3_SHATE,    // IPV3沙特    11
-    IP_PDUV3_ECC       // IPV3 ECC    12
+    IP_PDUV3_ECC,       // IPV3 ECC    12
+    IP_PDUV3_DCL       // IPV3 香港DCL    13
 };
 
 

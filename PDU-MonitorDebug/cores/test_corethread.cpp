@@ -16,12 +16,24 @@ void Test_CoreThread::initFunSlot()
     Dev_IpRtu::bulid(this);
     Dev_IpSnmp::bulid(this);
     Test_NetWork::bulid(this);
+    connect(Test_NetWork::bulid(this) , SIGNAL(sendMACSig(QString)) , this , SLOT(getMacSlot(QString)));
     mYc = Yc_Obj::bulid(this);
 
     mCtrl = Test_SiThread::bulid(this);
     mAd = Ad_CoreThread::bulid(this);
     mSn = Sn_SerialNum::bulid(this);
+    mSendUdp = new UdpSendSocket(this);
+    mSendUdp->initSocket(47755);
 }
+
+void Test_CoreThread::getMacSlot(QString str)
+{
+    if( str.size() >= 17 ){
+        this->mMacStr = str.right(17);
+        mPro->macAddress = this->mMacStr;
+    }
+}
+
 
 bool Test_CoreThread::setDev()
 {
@@ -35,6 +47,10 @@ bool Test_CoreThread::setDev()
     }
 
     if(ret) ret = mSn->snEnter();
+    mPro->productSN = mDt->sn;
+    mPro->productType = mDt->dev_type;
+    mPro->clientName.clear();
+    mPro->clientName = mItem->user;
     return ret;
 }
 
@@ -105,12 +121,15 @@ void Test_CoreThread::workResult()
     QString str = tr("最终结果 ");
     if(mPro->result != Test_Fail) {
         str += tr("通过");
+        mPro->uploadPassResult = 1;
     } else {
         res = false;
         str += tr("失败");
+        mPro->uploadPassResult = 0;
     }
 
     updatePro(str, res, 2);
+    if(mPro->recordstep == Test_Start) mSendUdp->dataSend();//全流程才发送记录
     mPro->step = Test_Over;
 }
 
@@ -190,6 +209,7 @@ void Test_CoreThread::run()
     }
     if(isRun) return; else isRun = true; 
     bool ret = initFun();
+    mPro->recordstep = mPro->step;
     if(ret) {
         switch (mPro->step) {
         case Test_Start: workDown(); break;

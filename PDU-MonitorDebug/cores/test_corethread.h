@@ -4,6 +4,7 @@
 #include "test_sithread.h"
 #include "ad_corethread.h"
 #include "ctrl_zpduthread.h"
+#include "udpsendsocket.h"
 
 class Test_CoreThread : public BaseThread
 {
@@ -23,6 +24,7 @@ protected:
 
 protected slots:
     void initFunSlot();
+    void getMacSlot(QString str);
 
 private:
     Yc_Obj *mYc;
@@ -30,6 +32,8 @@ private:
     Test_SiThread *mCtrl;
     Ad_CoreThread *mAd;
     Ctrl_ZpduThread *mControlOp;
+    QString mMacStr;
+    UdpSendSocket *mSendUdp;
 };
 
 #endif // TEST_CORETHREAD_H

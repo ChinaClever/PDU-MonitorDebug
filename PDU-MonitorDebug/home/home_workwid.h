@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "td_mainwid.h"
 #include "test_corethread.h"
+#include "udpsendsocket.h"///test//////////////////////////////////
 
 namespace Ui {
 class Home_WorkWid;
@@ -45,6 +46,7 @@ private:
     bool isCheck;
     QTimer *timer;
     Test_CoreThread *mCoreThread;
+    UdpSendSocket *mSendUdp;///test//////////////////////////////////
 };
 
 #endif // HOME_WORKWID_H

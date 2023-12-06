@@ -176,12 +176,29 @@ struct sProgress
     sProgress() {step=0;}
 
     uchar step; // 步骤
+    uchar recordstep; // 记录启动步骤
     QString time;
     QList<bool> pass;
     QStringList status;
 
     uchar result;    // 最终结果
     QTime startTime;
+
+    QString softwareType;
+    QString companyName;
+    QString protocolVersion;
+
+    QString productType;
+    QString productSN;
+    QString macAddress;
+    QString softwareVersion;
+    QString clientName;
+    QString testTime;
+    QString testStartTime;
+    QString testEndTime;
+    QStringList no, itemName;
+    QList<bool> uploadPass;
+    uchar uploadPassResult;
 };
 
 

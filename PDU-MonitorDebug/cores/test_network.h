@@ -14,6 +14,9 @@ public:
     bool startProcess();
     bool checkNet();
 
+signals:
+    void sendMACSig(QString str);
+
 protected:
     void run();
     void workDown();

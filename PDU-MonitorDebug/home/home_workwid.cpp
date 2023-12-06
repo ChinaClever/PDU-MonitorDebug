@@ -43,7 +43,12 @@ void Home_WorkWid::initFunSlot()
     timer = new QTimer(this);
     timer->start(500);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutDone()));
+//    mSendUdp = new UdpSendSocket();
+//    mSendUdp->initSocket(47755);///test//////////////////////////////////
+
+
     mCoreThread = new Test_CoreThread(this);
+
 }
 
 void Home_WorkWid::setTextColor()
@@ -64,6 +69,7 @@ void Home_WorkWid::insertText()
 {
     while(mPro->status.size()) {
         setTextColor();
+        mPro->no <<QString::number(mId);
         QString str = QString::number(mId++) + "、"+ mPro->status.first() + "\n";
         ui->textEdit->insertPlainText(str);
         mPro->status.removeFirst();
@@ -179,9 +185,9 @@ bool Home_WorkWid::initSerial()
     ret = mItem->source->isOpened();
     //ret = true;
     if(!ret) {MsgBox::critical(this, tr("请先打开标准源串口")); return ret;}
-//    ret = mItem->control->isOpened();
-//    if(!ret) {MsgBox::critical(this, tr("请先打开控制继电器串口")); return ret;}
-   return ret;
+    //    ret = mItem->control->isOpened();
+    //    if(!ret) {MsgBox::critical(this, tr("请先打开控制继电器串口")); return ret;}
+    return ret;
 }
 
 bool Home_WorkWid::initWid()
@@ -220,6 +226,10 @@ bool Home_WorkWid::initWid()
 
 void Home_WorkWid::on_startBtn_clicked()
 {
+//        mPacket->init();
+//        mPro->step = ui->modeBox->currentIndex()+Test_Start;
+//        mSendUdp->dataSend();///test//////////////////////////////////
+
     if(mPro->step == Test_End) {
         if(initWid()) mCoreThread->start();
     } else {

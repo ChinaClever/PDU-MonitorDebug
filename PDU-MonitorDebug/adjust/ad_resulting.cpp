@@ -80,7 +80,11 @@ bool Ad_Resulting::curRangeByID(int i, int exValue, int cnt)
 {
     int cur = mData->cur.value[i] * 10 ;
     if(mDt->lines == 2 &&i == 0) exValue *= 2;
-    QString str = tr("期望电流%1A: 实际电流 %2A 第%3位 电流 ").arg(exValue/AD_CUR_RATE).arg(mData->cur.value[i]/100.0).arg(i+1);
+    sDevData *dd = sDataPacket::bulid()->getDev();
+    double crate = 1.0;
+    if(dd->dt.screen == 1) crate = 10.0;
+    if(dd->dt.screen == 3 && dd->cfg.log_en  == 0 && dd->cfg.security  == 1) crate = 10;
+    QString str = tr("期望电流%1A: 实际电流 %2A 第%3位 电流 ").arg(exValue/AD_CUR_RATE).arg(mData->cur.value[i]/COM_RATE_CUR/crate).arg(i+1);
     bool ret = curErrRange(exValue, cur);
     mData->cured[i] = mData->cur.value[i];
     if(ret) {

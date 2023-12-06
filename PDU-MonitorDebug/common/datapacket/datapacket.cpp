@@ -33,4 +33,14 @@ void sDataPacket::init()
     pro->result = Test_Info;
     pro->startTime = QTime::currentTime();
     memset(&(dev->data),0,sizeof(sObjData));
+
+
+    pro->softwareType = "PDU-MonitorDebug";
+    pro->companyName = "clever";
+    pro->protocolVersion = "V1.0";
+    pro->testStartTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+    pro->testEndTime.clear();
+    pro->no.clear();
+    pro->itemName.clear();
+    pro->uploadPass.clear();
 }
