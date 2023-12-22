@@ -66,6 +66,7 @@ void Set_WorkWid::on_setBtn_clicked()
     mItem->aiMode = ui->aiBox->currentIndex();
     if(mItem->user != ui->userEdit->text()) {
         mItem->user = ui->userEdit->text();
+        // mPro->pn = ui->userEdit->text();
         sCount *cnt = &(mItem->cnt);
         cnt->all = cnt->ok = cnt->err = 0;
         Cfg::bulid()->writeCnt();
@@ -123,3 +124,9 @@ void Set_WorkWid::timeoutDone()
 {
     updateMac();
 }
+
+void Set_WorkWid::on_userEdit_textChanged(const QString &arg1)
+{
+    ui->userEdit->setClearButtonEnabled(1);
+}
+

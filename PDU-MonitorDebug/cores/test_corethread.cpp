@@ -22,8 +22,6 @@ void Test_CoreThread::initFunSlot()
     mCtrl = Test_SiThread::bulid(this);
     mAd = Ad_CoreThread::bulid(this);
     mSn = Sn_SerialNum::bulid(this);
-    mSendUdp = new UdpSendSocket(this);
-    mSendUdp->initSocket(47755);
 }
 
 void Test_CoreThread::getMacSlot(QString str)
@@ -47,10 +45,6 @@ bool Test_CoreThread::setDev()
     }
 
     if(ret) ret = mSn->snEnter();
-    mPro->productSN = mDt->sn;
-    mPro->productType = mDt->dev_type;
-    mPro->clientName.clear();
-    mPro->clientName = mItem->user;
     return ret;
 }
 
@@ -129,7 +123,12 @@ void Test_CoreThread::workResult()
     }
 
     updatePro(str, res, 2);
-    if(mPro->recordstep == Test_Start) mSendUdp->dataSend();//全流程才发送记录
+    if(mPro->recordstep == Test_Start)
+     {
+        sleep(2);
+        Json_Pack::bulid()->http_post("debugdata/add","192.168.1.12");//全流程才发送记录(http)
+    }
+    //全流程才发送记录
     mPro->step = Test_Over;
 }
 
@@ -148,7 +147,6 @@ bool Test_CoreThread::initFun()
         if(ret) ret = readDev();
         if(ret && !mDt->devType) {
             ret = mCtrl->setAlarm();
-
         }
     }else{
         ret = mYc->powerOn(0);

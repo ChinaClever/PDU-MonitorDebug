@@ -2,8 +2,9 @@
 #define TEST_NETWORK_H
 #include "baselogs.h"
 #include "sn_serialnum.h"
+#include "datapacket.h"
+#include "json_pack.h"
 #include "udprecvsocket.h"
-
 class Test_NetWork : public BaseThread
 {
     Q_OBJECT
@@ -27,8 +28,9 @@ protected slots:
 
 private:
     bool mac;
-    UdpRecvSocket *mUdp;
     QProcess *mProcess;
+    sProgress *mPro;
+    UdpRecvSocket *mUdp;
 };
 
 #endif // TEST_NETWORK_H

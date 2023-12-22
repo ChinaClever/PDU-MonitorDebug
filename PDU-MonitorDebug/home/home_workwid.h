@@ -6,6 +6,7 @@
 #include "test_corethread.h"
 #include "udpsendsocket.h"///test//////////////////////////////////
 
+
 namespace Ui {
 class Home_WorkWid;
 }
@@ -20,7 +21,6 @@ public:
 
 protected:
     void initLayout();
-    void insertText();
     void setTextColor();
 
     QString getTime();
@@ -31,6 +31,7 @@ protected:
 
     bool initSerial();
     bool initWid();
+    void insertText();
 
 private slots:
     void timeoutDone();
@@ -38,7 +39,7 @@ private slots:
     void on_startBtn_clicked();
     void on_upBtn_clicked();
     void on_downBtn_clicked();
-
+    void insertTextSlot(QString  str , bool ret);
 private:
     Ui::Home_WorkWid *ui;
 

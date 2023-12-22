@@ -5,8 +5,9 @@
 #include <QtCore>
 #include <QtNetwork>
 #include "json_pack.h"
+#include "baseobject.h"
 
-class UdpSendSocket : public QThread
+class UdpSendSocket : public  BaseThread//QThread
 {
     Q_OBJECT
 public:
@@ -15,17 +16,21 @@ public:
 
     bool initSocket(int port);
     int dataSend(void);
-
+    // BaseThread *mlogs;
 protected:
 
 
 signals:
 
 public slots:
-
+    bool dataReceivedSlot(void);
 private:
     bool isRun;
+    bool mRet;
     QUdpSocket *mUdpSocket;
+    UdpSendSocket *mSendUdp;
+    sDataPacket *mPacket;
+
 };
 
 #endif // UDPSENDSOCKET_H

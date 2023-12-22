@@ -43,9 +43,7 @@ void Home_WorkWid::initFunSlot()
     timer = new QTimer(this);
     timer->start(500);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeoutDone()));
-//    mSendUdp = new UdpSendSocket();
-//    mSendUdp->initSocket(47755);///test//////////////////////////////////
-
+    connect(Json_Pack::bulid(this), &Json_Pack::httpSig, this, &Home_WorkWid::insertTextSlot);
 
     mCoreThread = new Test_CoreThread(this);
 
@@ -63,6 +61,28 @@ void Home_WorkWid::setTextColor()
     QTextCursor cursor = ui->textEdit->textCursor();//获取文本光标
     cursor.mergeCharFormat(fmt);//光标后的文字就用该格式显示
     ui->textEdit->mergeCurrentCharFormat(fmt);//textEdit使用当前的字符格式
+    mPro->uploadPass<<pass;
+
+}
+
+void Home_WorkWid::insertTextSlot(QString str , bool ret)
+{
+    QColor color("black");
+    bool pass = ret;
+    if(!pass) color = QColor("red");
+    ui->textEdit->moveCursor(QTextCursor::Start);
+
+    QTextCharFormat fmt;//文本字符格式
+    fmt.setForeground(color);// 前景色(即字体色)设为color色
+    QTextCursor cursor = ui->textEdit->textCursor();//获取文本光标
+    cursor.mergeCharFormat(fmt);//光标后的文字就用该格式显示
+    ui->textEdit->mergeCurrentCharFormat(fmt);//textEdit使用当前的字符格式
+
+    mPro->no <<QString::number(mId);
+    QString str1 = QString::number(mId++) + "、"+ str + "\n";
+    ui->textEdit->insertPlainText(str1);
+    mPro->itemName<<str;
+    mPro->uploadPass<<pass;
 }
 
 void Home_WorkWid::insertText()
@@ -74,6 +94,7 @@ void Home_WorkWid::insertText()
         ui->textEdit->insertPlainText(str);
         mPro->status.removeFirst();
         mPro->pass.removeFirst();
+        mPro->itemName<<str;
     }
 }
 
@@ -149,15 +170,21 @@ void Home_WorkWid::updateResult()
 
 void Home_WorkWid::updateWid()
 {
+    sTypeCfg *dt = &(mDev->cfg);
     QString str = mDt->sn;
     if(str.isEmpty()) str = "--- ---";
     ui->snLab->setText(str);
+    mPro->productSN = str;
 
     str = mDt->dev_type;
     if(str.isEmpty()) str = "--- ---";
     ui->devLab->setText(str);
+    mPro->productType = str;
     ui->userLab->setText(mItem->user);
+    mPro->clientName = mItem->user;
     ui->cntLab->setNum(mItem->cnt.cnt);
+    mPro->softwareVersion = QString::number(mDt->version);
+    qDebug()<<"mPro->softwareVersion   "<<mPro->softwareVersion;
     if(mPro->step < Test_Over) {
         updateTime();
     } else if(mPro->step < Test_End){
@@ -192,10 +219,11 @@ bool Home_WorkWid::initSerial()
 
 bool Home_WorkWid::initWid()
 {
+    mPacket->init();
     bool ret = initSerial();
     if(ret) {
         if(mItem->user.isEmpty()) {
-            MsgBox::critical(this, tr("请先填写客户名称！")); return false;
+            MsgBox::critical(this, tr("请先填写工单号！")); return false;
         }
         if(mItem->cnt.cnt < 1) {
             MsgBox::critical(this, tr("请先填写订单剩余数量！")); return false;
@@ -211,12 +239,16 @@ bool Home_WorkWid::initWid()
                 }
             }
         }
+        QString str;
+        if(mItem->mac.isEmpty())  str = "--- ---";
+        ui->macLab->setText(str);
+        mPro->macAddress = str;
 
         mId = 1;
-        mPacket->init();
         ui->textEdit->clear();
         ui->modeBox->setEnabled(false);
         ui->groupBox_4->setEnabled(false);
+
         mPro->step = ui->modeBox->currentIndex()+Test_Start;
         if(mPro->step == Test_Start) isCheck = true; else isCheck = false;
     }
@@ -226,12 +258,11 @@ bool Home_WorkWid::initWid()
 
 void Home_WorkWid::on_startBtn_clicked()
 {
-//        mPacket->init();
-//        mPro->step = ui->modeBox->currentIndex()+Test_Start;
-//        mSendUdp->dataSend();///test//////////////////////////////////
-
     if(mPro->step == Test_End) {
-        if(initWid()) mCoreThread->start();
+        if(initWid()) {
+
+            mCoreThread->start();
+        }
     } else {
         bool ret = MsgBox::question(this, tr("确定需要提前结束？"));
         if(ret) {

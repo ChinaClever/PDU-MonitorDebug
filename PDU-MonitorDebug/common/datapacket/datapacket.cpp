@@ -34,6 +34,11 @@ void sDataPacket::init()
     pro->startTime = QTime::currentTime();
     memset(&(dev->data),0,sizeof(sObjData));
 
+    pro->productType.clear();
+    pro->productSN.clear();
+    pro->macAddress.clear();
+    pro->clientName.clear();
+    pro->testTime.clear();
 
     pro->softwareType = "PDU-MonitorDebug";
     pro->companyName = "clever";

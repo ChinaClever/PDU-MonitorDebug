@@ -7,16 +7,16 @@
 #include "json_pack.h"
 
 
-Json_Pack::Json_Pack()
+Json_Pack::Json_Pack(QObject *parent)
 {
     mPro = sDataPacket::bulid()->getPro();
 }
 
-Json_Pack *Json_Pack::bulid()
+Json_Pack *Json_Pack::bulid(QObject *parent)
 {
     static Json_Pack* sington = NULL;
     if(sington == NULL) {
-        sington = new Json_Pack();
+        sington = new Json_Pack(parent);
     }
     return sington;
 }
@@ -33,7 +33,7 @@ void Json_Pack::head(QJsonObject &obj)
     obj.insert("macAddress", mPro->macAddress);
     obj.insert("result", mPro->uploadPassResult);
     obj.insert("softwareVersion", mPro->softwareVersion);
-    obj.insert("clientName", mPro->clientName);
+    obj.insert("work_order", mPro->clientName);//工单号
     obj.insert("companyName", mPro->companyName);
     obj.insert("protocolVersion", mPro->protocolVersion);
     obj.insert("testStartTime", mPro->testStartTime);
@@ -48,7 +48,13 @@ void Json_Pack::pduInfo(QJsonObject &obj)
     objData(obj);
 }
 
+void Json_Pack::part_head(QJsonObject &obj)
+{
+    obj.insert("serial_id", mPro->productSN);
+    obj.insert("work_order", mPro->clientName);
 
+
+}
 
 int Json_Pack::objData(QJsonObject &obj)
 {
@@ -74,7 +80,43 @@ void Json_Pack::getJson(QJsonObject &json , QByteArray &ba)
     QJsonDocument jsonDoc(json);
     ba = jsonDoc.toJson();
 }
+void Json_Pack::http_post(const QString &method, const QString &ip, int port)
+{
+    QJsonObject json; head(json);
 
+    AeaQt::HttpClient http;
+    http.clearAccessCache();
+    http.clearConnectionCache();
+    QString url = "http://%1:%2/%3";
+    http.post(url.arg(ip).arg(port).arg(method))
+        .header("content-type", "application/json")
+        .onSuccess([&](QString result) {emit httpSig(result,true);})
+        .onFailed([&](QString error) {emit httpSig(error,false); })
+        .onTimeout([&](QNetworkReply *) {emit httpSig("http_post timeout",false); }) // 超时处理
+        .timeout(1000) // 1s超时
+        .block()
+        .body(json)
+        .exec();
+}
+QString Json_Pack::http_get(const QString &method, const QString &ip, int port)
+{
+    QJsonObject json; part_head(json);
+    QString mac;
+    AeaQt::HttpClient http;
+    http.clearAccessCache();
+    http.clearConnectionCache();
+    QString url = "http://%1:%2/%3";
+    http.get(url.arg(ip).arg(port).arg(method))
+        .header("content-type", "application/json")
+        .onSuccess([&](QString result) {mac = result;emit httpSig(result,true);})
+        .onFailed([&](QString error) {emit httpSig(error,false); })
+        .onTimeout([&](QNetworkReply *) {emit httpSig("http_get timeout",false); }) // 超时处理
+        .timeout(1000) // 1s超时
+        .block()
+        .body(json)
+        .exec();
+    return mac;
+}
 //bool Json_Build::saveJson( QJsonObject &json)
 //{
 //    QJsonDocument jsonDoc(json);
