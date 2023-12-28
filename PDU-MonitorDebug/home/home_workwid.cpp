@@ -78,7 +78,7 @@ void Home_WorkWid::insertTextSlot(QString str , bool ret)
     cursor.mergeCharFormat(fmt);//光标后的文字就用该格式显示
     ui->textEdit->mergeCurrentCharFormat(fmt);//textEdit使用当前的字符格式
 
-    mPro->no <<QString::number(mId);
+    // mPro->no <<QString::number(mId);
     QString str1 = QString::number(mId++) + "、"+ str + "\n";
     ui->textEdit->insertPlainText(str1);
     mPro->itemName<<str;
@@ -89,12 +89,12 @@ void Home_WorkWid::insertText()
 {
     while(mPro->status.size()) {
         setTextColor();
-        mPro->no <<QString::number(mId);
+        // mPro->no <<QString::number(mId);
         QString str = QString::number(mId++) + "、"+ mPro->status.first() + "\n";
         ui->textEdit->insertPlainText(str);
         mPro->status.removeFirst();
         mPro->pass.removeFirst();
-        mPro->itemName<<str;
+        mPro->itemName << mPro->status.first();
     }
 }
 
@@ -171,6 +171,7 @@ void Home_WorkWid::updateResult()
 void Home_WorkWid::updateWid()
 {
     sTypeCfg *dt = &(mDev->cfg);
+    sObjData *obj = &(mDev->data);
     QString str = mDt->sn;
     if(str.isEmpty()) str = "--- ---";
     ui->snLab->setText(str);
@@ -183,8 +184,7 @@ void Home_WorkWid::updateWid()
     ui->userLab->setText(mItem->user);
     mPro->clientName = mItem->user;
     ui->cntLab->setNum(mItem->cnt.cnt);
-    mPro->softwareVersion = QString::number(mDt->version);
-    qDebug()<<"mPro->softwareVersion   "<<mPro->softwareVersion;
+    mPro->softwareVersion = obj->version;
     if(mPro->step < Test_Over) {
         updateTime();
     } else if(mPro->step < Test_End){
@@ -203,11 +203,9 @@ bool Home_WorkWid::initSerial()
 {
     bool ret = mItem->com->isOpened();
 
-
     if(ui->modeBox->currentIndex() == 1) ret = true;
     if(!ret) {MsgBox::critical(this, tr("请先打开PDU串口")); return ret;}
     if(ui->modeBox->currentIndex() == 1) ret = false;//跳过读取PDU串口检查
-
 
     ret = mItem->source->isOpened();
     //ret = true;
@@ -219,7 +217,6 @@ bool Home_WorkWid::initSerial()
 
 bool Home_WorkWid::initWid()
 {
-    mPacket->init();
     bool ret = initSerial();
     if(ret) {
         if(mItem->user.isEmpty()) {
@@ -239,16 +236,17 @@ bool Home_WorkWid::initWid()
                 }
             }
         }
+        mPacket->init();
         QString str;
         if(mItem->mac.isEmpty())  str = "--- ---";
         ui->macLab->setText(str);
         mPro->macAddress = str;
 
         mId = 1;
+        mPro->PCB_Code = ui->pcbEdit->text();
         ui->textEdit->clear();
         ui->modeBox->setEnabled(false);
         ui->groupBox_4->setEnabled(false);
-
         mPro->step = ui->modeBox->currentIndex()+Test_Start;
         if(mPro->step == Test_Start) isCheck = true; else isCheck = false;
     }
@@ -259,9 +257,10 @@ bool Home_WorkWid::initWid()
 void Home_WorkWid::on_startBtn_clicked()
 {
     if(mPro->step == Test_End) {
-        if(initWid()) {
-
-            mCoreThread->start();
+        if(!ui->pcbEdit->text().isEmpty()){
+            if(initWid())mCoreThread->start();
+        }else{
+            MsgBox::critical(this, tr("请先填写pcb码！"));
         }
     } else {
         bool ret = MsgBox::question(this, tr("确定需要提前结束？"));
@@ -282,3 +281,9 @@ void Home_WorkWid::on_downBtn_clicked()
     Yc_Obj::bulid()->get()->setCur(0);
     Yc_Obj::bulid()->get()->setVol(0);
 }
+
+void Home_WorkWid::on_pcbEdit_textChanged(const QString &arg1)
+{
+    ui->pcbEdit->setClearButtonEnabled(1);
+}
+

@@ -21,6 +21,7 @@ include(serialport/serialport.pri)
 include(backcolour/backcolour.pri)
 include(qtsingleapplication/qtsingleapplication.pri)
 include(http/http.pri)
+
 HEADERS += \
     $$PWD/common.h
 	

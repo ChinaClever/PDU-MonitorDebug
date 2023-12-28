@@ -18,7 +18,6 @@ void Test_CoreThread::initFunSlot()
     Test_NetWork::bulid(this);
     connect(Test_NetWork::bulid(this) , SIGNAL(sendMACSig(QString)) , this , SLOT(getMacSlot(QString)));
     mYc = Yc_Obj::bulid(this);
-
     mCtrl = Test_SiThread::bulid(this);
     mAd = Ad_CoreThread::bulid(this);
     mSn = Sn_SerialNum::bulid(this);
@@ -43,7 +42,6 @@ bool Test_CoreThread::setDev()
         ret = mCtrl->setDev();
         if(mCfg->si_led) return ret;
     }
-
     if(ret) ret = mSn->snEnter();
     return ret;
 }
