@@ -136,6 +136,7 @@ struct sDevType
     // IP V1 V3
     // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
     // 8:IP-PDUV1-YIXIN 9:IP_PDUV1_HUADA 10:IP_PDUV3_BYTE 11:IP_PDUV3_SHATE
+    uchar customizedType;// 1 BM-PDU定制单相两回路时，总相电流阈值与回路阈值相等
     QString dev_type;
     QString sn;
 };

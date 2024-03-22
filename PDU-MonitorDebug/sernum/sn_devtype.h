@@ -19,6 +19,7 @@ protected:
     int getLineNum(const QString &str);
     int getSerie(const QString &str);
     int getSceenType(const QString &str);
+    int getCustomizedDevType(const QString &str);
 
 private:
     sDevType *mDt;

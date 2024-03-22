@@ -27,8 +27,10 @@ bool Dev_SiCtrl::setCurTh(int i)
     ushort value = unit->max * 10;
     if(mDt->screen == 1) value *= 10;
     if((mCfg->si_lines == 2) && i) {
-        if(value == 630&&value == 6300) value = (value/10 +1)/2 * 10; // 解决单项二路阈值问题
-        else value /= 2;
+        if(mDt->customizedType != BM_PDU_SINGLEPHASETWOLOOP){
+            if(value == 630&&value == 6300) value = (value/10 +1)/2 * 10; // 解决单项二路阈值问题
+            else value /= 2;
+        }
     }
 
     if(mData->cur.max[i] != value) {
