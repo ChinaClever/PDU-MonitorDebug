@@ -48,7 +48,8 @@ void Home_WorkWid::initFunSlot()
 
 
     mCoreThread = new Test_CoreThread(this);
-
+    connect(mCoreThread , SIGNAL(upMessageBoxSig()), this , SLOT(upMessageBoxSlot()));
+    connect(this , SIGNAL(downMessageBoxSig()), mCoreThread , SLOT(downMessageBoxSlot()));
 }
 
 void Home_WorkWid::setTextColor()
@@ -250,4 +251,11 @@ void Home_WorkWid::on_downBtn_clicked()
 {
     Yc_Obj::bulid()->get()->setCur(0);
     Yc_Obj::bulid()->get()->setVol(0);
+}
+
+void Home_WorkWid::upMessageBoxSlot()
+{
+    bool ret = false;
+    ret = MsgBox::information(this, tr("SI-PDU切换类型，需要手动重启设备再校准"));
+    if(ret) emit downMessageBoxSig();
 }

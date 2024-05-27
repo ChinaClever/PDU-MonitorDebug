@@ -27,6 +27,7 @@ void Dev_SiCfg::initType()
     ptr->si_series = read("si_series", 0).toInt();
     ptr->si_standar = read("si_standar", 0).toInt();
     ptr->si_version = read("si_version", 0).toInt();
+    ptr->si_horizontal = read("si_horizontal", 1).toInt();
 }
 
 void Dev_SiCfg::writeType()
@@ -38,6 +39,7 @@ void Dev_SiCfg::writeType()
     write("si_series", ptr->si_series);
     write("si_standar", ptr->si_standar);
     write("si_version", ptr->si_version);
+    write("si_horizontal", ptr->si_horizontal);
 }
 
 void Dev_SiCfg::initData()

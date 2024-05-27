@@ -95,7 +95,10 @@ bool Dev_SiCtrl::setDev()
     if(mCfg->si_lines == 2 && mDt->devType == 0 && mDt->screen == 1) sentRtuCmd(0x1049, 0x03);
     ret = sentRtuCmd(0x1049, mCfg->si_lines); ret = true;  //断码屏没有返回，上面命令默认都能成功
     if(ret) ret = sentRtuCmd(0x1051, mCfg->si_series);
-    if(ret) ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
+    if(ret) {
+        if(mCfg->si_series != 2)//互感器不设置定制功能
+        ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
+    }
 
     return ret;
 }

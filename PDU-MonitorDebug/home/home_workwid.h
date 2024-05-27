@@ -32,6 +32,12 @@ protected:
     bool initSerial();
     bool initWid();
 
+signals:
+    void downMessageBoxSig();
+
+public slots:
+    void upMessageBoxSlot();
+
 private slots:
     void timeoutDone();
     void initFunSlot();

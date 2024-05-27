@@ -22,6 +22,11 @@ protected:
     void collectData();
     void workResult();
 
+signals:
+    void upMessageBoxSig();
+public slots:
+    void downMessageBoxSlot();
+
 protected slots:
     void initFunSlot();
     void getMacSlot(QString str);
@@ -34,6 +39,7 @@ private:
     Ctrl_ZpduThread *mControlOp;
     QString mMacStr;
     UdpSendSocket *mSendUdp;
+    bool mFlag;
 };
 
 #endif // TEST_CORETHREAD_H

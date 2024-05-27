@@ -108,7 +108,7 @@ bool Test_SiThread::setHorizontalOrVertical()
 {
     QString str = tr("切换水平");
     bool ret = true;
-    if(mDev->dt.screen == 0) {
+    if(mDev->dt.dev_type.contains("液晶屏")) {
         if(mCfg->si_horizontal == 0x01) str = tr("切换垂直");
         bool ret = mCtrl->setHorizontaOrVertical();
         if(ret) {

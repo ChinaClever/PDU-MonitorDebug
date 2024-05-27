@@ -24,6 +24,7 @@ void Test_CoreThread::initFunSlot()
     mSn = Sn_SerialNum::bulid(this);
     mSendUdp = new UdpSendSocket(this);
     mSendUdp->initSocket(47755);
+    mFlag = false;
 }
 
 void Test_CoreThread::getMacSlot(QString str)
@@ -161,7 +162,12 @@ bool Test_CoreThread::initFun()
 void Test_CoreThread::workDown()
 {
     bool ret = checkDev();
+    mFlag = false;
     Ad_Resulting::bulid(this)->initRtuThread();
+    if( mDt->devType == 0  && mCfg->si_series != 0 && mDt->dev_type.contains("SI")){
+        emit upMessageBoxSig();
+        while(!mFlag) sleep(1);
+    }
     if(ret) ret = mAd->startAdjust();
     if(!mItem->modeId) {
         mCtrl->clearEle(); sleep(1); msleep(500);
@@ -175,6 +181,11 @@ void Test_CoreThread::workDown()
             updatePro(str, false);
         }
     }
+}
+
+void Test_CoreThread::downMessageBoxSlot()
+{
+    mFlag = true;
 }
 
 void Test_CoreThread::collectData()
