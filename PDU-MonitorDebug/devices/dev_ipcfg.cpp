@@ -34,6 +34,7 @@ void Dev_IpCfg::initType()
     ptr->log_en = read("log_en", 0).toInt();
     ptr->ip_lcd = read("ip_lcd", 0).toInt();
     ptr->ip_bytepassword = read("ip_bytepassword", 0).toInt();
+    ptr->ip_type = read("ip_type", 0).toInt();
     ptr->ip_inFirst = read("ip_infirst", "IEC309").toString();
     ptr->ip_inSecond = read("ip_insecond", "18A").toString();
     ptr->ip_outFirst = read("ip_outfirst", "20xC13").toString();
@@ -54,7 +55,14 @@ void Dev_IpCfg::writeType()
     write("security", ptr->security);
     write("log_en", ptr->log_en);
     write("ip_lcd", ptr->ip_lcd);
-    write("ip_bytepassword", ptr->ip_bytepassword);
+
+    int v = ptr->ip_version - 1; if(v) v = v - 1;
+    if(v == IP_PDUV3_BYTE - 2) {
+        write("ip_bytepassword", ptr->ip_bytepassword);
+    }
+    if(v == IP_PDUV3 - 2) {
+        write("ip_type", ptr->ip_type);
+    }
 
     write("ip_infirst", ptr->ip_inFirst);
     write("ip_insecond", ptr->ip_inSecond);

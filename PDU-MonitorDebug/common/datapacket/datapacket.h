@@ -113,6 +113,7 @@ struct sTypeCfg
     uchar ip_modbus;
     uchar ip_standard;
     uchar ip_version;
+    uchar ip_type;
     // 1:IP-PDUV1 3:IP-PDUV3 4:IP-PDUV3-C3
     // 5:IP-PDUV3-EATON 6:IP-PDUV6 7:IP-PDUV6-HUAWEI
     // 9:IP_PDUV1_HUADA// IPV1华大 10:IP_PDUV3_BYTE 11:IP_PDUV3_SHATE 12:
