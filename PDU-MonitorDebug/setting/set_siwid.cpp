@@ -43,6 +43,8 @@ void Set_SiWid::initType()
     if(cfg->si_version == 9)  ver = 4;
     ui->sVer->setCurrentIndex(ver);
     if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
+    if(cfg->si_horizontal == 2) ui->HorizontalCheck->setChecked(true);
+    else if(cfg->si_horizontal == 1) ui->HorizontalCheck->setChecked(false);
 }
 
 void Set_SiWid::updateType()

@@ -256,6 +256,6 @@ void Home_WorkWid::on_downBtn_clicked()
 void Home_WorkWid::upMessageBoxSlot()
 {
     bool ret = false;
-    ret = MsgBox::information(this, tr("SI-PDU切换类型，需要手动重启设备再校准"));
+    ret = MsgBox::information(this, tr("SI/BM切换类型，需要手动重启设备再校准"));
     if(ret) emit downMessageBoxSig();
 }

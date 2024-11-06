@@ -164,7 +164,7 @@ void Test_CoreThread::workDown()
     bool ret = checkDev();
     mFlag = false;
     Ad_Resulting::bulid(this)->initRtuThread();
-    if( mDt->devType == 0  && mCfg->si_series != 0 && mDt->dev_type.contains("SI")){
+    if( mDt->devType == 0  && mCfg->si_series != 0 && (mDt->dev_type.contains("SI")||mDt->dev_type.contains("BM"))){
         emit upMessageBoxSig();
         while(!mFlag) sleep(1);
     }
