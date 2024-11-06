@@ -61,9 +61,9 @@ bool BaseLogs::appendLogItem(const QString &str, bool pass)
 void BaseLogs::saveLogs()
 {
     bool ret = writeLog();
+    if(mMac.size()) writeMac();//系列号为空也记录MAC地址
     if(ret) {
         writeLogs();
-        if(mMac.size()) writeMac();
         writeValues();
     } else {
         // updatePro(tr("因未创建序列号，日志无法保存！"), false);

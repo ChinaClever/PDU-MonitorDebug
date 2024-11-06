@@ -45,7 +45,17 @@ void Set_IpWid::initType()
     ui->ipModeBox->setCurrentIndex(dt->ip_modbus);
     ui->securityBox->setCurrentIndex(dt->security);
     ui->languageBox->setCurrentIndex(dt->ip_language);
-    ui->PasswordTypeBox->setCurrentIndex(dt->ip_bytepassword);
+    if(v == IP_PDUV3_BYTE - 2) {
+        ui->PasswordTypeBox->setItemText(0 , tr("字节抖音默认密码"));
+        ui->PasswordTypeBox->setItemText(1 , tr("中集造无默认密码"));
+        ui->PasswordTypeBox->setCurrentIndex(dt->ip_bytepassword);
+    }
+    if( v == IP_PDUV3 - 2){
+        ui->PasswordTypeBox->setItemText(0 , tr("锰铜"));
+        ui->PasswordTypeBox->setItemText(1 , tr("互感器"));
+        ui->PasswordTypeBox->setCurrentIndex(dt->ip_type);
+    }
+
     if(dt->ip_lines) dt->ip_ac = AC; else dt->ip_ac = DC;
     ui->InFirst->setText(dt->ip_inFirst);
     ui->InSecond->setText(dt->ip_inSecond);
@@ -63,7 +73,12 @@ void Set_IpWid::updateType()
     dt->ip_lcd = ui->lcdBox->currentIndex();
     dt->ip_lines = ui->lineBox->currentIndex();
     dt->ip_modbus = ui->ipModeBox->currentIndex();
-    dt->ip_bytepassword = ui->PasswordTypeBox->currentIndex();
+    if(v == IP_PDUV3_BYTE) {
+        dt->ip_bytepassword = ui->PasswordTypeBox->currentIndex();
+    }
+    if( v == IP_PDUV3){
+        dt->ip_type = ui->PasswordTypeBox->currentIndex();
+    }
     dt->ip_standard = ui->sBox->currentIndex();
     dt->log_en = ui->logBox->currentIndex();
     if(!ui->securityBox->isHidden()) dt->security = ui->securityBox->currentIndex();
@@ -114,7 +129,19 @@ void Set_IpWid::on_ipTypeBox_currentIndexChanged(int index)
 {
     bool res = true;
     mUnitWid->changeIndex(index);
-    if(index == IP_PDUV3_BYTE - 2) {
+    if(index == IP_PDUV3_BYTE - 2 || index == IP_PDUV3 - 2) {
+        if(index == IP_PDUV3_BYTE - 2) {
+            sTypeCfg *dt = &(mDev->cfg); //设备类型
+            ui->PasswordTypeBox->setItemText(0 , tr("字节抖音默认密码"));
+            ui->PasswordTypeBox->setItemText(1 , tr("中集造无默认密码"));
+            ui->PasswordTypeBox->setCurrentIndex(dt->ip_bytepassword);
+        }
+        if( index == IP_PDUV3 - 2){
+            sTypeCfg *dt = &(mDev->cfg); //设备类型
+            ui->PasswordTypeBox->setItemText(0 , tr("锰铜"));
+            ui->PasswordTypeBox->setItemText(1 , tr("互感器"));
+            ui->PasswordTypeBox->setCurrentIndex(dt->ip_type);
+        }
         ui->label_13->show();
         ui->PasswordTypeBox->show();
     }else{

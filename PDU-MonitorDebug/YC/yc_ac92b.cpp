@@ -59,7 +59,10 @@ bool YC_Ac92b::setVol(int v, int sec)
     if(v == 200) {
         vol = 91;
         serialWrite("P5\r"); // 改变功率因素
-    } else if(v == 0) {
+    }else if(v == 250){
+        vol = 114;
+    }
+    else if(v == 0) {
         vol = v;
     }
 

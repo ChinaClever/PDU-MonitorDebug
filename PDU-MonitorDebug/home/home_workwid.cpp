@@ -46,7 +46,8 @@ void Home_WorkWid::initFunSlot()
     connect(Json_Pack::bulid(this), &Json_Pack::httpSig, this, &Home_WorkWid::insertTextSlot);
 
     mCoreThread = new Test_CoreThread(this);
-
+    connect(mCoreThread , SIGNAL(upMessageBoxSig()), this , SLOT(upMessageBoxSlot()));
+    connect(this , SIGNAL(downMessageBoxSig()), mCoreThread , SLOT(downMessageBoxSlot()));
 }
 
 void Home_WorkWid::setTextColor()
@@ -282,8 +283,15 @@ void Home_WorkWid::on_downBtn_clicked()
     Yc_Obj::bulid()->get()->setVol(0);
 }
 
+
 void Home_WorkWid::on_pcbEdit_textChanged(const QString &arg1)
 {
     ui->pcbEdit->setClearButtonEnabled(1);
 }
 
+void Home_WorkWid::upMessageBoxSlot()
+{
+    bool ret = false;
+    ret = MsgBox::information(this, tr("SI/BM切换类型，需要手动重启设备再校准"));
+    if(ret) emit downMessageBoxSig();
+}

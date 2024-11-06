@@ -83,6 +83,18 @@ int Sn_DevType::getDevType(const QString &str)
     return ret;
 }
 
+int Sn_DevType::getCustomizedDevType(const QString &str)
+{
+    int ret = 0;
+    if(str.contains("BM-PDU")){
+        if(str.contains("世科伟业")) ret = BM_PDU_SINGLEPHASETWOLOOP;
+        else ret = BM_PDU;
+    }
+
+
+    return ret;
+}
+
 int Sn_DevType::getAcType(const QString &str)
 {
     int ret = AC;
@@ -136,6 +148,7 @@ bool Sn_DevType::analysDevType(uint id)
     if(str.size()) {
         mDt->devId = id;
         mDt->dev_type = str;
+        mDt->customizedType = getCustomizedDevType(str);
         mDt->devType = getDevType(str);
         mDt->ac = getAcType(str);
         mDt->screen = getSceenType(str);

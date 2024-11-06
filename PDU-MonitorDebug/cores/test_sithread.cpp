@@ -108,16 +108,18 @@ bool Test_SiThread::setHorizontalOrVertical()
 {
     QString str = tr("切换水平");
     bool ret = true;
-    if(mDev->dt.screen == 0) {
-        if(mCfg->si_horizontal == 0x01) str = tr("切换垂直");
-        bool ret = mCtrl->setHorizontaOrVertical();
-        if(ret) {
-            str += tr("正常");
-        } else {
-            str += tr("错误");
-        }
-       ret =  updatePro(str, ret);
+    if(mCfg->si_horizontal == 0x01){
+        str = tr("切换垂直");
+        return ret;
     }
+
+    ret = mCtrl->setHorizontaOrVertical();
+    if(ret) {
+        str += tr("正常");
+    } else {
+        str += tr("错误");
+    }
+   ret =  updatePro(str, ret);
 
 
     return  ret;

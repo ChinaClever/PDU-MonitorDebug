@@ -36,8 +36,10 @@ bool UdpSendSocket::initSocket(int port)
     mUdpSocket = new QUdpSocket(this);
     bool ret = mUdpSocket->bind(QHostAddress::AnyIPv4, port);
     if(ret) {
-        connect(mUdpSocket,SIGNAL(readyRead()),this,SLOT(dataReceivedSlot())); // 数据接收
-        // start(); // 启动接收线程
+
+        // connect(mUdpSocket,SIGNAL(readyRead()),this,SLOT(dataReceivedSlot())); // 数据接收
+        // // start(); // 启动接收线程
+
     } else
         qDebug() << "udp socket create err" << port;
 

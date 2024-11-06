@@ -316,6 +316,7 @@ bool Ad_Resulting::noLoadEnter()
 
     QString str = tr("空载验证：设置空载电流");
     updatePro(str, ret, 5);
+    if(AC == mDt->ac) mSource->setVol(250 , 3);// 升高电压，避免低电压出现电流底数变成零的情况
     if(ret) ret = noLoadCurFun();
     return ret;
 }

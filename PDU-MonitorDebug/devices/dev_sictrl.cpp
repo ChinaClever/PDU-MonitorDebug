@@ -27,8 +27,10 @@ bool Dev_SiCtrl::setCurTh(int i)
     ushort value = unit->max * 10;
     if(mDt->screen == 1) value *= 10;
     if((mCfg->si_lines == 2) && i) {
-        if(value == 630&&value == 6300) value = (value/10 +1)/2 * 10; // 解决单项二路阈值问题
-        else value /= 2;
+        if(mDt->customizedType != BM_PDU_SINGLEPHASETWOLOOP){
+            if(value == 630&&value == 6300) value = (value/10 +1)/2 * 10; // 解决单项二路阈值问题
+            else value /= 2;
+        }
     }
 
     if(mData->cur.max[i] != value) {
@@ -93,7 +95,10 @@ bool Dev_SiCtrl::setDev()
     if(mCfg->si_lines == 2 && mDt->devType == 0 && mDt->screen == 1) sentRtuCmd(0x1049, 0x03);
     ret = sentRtuCmd(0x1049, mCfg->si_lines); ret = true;  //断码屏没有返回，上面命令默认都能成功
     if(ret) ret = sentRtuCmd(0x1051, mCfg->si_series);
-    if(ret) ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
+    if(ret) {
+        if(mCfg->si_series != 2)//互感器不设置定制功能
+        ret = sentRtuCmd(0x1050, mCfg->si_version); //mCfg->si_standar
+    }
 
     return ret;
 }

@@ -33,6 +33,12 @@ protected:
     bool initWid();
     void insertText();
 
+signals:
+    void downMessageBoxSig();
+
+public slots:
+    void upMessageBoxSlot();
+
 private slots:
     void timeoutDone();
     void initFunSlot();
@@ -49,7 +55,6 @@ private:
     bool isCheck;
     QTimer *timer;
     Test_CoreThread *mCoreThread;
-    UdpSendSocket *mSendUdp;///test//////////////////////////////////
 };
 
 #endif // HOME_WORKWID_H
