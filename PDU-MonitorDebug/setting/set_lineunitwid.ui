@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>421</width>
-    <height>208</height>
+    <height>226</height>
    </rect>
   </property>
   <property name="font">
@@ -231,7 +231,7 @@
       <number>0</number>
      </property>
      <property name="maximum">
-      <double>300.000000000000000</double>
+      <double>400.000000000000000</double>
      </property>
      <property name="value">
       <double>276.000000000000000</double>
