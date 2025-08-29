@@ -147,6 +147,10 @@ bool Test_CoreThread::initFun()
 //        }
         if(ret) ret = setDev();
         if(ret) ret = readDev();
+        if( mDt->devType == 0  && mCfg->si_series != 0 && (mDt->dev_type.contains("SI")||mDt->dev_type.contains("BM"))){
+            emit upMessageBoxSig();
+            while(!mFlag) sleep(1);
+        }
         if(ret && !mDt->devType) {
             ret = mCtrl->setAlarm();
 
@@ -164,10 +168,10 @@ void Test_CoreThread::workDown()
     bool ret = checkDev();
     mFlag = false;
     Ad_Resulting::bulid(this)->initRtuThread();
-    if( mDt->devType == 0  && mCfg->si_series != 0 && (mDt->dev_type.contains("SI")||mDt->dev_type.contains("BM"))){
-        emit upMessageBoxSig();
-        while(!mFlag) sleep(1);
-    }
+//    if( mDt->devType == 0  && mCfg->si_series != 0 && (mDt->dev_type.contains("SI")||mDt->dev_type.contains("BM"))){
+//        emit upMessageBoxSig();
+//        while(!mFlag) sleep(1);
+//    }
     if(ret) ret = mAd->startAdjust();
     if(!mItem->modeId) {
         mCtrl->clearEle(); sleep(1); msleep(500);
