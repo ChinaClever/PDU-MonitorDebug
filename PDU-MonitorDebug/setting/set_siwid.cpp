@@ -43,17 +43,21 @@ void Set_SiWid::initType()
     if(cfg->si_version == 9)  ver = 4;
     ui->sVer->setCurrentIndex(ver);
     if(cfg->si_lines) cfg->si_ac = AC; else  cfg->si_ac = DC;
-    if(cfg->si_horizontal == 2) ui->HorizontalCheck->setChecked(true);
-    else if(cfg->si_horizontal == 1) ui->HorizontalCheck->setChecked(false);
+//    if(cfg->si_horizontal == 2) ui->HorizontalCheck->setChecked(true);
+//    else if(cfg->si_horizontal == 1) ui->HorizontalCheck->setChecked(false);
+    ui->HorizontalBox->setCurrentIndex(cfg->si_horizontal-1);
 }
 
 void Set_SiWid::updateType()
 {
     sTypeCfg *cfg = &(mDev->cfg);
     cfg->si_led = ui->ledCheck->isChecked()?1:0;
-    if(ui->ledCheck->isChecked())
-        ui->HorizontalCheck->setChecked(false);
-    cfg->si_horizontal = ui->HorizontalCheck->isChecked()?0x2:0x1;
+    if(ui->ledCheck->isChecked()){
+        //ui->HorizontalCheck->setChecked(false);
+        ui->HorizontalBox->setEnabled(false);
+    }
+    //1垂直 2水平 3垂直翻转 4水平翻转
+    cfg->si_horizontal = ui->HorizontalBox->currentIndex()+1;
     cfg->si_lines = ui->lineBox->currentIndex();
     cfg->si_standar = ui->sBox->currentIndex();
     cfg->si_series = ui->curBox->currentIndex();
